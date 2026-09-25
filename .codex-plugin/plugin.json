@@ -1,0 +1,21 @@
+{
+  "name": "makeitship",
+  "version": "0.1.0",
+  "description": "Hand work to the Makeitship team as tasks, and follow their replies, from the agent you already use.",
+  "author": { "name": "Makeitship", "url": "https://makeitship.com" },
+  "homepage": "https://platform.makeitship.com",
+  "repository": "https://github.com/ai-lab-development-bot/makeitship-plugin",
+  "license": "MIT",
+  "keywords": ["makeitship", "human-tasks", "mcp"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Makeitship",
+    "shortDescription": "Hand work to the Makeitship team as tasks",
+    "longDescription": "Delegate what your agent cannot do itself to the Makeitship team as a task, and track the team's replies, from Codex.",
+    "developerName": "Makeitship",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://makeitship.com"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "makeitship",
+  "description": "Makeitship plugins for Claude Code and Codex",
+  "owner": { "name": "Makeitship", "url": "https://makeitship.com" },
+  "plugins": [
+    {
+      "name": "makeitship",
+      "source": ".",
+      "description": "Hand work to the Makeitship team as tasks, and follow their replies."
+    }
+  ]
+}
