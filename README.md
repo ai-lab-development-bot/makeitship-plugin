@@ -32,12 +32,8 @@ Both need the server connected; without it they say so.
 
 ## Without the plugin
 
-Add the server yourself: `claude mcp add --transport http --scope user makeitship https://mcp.makeitship.com/mcp`, or `codex mcp add makeitship --url https://mcp.makeitship.com/mcp` then `codex mcp login makeitship`. Claude Desktop: Settings → Connectors → Add custom connector with the same URL.
+Add the server yourself with the server URL from the Connect agent page of your Makeitship dashboard: `claude mcp add --transport http --scope user makeitship <url>`, or `codex mcp add makeitship --url <url>` then `codex mcp login makeitship`. Claude Desktop: Customize → Connectors → Add custom connector with the same URL.
 
 ## Versioning
 
 Semantic versions in the manifests. Tools are only added or gain optional fields; a rename is a new tool plus the old one marked deprecated in its description for one minor release.
-
-## Testing against staging
-
-The plugin ships the production server. To try a release against staging, install the plugin for its skills and add the staging server by hand beside it: `claude mcp add --transport http --scope user makeitship https://mcp-staging.makeitship.com/mcp`, or `codex mcp add makeitship --url https://mcp-staging.makeitship.com/mcp`. The tools then appear as `mcp__makeitship__<tool>`; the skills still find them.

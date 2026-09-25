@@ -9,7 +9,7 @@ Without the makeitship MCP server connected this skill does nothing: say so and 
 
 ## Gather, then create
 
-1. **Title** — one line a stranger understands. Not "fix it": "Point staging.acme.com at the new load balancer".
+1. **Title** — one line a stranger understands. Not "fix it": "Point www.acme.com at the new load balancer".
 2. **Context** — what you tried, where it lives (paths, URLs, error text), and why it needs a person.
 3. **Definition of done** — what the person should be able to observe when the task is finished.
 4. **Priority** — `low`, `medium` or `high`; default `medium`, `high` only when the person is blocked.

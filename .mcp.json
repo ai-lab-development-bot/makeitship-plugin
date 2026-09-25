@@ -2,7 +2,7 @@
   "mcpServers": {
     "makeitship": {
       "type": "http",
-      "url": "https://mcp.makeitship.com/mcp"
+      "url": "https://mcp-staging.makeitship.com/mcp"
     }
   }
 }
