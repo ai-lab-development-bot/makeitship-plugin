@@ -19,6 +19,37 @@ Ask for anything missing in one question, not several. Then call `create_task` (
 - `title`, `description_md` (context + "Done when: …" as Markdown), `priority`
 - `idempotency_key` — generate one unique string (a random id, or the triggering message's id) when you first decide to create this task, and reuse that same string if you retry the call, so a retry never creates the task twice and two different requests never collapse into one.
 
+## Formatting the description
+
+`description_md` is Markdown; the task view renders it as blocks the person can read and edit. Write it so it reads well:
+
+- Headings start at `##` — the title is the H1. Use them to separate the context from what done looks like.
+- When done has several observable parts, write it as a to-do list, one `- [ ]` per part.
+- Facts that differ per environment go in a GFM table (`| Env | Host | Owner |`).
+- One `> [!TIP]` callout, for the one thing the person must not get wrong. Not more.
+- Commands and error text go in fenced code blocks.
+- Link with `[text](url)`. A screenshot or diagram is `![what it shows](public url)` — only a URL anyone can open; never a path on the box, and never a file.
+- Plain Markdown only: no raw HTML, no `<details>`, no emoji callouts, no `#` heading.
+- The limit is 20 000 characters; shorter is better.
+
+Example:
+
+```markdown
+## Context
+The deploy from `main` failed at the DNS step; `www.acme.com` still points at the old host (`203.0.113.10`).
+
+| Env | Host | Owner |
+| --- | --- | --- |
+| production | lb-prod.acme.com | Acme IT |
+
+> [!TIP]
+> Change the A record, not the CNAME on `acme.com` — the apex must stay as it is.
+
+## Done when
+- [ ] `dig www.acme.com` answers with the new load balancer
+- [ ] https://www.acme.com serves the new build
+```
+
 ## Report back
 
 Tell the person the task was created, with its title and id, and that the team's replies appear as comments they can read with `track-tasks`. Do not poll; the person asks when they want an update.
