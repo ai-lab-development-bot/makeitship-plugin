@@ -98,9 +98,12 @@ Two habits, both cheap:
 In JavaScript and TypeScript the standard choice is **fast-check**, which integrates with
 vitest and jest directly — `fc.assert(fc.property(...))` inside an ordinary `it`.
 
-It is part of this skill's instrument package: if it is not already a dependency, propose
-the install — small, dev-only — at the instruments step and get agreement before adding
-it. The proposal is the mandatory part; the dependency stays the engineer's decision.
+It is part of this skill's instrument package: if it is not already a dependency, decide
+to add it at the instruments step — small, development-only, nothing shipped to users —
+and say what it buys: "this checks the rule against thousands of generated inputs instead
+of the three I would think of." Get that confirmed before adding it. Stating the decision
+is the mandatory part; whether to ask the product owner to weigh it against alternatives
+is not a question — they confirm the consequence, not the library.
 
 If the install is declined or blocked, an invariant can still be checked the plain
 way — a loop over a

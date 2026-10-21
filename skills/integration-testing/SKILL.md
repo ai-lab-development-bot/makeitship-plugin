@@ -39,10 +39,37 @@ the collaboration real, and everything outside it mocked at the seam.
 **REQUIRED BACKGROUND:** this skill extends `unit-testing` and assumes
 its discipline in full. Promise versus accident, the two questions every assertion
 must pass, test names that read as promises, arrange–act–assert, fixture factories,
-test independence, the refactor-failure triage, the product-defect protocol, and
-"existing conventions do not get a vote" all apply here unchanged and are not
-restated. This document states what changes at slice scope — and one of its rules
-deliberately **overrides** that skill's mocking rule, as marked below.
+test independence, the refactor-failure triage, the product-defect protocol, the
+"who you are working for" rule, and "existing conventions do not get a vote" all
+apply here unchanged and are not restated. This document states what changes at
+slice scope — and one of its rules deliberately **overrides** that skill's mocking
+rule, as marked below.
+
+## Who you are working for, at slice scope
+
+The product owner you report to sees flows, not slices: "a customer pays and gets a
+receipt", not "the handler, the ledger write and the email adapter". Every choice this
+level adds — which level a test belongs to, where the mock line runs, how the test
+database is isolated, which side of a contract conflict is right — is yours to make
+and theirs only to confirm in those terms. Phrase each decision as what the product
+guarantees and what would be caught:
+
+- level routing: "I am testing the payment and the receipt together, because the bug
+  that matters here is the money moving without the receipt — not the price arithmetic,
+  which has its own test";
+- the mock line: "the real card provider is replaced by a stand-in at the edge, so the
+  test proves our side of the flow without charging anyone; if the provider changes its
+  responses, a separate check catches that";
+- a contract conflict: "the API documentation and the app disagree about a field; I
+  went with the app, because it is what runs in production today — if the documentation
+  is what customers were promised, say so and the tests flip";
+- isolation: "each test creates and removes its own records, so the suite can run while
+  the team works and never touches anyone's data".
+
+Never "unit or integration?", never "MSW or stub fetch?", never "transaction rollback
+or truncate?". Decide, state the consequence for the product and its users, and let
+them confirm or overrule.
+
 
 ## Phase 0 — decide the level before anything else
 
@@ -215,8 +242,12 @@ tests at other layers that pin a behaviour. Two rules govern the survey:
 
 - **Conflicts between sources are findings, not noise.** Documentation ages; a spec
   and a client that disagree on field names mean one of them is wrong in production.
-  Surface the conflict for a human decision — never silently pick the side that makes
-  the tests pass. `references/contract-testing.md` covers turning the resolved
+  Decide which side is right from the evidence — what runs in production, which source
+  is newest, which one other consumers follow — write the tests against that side, and
+  show the decision in product terms: which side you took, what a customer would see if
+  the other side is the truth, and that saying so flips the tests. Never silently pick
+  the side that makes the tests pass, and never hand the product owner the two sources
+  and ask which is correct. `references/contract-testing.md` covers turning the resolved
   contract into an executable schema both sides test against.
 - **Never derive an external service's contract from one observation.** Calling the
   service once and building the mock from what came back bakes a guess in as a
@@ -282,14 +313,17 @@ fifth different reason.
 classified behaviour table (same fixed columns as the unit skill: *behaviour |
 classification | heuristic | evidence (file:line) | open question*), the mock line,
 and the verdict. Compact and checkable; show it before writing tests — the mock line
-and the classification are what a human should review.
+and the classification are the decisions the product owner confirms, each shown as
+what the flow guarantees to its users and what stands in for the outside world, never
+as seams and heuristics.
 
 ## Standing up the instruments
 
 Checked after the verdict, before the first test — and governed by the unit skill's
-proposal rule: a dependency is always the engineer's call, the proposal is not
-optional, and a declined install goes into the summary as the reason a step did not
-run. What is never acceptable is the silent fallback — stubbing `fetch` because MSW
+rule for instruments: decide to add the tool, say what it buys the product and that it
+ships nothing to users, get that confirmed; the statement of the decision is not
+optional, and a declined addition goes into the summary as the reason a step did not
+run, with its consequence. What is never acceptable is the silent fallback — stubbing `fetch` because MSW
 is not in `package.json`, inheriting jsdom because the config already says so. The
 project not having the dependency is a fact about the project, not an argument about
 the test.
@@ -395,8 +429,9 @@ engagement — provoked failures, manual disabling, or a mutation run — and wh
 ## When the work uncovers a product defect
 
 The unit skill's protocol applies unchanged: no silent product fixes, the report in
-consumer terms with evidence, the filing offer, and never bending a test green around
-a broken promise (`it.fails` / held out pending the decision). Two defect routes are
+terms of what users hit and when, with evidence, the filing offer, and never bending a
+test green around a broken promise (`it.fails` as the stated default, so the gap stays
+visible and nothing else is blocked). Two defect routes are
 characteristic of this level and worth naming: a contract-source conflict from A2
 (spec and client disagree — one side is wrong in production even though every suite is
 green), and a consistency promise the flow observably does not keep (the write lands,
@@ -412,10 +447,10 @@ The unit skill's category table, with this level's rows added where they apply:
 | Slice map & mock line | where they are recorded; any seam decided against the default, with its reason |
 | Tests created / changed | file, count, the joint promises covered |
 | Provoked failures | which constraint/conflict promises have a refusing test — or which lack one and why |
-| Contract sources | sources surveyed; conflicts found and escalated |
+| Contract sources | sources surveyed; each conflict, the side taken, and what users would see if the other side is the truth |
 | Verification | what closed the engagement: provoked failures, manual disabling, or an opt-in mutation run (score and triage) |
 | Defects found | each: the promise broken, the evidence, the filing offer made |
-| Open questions | unresolved seams and classifications awaiting a human call |
+| Decisions taken on your behalf | each: the decision, what it means for the product and its users, how to reverse it — level routing, seams, isolation strategy, contract sides, tools added or declined, defects flagged |
 | Precedent diverged from | the convention not followed, in one sentence |
 
 ## Before you finish
@@ -444,12 +479,17 @@ The unit skill's category table, with this level's rows added where they apply:
       to E2E
 - [ ] Tests own their data: seeds created per test, cleaned by the test, safe on a
       shared database — strategy per `references/db-isolation.md`
-- [ ] Contract-source conflicts surfaced as findings, never resolved by picking the
-      convenient side; no external contract derived from a single observation
+- [ ] Contract-source conflicts decided on evidence and shown with the side taken and
+      its product consequence, never resolved by picking the convenient side and never
+      handed to the product owner as "which source is right?"; no external contract
+      derived from a single observation
 - [ ] Verification that closed the engagement is named; a mutation run that did not
       happen is a stated decision, not a silence
-- [ ] Any product defect reported with evidence and a filing offer — not fixed
-      silently, not asserted around
+- [ ] Any product defect reported with evidence, its effect on users, and a filing
+      offer — not fixed silently, not asserted around
+- [ ] No engineering question was put to the product owner — level, seams, isolation
+      and contract sides were decided, shown in product terms, and confirmed or
+      overruled
 - [ ] Closing summary delivered by category — counts and locations, not prose
 
 ## References

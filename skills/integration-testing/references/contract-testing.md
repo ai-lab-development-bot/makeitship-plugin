@@ -53,17 +53,22 @@ external or separately owned side:
    and (as one source among several, never alone) a live call to the service.
 2. **Compare them.** Sources age at different rates; a spec and a client that
    disagree on field names mean one of them is wrong in production right now. A
-   conflict is a *finding* — surface it for a human decision, and record which side
-   the tests were written against and why. Silently mocking the side that makes the
+   conflict is a *finding* — decide which side the evidence favours (what runs in
+   production, the newer source, what other consumers follow), write the tests against
+   it, and show the decision in product terms: the side taken and what a customer would
+   see if the other side is the truth. Record which side and why. Silently mocking the side that makes the
    tests pass converts a production bug into a green suite.
 3. **Never build the contract from a single observation.** One response shows one
    shape the service *can* produce — not the fields that are optional, the enum
    values that appear under other conditions, or the error bodies. A mock built that
    way encodes a contract that does not exist, and every test against it inherits
    the invention.
-4. **Where no source exists at all**, that absence is the finding. The options —
-   adopt-and-document the observed shape as a provisional contract, or chase the
-   owning team for a real one — are the engineer's call, made visibly.
+4. **Where no source exists at all**, that absence is the finding. The default is to
+   adopt the observed shape as a provisional contract and document it as such; state
+   that decision and its consequence — "the tests assume the service keeps answering
+   the way it does today; if its owners change it, these tests will say so before
+   customers do" — and note that a real contract from the owning team would replace
+   the assumption. Do not put the two options to the product owner as a choice.
 
 ## Wiring the schema into the tests
 

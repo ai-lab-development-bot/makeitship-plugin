@@ -46,6 +46,33 @@ that question, never an inheritance from whatever test file sits nearby. A mixed
 usually splits: the pure rule tested here, its application to shared state tested
 there — and the split is the routing working, not overhead.
 
+## Who you are working for
+
+The person you report to owns the product, not the test suite. They can tell you what
+the product must do for its users; they cannot — and should not have to — tell you
+whether a behaviour is a promise or an accident, which runner to use, or whether a
+dev dependency is worth adding. Every one of those is your call. This skill contains
+no question you may hand to them in engineering terms.
+
+When a choice arises, make it, then show it in product terms so they can confirm or
+overrule it:
+
+- **The decision** — one line, in the vocabulary of the product: "I treat 'a refund
+  never exceeds the original charge' as a rule this unit guarantees."
+- **What it means for them** — the effect on the product and its users if the decision
+  stands, and what they would notice if it is wrong: "a future change that lets a
+  refund exceed the charge will fail the build before it reaches customers; if that
+  is in fact allowed, tell me and the test goes."
+- **What they need to do** — confirm, or say no. Nothing else.
+
+Never "do you want fast-check or plain loops?", never "promise or accident?", never
+"should I add Stryker?". Say what you are doing, what it protects, what it costs, and
+let them confirm the consequence rather than choose the mechanism. When a decision
+is genuinely theirs — a rule the product has never written down anywhere — your
+default is the conservative one (leave the behaviour unasserted), stated as a
+decision with its consequence, not as an open question. The closing summary carries
+every such decision in one place, so nothing is confirmed implicitly by silence.
+
 ## How this works
 
 The work splits into two phases, and the seam between them matters:
@@ -175,8 +202,8 @@ implementations are out of bounds. Capable models drift past the module boundary
 "understanding the system", and what they learn there leaks straight into assertions: the
 test of this unit quietly starts pinning an adjacent module's logic, and a legitimate
 change to that module turns this unit's suite red. If a collaborator's signature is not
-enough to classify a behaviour, that is a question to raise — A3's default — not a licence
-to read deeper.
+enough to classify a behaviour, A3's default applies — leave it unasserted and record the
+decision — not a licence to read deeper.
 
 ### A1. Find the consumers
 
@@ -232,12 +259,16 @@ promise *that* the field is present and carried; the field's internal shape belo
 collaborator's own contract and its own tests. This is the trap behind tests that break
 when an adjacent module legitimately changes.
 
-**When none of these settle it, do not guess.** Leave the behaviour unasserted and raise the
-question: "does X promise Y, or is that incidental?"
+**When none of these settle it, do not guess — and do not ask the product owner to
+classify it either.** Leave the behaviour unasserted, and record it as a decision taken on
+their behalf, in product terms: "I am not locking in that the list comes back sorted by
+date, because nothing in the product says a customer relies on it; if customers do, say so
+and I will guarantee it with a test."
 
 The asymmetry justifies that default: an unasserted accident costs nothing today and can be
 asserted later; an asserted accident costs a false failure on every future refactor. Guessing
-here is the most expensive mistake available in this workflow.
+here is the most expensive mistake available in this workflow — and a question phrased as
+"promise or accident?" is a guess delegated to someone who cannot answer it.
 
 ### A4. Name the invariants
 
@@ -274,8 +305,9 @@ tests under this skill's rules is the routing failing, not thoroughness.
 The table has fixed columns — *behaviour | classification | heuristic applied | evidence
 (file:line) | open question* — because a free-form report can compress a nuance away
 invisibly, while an empty cell in a required column is visible. Keep it compact and
-checkable — a table and a short list, never an essay. Show it, so the classification can
-be corrected; A3 is the part a human should review.
+checkable — a table and a short list, never an essay. Show it, so a classification can
+be corrected; A3's decisions are the ones the product owner confirms — each shown as what
+the product guarantees to its users, never as the heuristic that produced it.
 
 ## Standing up the instruments
 
@@ -297,15 +329,19 @@ after the verdict says tests are warranted, before the first test is written:
   hard rule: a promise the simulation cannot observe (anything CSS or layout
   decides) is asserted in the real browser or not written at all.
 
-If any of these is missing, propose the install now — the package, that it is dev-only, and
-the mandatory step it unlocks — and wait for agreement before touching `package.json`.
-A dependency is always the engineer's call. What is not optional is the proposal
-itself: the failure mode this step exists to prevent is silence, where the tool is
-absent so the mutation run or the property tests quietly never happen and the summary
-never mentions them. A declined install is a legitimate outcome and goes into the
-summary as the reason a step did not run. What warrants stopping entirely is a package
-with no test runner at all: standing up a harness from nothing changes how the project
-builds, and that too is the engineer's call, as the orientation section says.
+If any of these is missing, decide to add it and say so before touching `package.json`:
+which tool, that it is a development-only addition that ships nothing to users, and what
+it buys the product — "Stryker checks that these tests would actually catch a broken
+rule, not just run green; without it I can only reason that they would." Then wait for
+the confirmation. Do not ask whether to install it: the product owner cannot weigh
+fast-check against a hand-written loop, and should not have to. What is not optional
+is stating the decision: the failure mode this step exists to prevent is silence, where
+the tool is absent so the mutation run or the property tests quietly never happen and
+the summary never mentions them. A declined addition is a legitimate outcome and goes
+into the summary as the reason a step did not run, with its consequence in product
+terms. A package with no test runner at all is the one case that changes how the
+project builds: pick the runner that fits the stack, say what it adds to the project,
+and get that confirmed first, as the orientation section says.
 
 ## Phase B (authoring) — write the tests
 
@@ -336,7 +372,10 @@ Every assertion must pass both questions below before it is finished.
 - *Promise with no test* → a gap. Rank it: genuinely worth adding, or over-testing.
 - *Assertion with no promise behind it* → over-assertion. It freezes an accident.
 - *Test whose subject is not in the model at all* → either the model is incomplete, or the
-  test exists for a reason nobody recorded. Ask.
+  test exists for a reason nobody recorded. Decide which is likelier from the evidence
+  (its history, its name, what else references the behaviour), act on that, and show
+  the decision with its consequence: "I am keeping this test because its name reads as
+  a rule about billing; if that rule no longer exists, say so and it goes."
 
 Doing this by subtraction is the point of building the model first. Walking the test file
 instead finds only the first kind of defect.
@@ -598,13 +637,18 @@ The protocol is the same on every route:
 2. **Report it explicitly**, in consumer terms rather than internals: what was promised,
    what actually happens, the evidence — failing test, call site, reproduction — and
    which consumers are affected.
-3. **Offer to file it** in whatever the project uses to track work. Which tracker and by
-   what mechanism is a runtime decision, not this skill's to prescribe.
+3. **Say what it means for the product and its users** — who hits it, under what
+   conditions, what they see — before anything about tests. Then offer to file it in
+   whatever the project uses to track work; which tracker and by what mechanism is a
+   runtime decision, not this skill's to prescribe.
 4. **Do not bend the test to green.** Asserting the buggy behaviour freezes the bug as
    contract. Keep the test as written and mark it with the runner's expected-failure
-   facility (`it.fails` in vitest, `it.failing` in jest) so the defect stays visible
-   without breaking the suite — or hold the test out pending the decision; offer that
-   choice alongside the report.
+   facility (`it.fails` in vitest, `it.failing` in jest): the defect stays visible, the
+   build stays green, and the day the bug is fixed the marker fails and gets removed.
+   That is the default; state it as the decision taken — "the test stays, flagged as a
+   known gap, so nothing else is blocked" — not as a choice between `it.fails` and
+   holding the test out. Hold the test out only when the product owner says the
+   behaviour is not a bug after all, in which case it was never a promise.
 
 ## Orienting in an unfamiliar repository
 
@@ -613,8 +657,12 @@ scripts, `vitest.config.*`, `jest.config.*`), the test file pattern and whether 
 colocated, and one nearby test file read for import style, fixture placement, and formatting.
 
 Run the suite once before changing anything, so you know which failures are yours. If a unit
-needs a test in a package with no runner at all, stop and ask — standing up a test harness is
-the engineer's decision, not a side effect of writing a test.
+needs a test in a package with no runner at all, stop before writing one: choose the runner
+that fits the stack, say what it adds to the project in the product owner's terms (a new
+check that runs before every release, a handful of configuration files, nothing shipped to
+users), and get that confirmed. Standing up a test harness changes how the product is built;
+it is never a silent side effect of writing a test, and never a question of "which runner?"
+put to someone who should not have to know.
 
 Read that nearby file for idiom, not for permission.
 
@@ -632,7 +680,7 @@ categories, never a wall of prose.
 | Mutation run | score; survivors triaged as gaps filled / accidents left alive / equivalent — or the blocker that stopped it |
 | Defects found | each: the promise broken, the evidence, and the filing offer made |
 | Contract lines written | where: TSDoc, type, schema, database comment |
-| Open questions | undecidable classifications awaiting a human call |
+| Decisions taken on your behalf | each: the decision, what it means for the product and its users, how to reverse it — behaviours left unasserted, tools added or declined, defects flagged |
 | Precedent diverged from | the convention not followed, in one sentence |
 
 The Phase A table shows what the unit promises; this table shows what was done about it.
@@ -644,7 +692,9 @@ Both modes:
 - [ ] Phase A output exists and is visible: classified behaviours, invariants, verdict
 - [ ] If Phase A was delegated: manifest checked against your own consumer grep, missed
       behaviours added to the table, no evidence-free reclassification of the subagent's entries
-- [ ] Nothing classified by guesswork — undecidable items raised as questions, not asserted
+- [ ] Nothing classified by guesswork — undecidable items left unasserted and recorded as
+      decisions with their product consequence, never put to the product owner as
+      "promise or accident?"
 - [ ] Every assertion passes Question 1 (survives a rewrite)
 - [ ] Every assertion passes Question 2 (fails when the promise is removed)
 - [ ] Every test's assertions are sufficient to prove its name's full claim
@@ -667,8 +717,10 @@ Both modes:
       every survivor is triaged as gap, accident, or equivalent; a run that did not happen
       names its reason in the summary: a declined install or a technical blocker, never
       silence
-- [ ] Any product defect uncovered was reported with evidence and a filing offer — not
-      fixed silently, not asserted around
+- [ ] Any product defect uncovered was reported with evidence, its effect on users, and
+      a filing offer — not fixed silently, not asserted around
+- [ ] No engineering question was put to the product owner — every choice was made,
+      shown in product terms with its consequence, and confirmed or overruled
 - [ ] Any defective precedent you chose not to follow is named, not silently diverged from
 - [ ] Closing summary delivered by category — counts and locations, not prose
 
