@@ -6,8 +6,8 @@ description: >
   against the design", "QA the billing screen", "compare the sidebar with Figma", "run
   UI exploratory QA", "does this screen match the design", "test it on mobile", "is the
   layout broken at other widths". A compare-and-fix loop over a web app in a real
-  browser: the agent recommends the mode (Figma MCP or exploratory) and the person
-  confirms it up front, then it captures each target from Figma (in Figma mode) and
+  browser: the person picks the mode (Figma MCP or exploratory) up front from a plain
+  description of both, then the agent captures each target from Figma (in Figma mode) and
   from the running app through the Chrome DevTools MCP, compares, fixes the obvious on
   its own, and escalates the rest as defect propositions that each carry a proposed fix
   and its consequence for users. It never switches mode on its own and reports in the
@@ -46,36 +46,45 @@ yours to make and theirs only to confirm, stated in the terms of their product:
   appear in the report; everything else is checked the same way."
 - **What they need to do** — confirm, or say no.
 
-Never "Figma MCP or exploratory?", never "which environment?", never "which tracker?"
-as a bare question. Recommend one, say why in product terms, and let them confirm the
+Never "which environment?", never "which tracker?", never "MCP or stub?" as a bare
+question. Recommend one, say why in product terms, and let them confirm the
 consequence rather than pick the mechanism. The exceptions are facts only they hold —
-the Figma file URL, a login, what the product knowingly lacks — and even those are
-asked once, in one message, with the reason the run needs them. Every escalated defect
-follows the same rule: it is a decision ready to take, with the proposed fix and what
-users would notice either way, never an open question.
+whether a design exists for these screens, the Figma file URL, a login, what the
+product knowingly lacks — and those are asked once, in one message, in product words,
+with the reason the run needs them. The mode (Step 1) is the first of these: the agent
+cannot know whether a design exists, so it describes both modes and lets them choose.
+Every escalated defect follows the same rule: it is a decision ready to take, with the
+proposed fix and what users would notice either way, never an open question.
 
 **Language — hard requirement.** `defects.md`, `targets.md` and every message in the
 chat are written in the language the user is conversing in. Only identifiers stay as
 they are: file names, target ids, field labels of the template, tool names. A report
 written in another language is rewritten before it is posted or saved.
 
-## Step 1 — The mode is confirmed first, on your recommendation
+## Step 1 — The mode is the user's choice, made first from a plain description
 
-Before any other action — before opening a page, before checking any tool — recommend
-one mode and wait for the confirmation. Recommend **Figma mode** when the request, the
-conversation or the repository points at a design file (a Figma URL, a design skill,
-a tokens reference); recommend **exploratory mode** otherwise. Say it in product terms:
+Before any other action — before opening a page, before checking any tool — stop and
+describe the two modes in product terms, then wait for the choice. Whether a design
+exists for these screens is a fact only the user holds: the repository may carry no
+trace of a Figma file that exists, or a stale trace of one that no longer applies, so
+the agent never infers the answer and never skips the question.
 
-> *"I recommend comparing against your Figma design: every screen is checked against
-> the frame, so anything that drifted from the design is caught, not just what looks
-> broken. I need the file link for that. If there is no design to compare with, I
-> check by experience instead, and 'does not match the design' will not be in the
-> report. Shall I go with the design?"*
+> *"This check runs in one of two ways — which one fits this round?*
+> *— **Against the design**: I compare every screen with your Figma file, so anything
+> that drifted from the design is caught, not only what looks broken. I will need the
+> file link.*
+> *— **By experience**: there is no design to compare with, so I judge each screen
+> the way an experienced tester would — broken, confusing or unfinished is still
+> caught, but nothing will be reported as 'differs from the design'."*
 
-One recommendation, its consequence, one confirmation. The agent does not probe Figma
-to decide, and does not start on its own. **Nothing starts until the mode is
-confirmed.** A mode named in the request itself ("compare with Figma", "no design,
-just explore") counts as the confirmation; anything less does not.
+Both options, each with what it gives and what it does not, and the user picks. When
+the request or the repository shows a sign of a design (a Figma URL, a design skill, a
+tokens reference), say so in the same message as a hint — "I see a Figma link in the
+project; if that is the current design, the first option is the stronger check" — and
+still let them choose; a hint is not a default. The agent does not probe Figma to
+decide, and does not start on its own. **Nothing starts until the choice is
+explicit.** A mode named in the request itself ("compare with Figma", "no design, just
+explore") counts as the choice; anything less does not.
 
 **The answer fixes the mode for the whole iteration.** There is no automatic switching
 in either direction:
@@ -600,10 +609,10 @@ user.
 
 | If you catch yourself… | Do instead |
 |---|---|
-| Starting anything before the mode is confirmed | Step 1: recommend one with its consequence, wait, record the answer |
+| Starting anything before the user has chosen the mode | Step 1: describe both modes in product terms, wait, record the answer |
 | Running a target through one lens and moving on | Four lenses, one at a time, then the step-back pass; the ledger Notes say which ran |
 | Opening a target without knowing what it is for | Step 2.5: read the docs or the code first; the *Expected* line has to come from somewhere |
-| Probing Figma to decide the mode yourself, or putting "Figma or exploratory?" to the user as a bare choice | Recommend one from what the request and the repo show, say what it means for the report, get it confirmed |
+| Probing Figma to decide the mode yourself, inferring "no design" from a repo with no Figma trace, or putting "Figma or exploratory?" as a bare two-word choice | Describe both modes and what each gives; a sign of a design in the repo is a hint in that message, never a default |
 | Figma did not answer, and you moved on in exploratory mode | Stop. Report what failed and what was tried; recommend the way forward with its consequence. The switch is confirmed by the user, never assumed |
 | Debugging "the Figma tools are missing right after install" as a broken plugin | It is the session: `/reload-plugins`, then `/exit` + `claude --continue`; check again |
 | A summary or report that does not say which mode was applied | Add it; the reader must know what the findings are based on |
