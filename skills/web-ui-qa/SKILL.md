@@ -194,6 +194,9 @@ Settle these before opening the first page, and write them at the top of `target
 
 - **Mode** — Figma or exploratory, and that the user chose it (Step 1). In Figma mode:
   the file URL, the canonical theme, the ignored nodes.
+- **Themes** — which ones the app offers and how it switches (a control, the system
+  setting, both). Both are always in scope: the canonical one gets the frame
+  comparison, the other one Lens 1's second pass. An app with one theme says so here.
 - **Scope** — which screens, components, states, viewports. Cap the target list at
   roughly a dozen per screen and state the cap.
 - **Environment** — recommend the one with safe demo data, say why ("I will click,
@@ -256,6 +259,60 @@ In Figma mode this is the frame comparison; without a frame it is composition by
 sense. Flag: anything cut off, overlapping, misaligned, unreadable, wrapping onto an
 icon, scrolling sideways, an image scaled wrong, a control below the fold on a phone,
 a token-level deviation the frame settles (colour, spacing, radius, weight).
+
+##### Lens 1, second pass — the other theme
+
+*Does the screen hold up when the theme flips?*
+
+Most apps ship a light and a dark theme, and the second theme is where design systems
+rot: a value hardcoded in one component while everything around it follows the tokens,
+a token whose dark value was guessed, a theme added late by a generated patch that
+covered the common surfaces and missed the rest. **Every target is captured in both
+themes**; the canonical theme (Step 2) gets the frame comparison, the other one gets
+this pass. Switch through the app's own control; if the app follows the system
+setting, use the DevTools MCP's colour-scheme emulation when it offers it, otherwise
+set the attribute or class the app reads (`evaluate_script`) and verify the page
+actually changed before capturing. Target ids carry the theme as part of the state
+(`billing@1440--default--dark`).
+
+Flag, in the terms a user would notice:
+
+- **A surface that did not switch** — a white card, panel, dropdown, tooltip, drawer or
+  dialog on a dark page, or the reverse; a native control (select, date picker,
+  scrollbar, checkbox) in the wrong scheme because `color-scheme` was never set.
+- **Text that is hard or impossible to read** — low contrast against its background,
+  placeholder or helper text that vanished, text inside a coloured badge, chip or
+  button that kept the light-theme colour; a disabled state indistinguishable from an
+  enabled one.
+- **Structure that disappeared** — borders, dividers, table lines and input outlines
+  that were visible in one theme and gone in the other; a shadow that carried the
+  depth in light mode with nothing replacing it in dark mode, so cards merge into the
+  page.
+- **Images and marks** — a logo, illustration, screenshot, favicon or chart with a
+  baked-in white background or an invisible dark line; an icon that does not follow
+  the text colour next to it; an empty-state or error illustration drawn for one theme.
+- **States that lost their meaning** — hover, selected, active, focus ring and error
+  colours that look the same in the second theme, or a status colour (success,
+  warning, danger) that reads as a different status.
+- **Theme behaviour itself** — a flash of the wrong theme on load or on navigation; a
+  choice that does not survive a reload, a new tab or a sign-in; an overlay or
+  skeleton whose transparency assumed one background; a third-party embed (map,
+  payment form, chat widget) that stays in its own theme with no frame around it.
+
+**Token or component — decide before bucketing.** Trace the deviation to its source in
+the design-system sources (Step 2): a component that hardcoded a value, or used the
+wrong token, while the right token exists is a *component* slip — the first bucket, one
+component, fixed and proven in both themes. A token whose value is wrong in one theme
+is a *design-system* defect: changing it moves every screen that uses it, so it is
+escalated, once, as one entry — *Screens: every screen with <token>* — with the
+proposed value, where it was found, and what users would see change across the product.
+Never patch a wrong token around in one component; that hides the defect and adds a
+second one.
+
+**Follow the cluster harder here than anywhere.** A theme defect is almost never
+alone: one card without a dark surface means every card from the same source; one
+badge with light-theme text means every badge. Check the siblings before the next
+target, and name the family in the entry rather than filing each instance.
 
 #### Lens 2 — Act (functional)
 
@@ -374,7 +431,9 @@ project root** (`ui-exploratory-qa/<run>/browser/<id>.png`). The MCP refuses any
 outside the workspace, so a scratch or temp directory fails with "Access denied".
 
 Target id = `<screen-or-component>@<width>--<state>`, e.g. `billing@1440--default`,
-`nav@375--drawer-open`. Same id in both folders, so a pair or a missing half is obvious.
+`nav@375--drawer-open`; the other theme appends `--dark` or `--light`
+(`billing@1440--default--dark`). Same id in both folders, so a pair or a missing half
+is obvious.
 
 ## Step 6 — The loop
 
@@ -401,8 +460,10 @@ loop in every mode, Figma or not:
 
 **Cycle** per `todo` row: capture design (Step 7, Figma mode) → capture built (Step 7)
 → run the four lenses and the step-back pass (Step 3; in Figma mode Lens 1 is the
-frame comparison) → write each finding as a *claim* ("the card border is missing on the
-left column") → bucket each claim (Step 4) → act → update Status
+frame comparison) → switch to the other theme, re-capture, run Lens 1's second pass
+(and Lens 2 only where a control's look carries its meaning) → write each finding as a
+*claim* ("the card border is missing on the left column") → bucket each claim (Step 4)
+→ act → update Status
 (`done` / `fixed` / `escalated` / `blocked`) and fill its Notes → enqueue any
 state discovered while interacting — **at the top of the ledger if the target had a
 finding**, at the bottom if it was clean.
@@ -622,6 +683,8 @@ user.
 | Capturing a mobile or tablet width without `mobile,touch`, or without proving it took | Re-emulate and run the check; a narrow desktop window is not a device |
 | Filing "does not match the design" with no frame | Senior exploratory mode: judge, and say why |
 | Filing a 1280 or tablet finding against the 1440 or 375 frame | That width has no frame; judge it by good sense |
+| Capturing a target in one theme only, or filing the other theme against the canonical frame | Both themes, every target; the second theme is Lens 1's second pass, judged by the token sources and good sense |
+| Fixing a wrong dark-theme value inside the one component where you saw it | Trace it: a component slip is yours; a wrong token is one escalated entry for every screen that uses it |
 | Asking the user which widths to test | All of them, always; only the frame widths get a design comparison |
 | A finding with no *Why it counts* | Add the reason or drop the finding |
 | An escalation that is only a question | Add the proposed fix: what, where, size, what users would notice, risk — and your recommendation |
