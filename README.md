@@ -30,6 +30,13 @@ codex mcp login makeitship
 
 The board's statuses are your workspace's own (rename, recolour, add your own under Task settings in the dashboard); an agent learns them with `list_task_statuses` and names one by its slug.
 
+## Engineering skills
+
+Development know-how the agent picks up on its own when the task calls for it. These need nothing from Makeitship: no server, no account — each works on its own in any repository.
+
+- `unit-testing` — works out what a unit promises and writes or judges its tests against that: asserts the contract, leaves accidents alone, catches assertions that pass whatever the code does.
+- `integration-testing` — holds several real parts to what they jointly promise (a flow and its database, components and their store), mocking only where the slice's own code ends. Builds on `unit-testing`.
+
 Both need the server connected; without it they say so.
 
 ## Without the plugin
