@@ -5,13 +5,16 @@ description: >
   screen, component, or state of a running web app in a browser: "check this page
   against the design", "QA the billing screen", "compare the sidebar with Figma", "run
   UI exploratory QA", "does this screen match the design", "test it on mobile", "is the
-  layout broken at other widths". A compare-and-fix loop over a web app in a real
-  browser: the person picks the mode (Figma MCP or exploratory) up front from a plain
-  description of both, then the agent captures each target from Figma (in Figma mode) and
-  from the running app through the Chrome DevTools MCP, compares, fixes the obvious on
-  its own, and escalates the rest as defect propositions that each carry a proposed fix
-  and its consequence for users. It never switches mode on its own and reports in the
-  language of the conversation. Project-agnostic; the Figma file is asked for each run.
+  layout broken at other widths". An exploratory pass, not pixel-perfect verification:
+  the agent examines each screen the way an experienced tester would — what a person
+  would notice, how it behaves, where it breaks — and catches what is obvious to a
+  human eye. A compare-and-fix loop over a web app in a real browser: the person picks
+  the mode (Figma MCP or exploratory) up front from a plain description of both, then
+  the agent captures each target from Figma (in Figma mode) and from the running app
+  through the Chrome DevTools MCP, compares, fixes the obvious on its own, and
+  escalates the rest as defect propositions that each carry a proposed fix and its
+  consequence for users. It never switches mode on its own and reports in the language
+  of the conversation. Project-agnostic; the Figma file is asked for each run.
 ---
 
 # Web UI Exploratory QA
