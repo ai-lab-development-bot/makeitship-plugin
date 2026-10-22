@@ -436,7 +436,10 @@ log — and recorded in the final table as *fixed from escalation*.
 
 One dated folder per run under `ui-exploratory-qa/` at the project root. Nothing else
 is written except source files a fix touches. **Never commit it**; check `git status`
-before any `git add` in a session that ran this skill.
+before any `git add` in a session that ran this skill. The folder is a **temporary
+artefact of the run**: it exists so the user can read `defects.md` and see the
+screenshots while the defects are being handled, and you remove it yourself once they
+are (Step 11).
 
 ```
 ui-exploratory-qa/<YYYY-MM-DD>-<scope-slug>/
@@ -693,6 +696,42 @@ After posting the Step 9 summary in the chat:
 Do not skip this because the run was short or found nothing; do not leave it to the
 user.
 
+## Step 11 — Remove the artefact folder once the defects are handled
+
+The run folder is scaffolding, not a deliverable. It is not left in the working tree
+"for later": the Step 9 summary in the chat carries the Fixed table and the Escalated
+list, and a defect the user wants to keep lives in the tracker, with its screenshots
+attached, not in a folder at the project root.
+
+Remove the run's folder (`ui-exploratory-qa/<YYYY-MM-DD>-<scope-slug>/`, and the parent
+`ui-exploratory-qa/` when it is then empty) as soon as **every defect is handled**,
+meaning each entry is in one of these states:
+
+- fixed by you and confirmed by the re-capture (the *Fixed* table);
+- escalated and **filed** into the tracker the user confirmed in Step 9, with the
+  screenshots attached to the item;
+- escalated and **decided** by the user in the chat — accepted as a fix you then applied
+  and re-captured, or explicitly dropped.
+
+When the run ends with no escalated entries, that is immediately after Step 10. When
+entries are escalated, it is right after the user's answer to the Step 9 offer: file
+them, or take the decisions, then remove the folder in the same turn. Say in the chat
+that the folder was removed, in one line.
+
+If an escalated entry is still open when the conversation moves on — the user has not
+answered, or asked to look at it later — **leave the folder** and say so: name the
+folder and the open entries by number, so the user knows what is still on disk and
+why. Never remove a folder that still holds the only copy of an unhandled defect's
+screenshots.
+
+A folder from an **earlier run** found under `ui-exploratory-qa/` at Step 5 is one that
+was left this way. Do not touch it on your own: name it in the Step 9 summary and ask
+in one line whether its defects were handled; remove it with this run's folder on a
+yes.
+
+Removal is a plain delete of that folder, nothing else: no `git clean`, no touching the
+source files a fix changed, nothing outside `ui-exploratory-qa/`.
+
 ## Red flags
 
 | If you catch yourself… | Do instead |
@@ -732,6 +771,8 @@ user.
 | Creating a plan, log, report or per-page defect file | Three files only: `targets.md`, `defects.md`, the screenshots |
 | Ending an iteration without the Fixed table and the Escalated list in the chat | Step 9 is not optional |
 | Ending an iteration with the MCP's Chrome window still open | Step 10: close the pages, quit that Chrome by its profile dir, confirm |
+| Leaving the run folder in the working tree after every defect is fixed, filed or decided | Step 11: remove it, say so in one line |
+| Removing the run folder while an escalated entry is still open, or wiping an earlier run's folder unasked | Leave it; name the folder and the open entries |
 | Mixing fixed and escalated defects in one list or table | Fixed → the table; escalated → the numbered list |
 | Moving to the next target right after a finding | Stay in the cluster: siblings, states, widths first |
 | Spreading the budget evenly over every target | Weight it toward the newest, most complex, and already-suspect sections |
