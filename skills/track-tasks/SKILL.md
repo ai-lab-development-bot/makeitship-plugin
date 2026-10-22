@@ -11,7 +11,7 @@ Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__list_task
 
 ## A task is its number
 
-Every task has a `number`, shown as `#12` on the board, and that is how a task is named — to the person and to the tools. `get_task`, `update_task`, `add_task_comment` and `delete_task` take `number`. "Task 12", "#12", "the twelfth one" is `get_task` with `number: 12`. "The task about the DNS" is `list_tasks` with `search` (it matches the title and the description; `12` or `#12` also matches the number), then the one whose title or description fits — ask when two could. Say a task back as `#12` followed by its title; never by any other identifier.
+Every task has a `number`, shown as `#12` on the board, and that is how a task is named — to the person and to the tools. `get_task`, `update_task`, `add_task_comment` and `delete_task` take `number`. "Task 12", "#12", "the twelfth one" is `get_task` with `number: 12`. "The task about the DNS" is `list_tasks` with `search` (it matches the title and the description; `12` or `#12` also matches the number), then the one whose title or description fits — ask when two could. Say a task back as `#12` followed by its title; never by any other identifier. When an answer carries the task's `url`, make that name the link — `[#12 Title](url)` opens the task on the board — wherever one task is the subject; a list stays plain lines.
 
 ## The statuses are the workspace's own
 
