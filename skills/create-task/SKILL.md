@@ -127,8 +127,18 @@ the facts one task needs, and you change nothing.
    folder, no report.
 
 Screenshots you take this way are local files and cannot go into the task (the task view
-takes only public URLs). Describe what you saw in words; tell the person they can attach
-a screenshot to the task themselves from the task view if they want one there.
+takes only public URLs). Describe what you saw in words. When a picture would help the
+task — a bug that is easier seen than read — offer the person the two ways, the first
+preferred because it needs nothing from them after the fact:
+
+1. **A link to a screenshot or recording** (any public URL: a screenshot host, Loom, a
+   shared drive). You put it into the task text as a link on the word that says what it
+   shows (`[Observe](url) that …`), so whoever reads the task clicks straight to it.
+2. **Attaching it to the task afterwards**: once the task exists, you give them its
+   number and they add the file from the task view themselves.
+
+Ask in one line, with the preference stated; do not wait for a picture to write the
+task.
 
 ### 2c. The person's words only
 
@@ -324,7 +334,8 @@ nearby), create it next with its own key, after the first is confirmed.
 
 Tell the person the task was created as `#12 Title` — the task's number (the `number` in
 the answer, shown as `#12` on the board) and its title — the column it landed in, and the
-priority. The number and the title are how people know a task; never name it by any other
+priority. If they chose to attach a screenshot or file themselves (2b), name the task
+again as the place to add it. The number and the title are how people know a task; never name it by any other
 identifier. If a second task was created, the same line for it. Replies appear as comments
 they can read with `track-tasks`. Do not poll; the person asks when they want an update.
 

@@ -79,6 +79,10 @@ steps — a task is read by people first.
   shows`).
 - A screenshot of the expected result is linked in *Expected* (`the [expected layout](url)`).
 - A recording (Loom, YouTube, a direct video URL) is a link like any other, never embedded.
+- Screenshots the agent took itself in a browser are local files and cannot be linked.
+  Ask the person for a link to their own screenshot or recording (preferred: it goes
+  into the text as a link); otherwise they attach the file from the task view once the
+  task exists. Neither blocks writing the report.
 - **Several screenshots or recordings and it is not clear which shows what** (actual or
   expected, which step, which defect in a grouped task): ask before writing. A picture
   under the wrong heading makes the report mislead; this one question is part of
