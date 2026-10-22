@@ -1,6 +1,6 @@
 # Makeitship plugin
 
-Hand work to the Makeitship team as tasks, and follow their replies, from the agent you already use. The plugin adds the Makeitship MCP server and two skills; approving the connection happens in your browser the first time — no keys to paste.
+Put work on your Makeitship board as tasks — for you, for your agent, or for the Makeitship team — and follow it, from the agent you already use. The plugin adds the Makeitship MCP server and its skills; approving the connection happens in your browser the first time — no keys to paste.
 
 ## Claude Code
 
@@ -23,12 +23,21 @@ codex mcp login makeitship
 
 `/plugin uninstall makeitship@makeitship` in Claude Code, `codex plugin remove makeitship@makeitship` in Codex — the server goes with the plugin. A server you added by hand: `claude mcp remove makeitship` / `codex mcp remove makeitship`.
 
-## Skills
+## Board skills
 
-- `delegate-task` — hands a piece of work to the team as a task, with a title, the context and what done looks like.
-- `track-tasks` — the status of your delegated tasks, the team's replies, a comment back.
+- `create-task` — makes a well-formed task on your board from the conversation: decides whether it is a feature, an enhancement or a bug, investigates what the product does today and what the request entails — in the code when the agent is in the repository, otherwise in the running product through a browser (the way `web-ui-exploratory-qa` opens it), settles the open decisions with you as propositions, and writes the task in the format its type needs (a defect is reported differently from a feature). A decision you already took, or a document you bring, is taken as settled and linked, not reopened. Who does the task is a separate question.
+- `track-tasks` — reads the board by its own statuses, what a task says and its replies; a comment back, a move between columns.
 
-Both need the server connected; without it they say so.
+Both need the server connected; without it they say so. The board's statuses are your workspace's own (rename, recolour, add your own under Task settings in the dashboard).
+
+## Engineering skills
+
+Development know-how the agent picks up on its own when the task calls for it. These need nothing from Makeitship: no server, no account — each works on its own in any repository.
+
+- `unit-testing` — works out what a unit promises and writes or judges its tests against that: asserts the contract, leaves accidents alone, catches assertions that pass whatever the code does.
+- `integration-testing` — holds several real parts to what they jointly promise (a flow and its database, components and their store), mocking only where the slice's own code ends. Builds on `unit-testing`.
+- `web-ui-exploratory-qa` — explores a running web app in a real browser the way an experienced tester would, screen by screen and in both themes, against the Figma design or by experience — what a person would notice, not pixel-perfect verification: fixes the obvious styling slips itself and hands over everything that touches what users see or do as a defect with a proposed fix and its consequence. Needs the Chrome DevTools MCP (and the Figma MCP in design mode); the skill walks through their setup.
+- `decision-review` — a skeptical read of a specification, a task, an implementation plan or the code itself, at whichever point of the cycle it is: it settles every technical question on its own and brings you only the decisions that change what the product does, each as a proposition in product language.
 
 ## Without the plugin
 
