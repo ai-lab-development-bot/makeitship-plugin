@@ -1,7 +1,7 @@
 {
   "name": "makeitship",
   "version": "0.7.0",
-  "description": "Put work on your Makeitship board as tasks \u2014 for you, for your agent, or for the Makeitship team \u2014 and follow it, from the agent you already use.",
+  "description": "Put work on your Makeitship board as tasks — for you, for your agent, or for the Makeitship team — and follow it, from the agent you already use.",
   "author": {
     "name": "Makeitship",
     "url": "https://makeitship.com"
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Makeitship",
     "shortDescription": "Track work on your Makeitship board as tasks",
-    "longDescription": "Create tasks from a conversation on your Makeitship board, read it by its statuses, update what you are working on, and hand anything that needs a person to the Makeitship team \u2014 from Codex.",
+    "longDescription": "Create well-formed tasks from a conversation on your Makeitship board — for you, for your agent, or for the Makeitship team — read the board by its statuses and reply on tasks, and bring engineering skills (testing, exploratory UI QA, decision review) that work in any repository — from Codex.",
     "developerName": "Makeitship",
     "category": "Productivity",
     "capabilities": [

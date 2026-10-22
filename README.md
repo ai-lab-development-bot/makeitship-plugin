@@ -23,12 +23,12 @@ codex mcp login makeitship
 
 `/plugin uninstall makeitship@makeitship` in Claude Code, `codex plugin remove makeitship@makeitship` in Codex — the server goes with the plugin. A server you added by hand: `claude mcp remove makeitship` / `codex mcp remove makeitship`.
 
-## Skills
+## Board skills
 
-- `create-task` — makes a well-formed task on your board from the conversation: decides whether it is a feature, an enhancement or a bug, investigates what the product does today and what the request entails — in the code when the agent is in the repository, otherwise in the running product through a browser (the way `web-ui-exploratory-qa` opens it), settles the open decisions with you as propositions, and writes the task in the format its type needs (a defect is reported differently from a feature). Who does the task is a separate question.
+- `create-task` — makes a well-formed task on your board from the conversation: decides whether it is a feature, an enhancement or a bug, investigates what the product does today and what the request entails — in the code when the agent is in the repository, otherwise in the running product through a browser (the way `web-ui-exploratory-qa` opens it), settles the open decisions with you as propositions, and writes the task in the format its type needs (a defect is reported differently from a feature). A decision you already took, or a document you bring, is taken as settled and linked, not reopened. Who does the task is a separate question.
 - `track-tasks` — reads the board by its own statuses, what a task says and its replies; a comment back, a move between columns.
 
-The board's statuses are your workspace's own (rename, recolour, add your own under Task settings in the dashboard); an agent learns them with `list_task_statuses` and names one by its slug.
+Both need the server connected; without it they say so. The board's statuses are your workspace's own (rename, recolour, add your own under Task settings in the dashboard).
 
 ## Engineering skills
 
@@ -39,12 +39,10 @@ Development know-how the agent picks up on its own when the task calls for it. T
 - `web-ui-exploratory-qa` — explores a running web app in a real browser the way an experienced tester would, screen by screen and in both themes, against the Figma design or by experience — what a person would notice, not pixel-perfect verification: fixes the obvious styling slips itself and hands over everything that touches what users see or do as a defect with a proposed fix and its consequence. Needs the Chrome DevTools MCP (and the Figma MCP in design mode); the skill walks through their setup.
 - `decision-review` — a skeptical read of a specification, a task, an implementation plan or the code itself, at whichever point of the cycle it is: it settles every technical question on its own and brings you only the decisions that change what the product does, each as a proposition in product language.
 
-Both need the server connected; without it they say so.
-
 ## Without the plugin
 
 Add the server yourself with the server URL from the Connect agent page of your Makeitship dashboard: `claude mcp add --transport http --scope user makeitship <url>`, or `codex mcp add makeitship --url <url>` then `codex mcp login makeitship`. Claude Desktop: Customize → Connectors → Add custom connector with the same URL.
 
 ## Versioning
 
-Semantic versions in the manifests. Tools are only added or gain optional fields; a rename is a new tool plus the old one marked deprecated in its description for one minor release. 0.3.0 is the one exception so far: statuses became the workspace's own, so a status is a slug from `list_task_statuses` and the fixed `new` / `in_progress` / `done` vocabulary of 0.2.x is gone (there were no production customers yet). 0.6.0 is the second: tasks are addressed by number — the `#12` a person sees on the board — in every tool that names one, and the UUIDs of 0.5.x are gone from tool inputs and outputs.
+Semantic versions in the manifests. Tools are only added or gain optional fields; a rename is a new tool plus the old one marked deprecated in its description for one minor release.
