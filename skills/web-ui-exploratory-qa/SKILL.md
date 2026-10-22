@@ -1,5 +1,5 @@
 ---
-name: web-ui-qa
+name: web-ui-exploratory-qa
 description: >
   Use when the user asks to visually check, QA, compare against Figma, or explore a
   screen, component, or state of a running web app in a browser: "check this page
@@ -14,7 +14,7 @@ description: >
   language of the conversation. Project-agnostic; the Figma file is asked for each run.
 ---
 
-# Web UI QA
+# Web UI Exploratory QA
 
 An **autonomous compare-and-fix loop**: pick a target, capture it from **Figma** (in
 Figma mode) and from **Chrome**, compare, then fix it yourself or escalate it with a
