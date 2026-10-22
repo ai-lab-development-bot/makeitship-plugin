@@ -194,6 +194,43 @@ Skip an item only when it clearly does not apply.
 - **Plan and quota**: does the change interact with plan limits, billing, or what a free
   workspace may do.
 
+## Step 2.5 — When the person already decided, or brings a document
+
+Often the person arrives with the thinking done: a decision they reached in an earlier
+conversation, a spec, a design document, a plan an agent wrote for them. The task is then
+not a brainstorm, and you do not reopen what is settled.
+
+- **A decision they took explicitly is a fact of the task.** It goes into *Change* and
+  *Done when* as it stands; you propose no alternative to it, even one you would have
+  preferred. The one exception: it contradicts what the product does today, or another
+  decision in the same document. Then it is a point in the Step 3 message — "the document
+  says X, the product today does Y, which would mean Z for users; I propose…" — because
+  they may not know the two disagree.
+- **The investigation narrows, it does not stop.** Step 2 still establishes today and what
+  the request entails; the checklist runs only over what the document did not settle. The
+  Step 3 message opens "Per your document, the task is…" and carries only the gaps and
+  the contradictions. A complete document means no message: straight to the draft.
+- **Explicit means written.** A decision you can infer from the document but that it does
+  not state is a gap, and goes to the person as a proposition like any other. Inference
+  is not a decision they took.
+- **The document is attached, not retold.** The task says enough for its reader to work
+  without opening the document — the decisions that matter, in product words — and
+  points at the document for the rest:
+  - a public address (Notion, Google Docs, Figma, a hosted page): a link on its name,
+    `per the [spec](url)`;
+  - a file in the repository (a plan or spec an agent wrote and saved, a design doc under
+    `docs/`): its hosted link when it is already pushed and you know the address;
+    otherwise its **repository-relative path** as it will be committed
+    (`docs/superpowers/specs/2026-10-22-archive.md`), with the branch when it only
+    exists there. This is the one place a path belongs in a task: a document, never
+    code. Never an absolute path on a machine;
+  - a file that lives nowhere shareable (a download, an attachment in the chat): take
+    the decisions into the text, and tell the person they can attach the file to the
+    task from the task view, as with a screenshot.
+- **A document that describes several tasks** — a whole area, several screens, a phase —
+  is split: propose the tasks, one line each, in the Step 3 message; create them in order
+  on a yes, each pointing at the document.
+
 ## Step 3 — Settle the decisions with the person, as propositions
 
 What the investigation answered is a fact of the task. What it could not answer is a
@@ -418,6 +455,8 @@ they can read with `track-tasks`. Do not poll; the person asks when they want an
 | "I could not find anything that depends on it, so nothing does" | Could not find is not is not there. Say what you could not confirm; it is a decision. |
 | A request that deletes or overwrites data, written up without saying so back to them | Say it back at its true size; a destructive change never passes on silence. |
 | A feature task whose questions start from a blank page ("where should it go? how should it look?") | Propose the shape from what the product has; they cross out and add. |
+| Proposing an alternative to a decision the person's document already states | Settled is settled. Flag it only where it contradicts today or itself. |
+| Retelling a spec in the task, or pasting it | Say what the reader needs, link or path the document for the rest. |
 | "I found a bug nearby; it belongs here" | One line in the chat, a separate task on a yes. |
 | A "must" in *Done when* with no "must not" or boundary next to it | Add the negatives, or say in the chat why there are none. |
 | A decision the person could take now, parked in *Open questions* | Ask it in Step 3. *Open questions* is for what depends on someone else. |
