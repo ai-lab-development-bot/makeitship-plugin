@@ -150,10 +150,28 @@ the product. Never present an unverified claim as a fact.
 
 ### What the request entails — every source
 
-The person asks for one thing; the product may need more for that thing to make sense.
-Look for: what else must change for the request to work, what it would leave
-inconsistent, what existing data or users it affects, what it silently breaks. Keep
-notes; nothing of this goes into the task as paths or code.
+The person asks for one thing; the product may need more for that thing to make sense,
+and they cannot see that from where they stand. Note the request's shape — it **changes**
+something that exists, **creates** something new, or both (the common case: "add a
+testimonials section to the About page") — and look in the direction each face needs:
+
+- **Backward, for a change**: what already uses or depends on the thing being changed?
+  Where else does it appear; what breaks or becomes inconsistent if only the named place
+  changes; what existing data or users it affects.
+- **Forward, for something new**: what does the product already have that this should
+  extend or match rather than duplicate (a similar list, dialog, menu, flow)? What must
+  the new thing connect to — navigation, search, notifications, realtime, quotas, the
+  other app? Does it need a **capability the product does not have yet** (payments,
+  email, file storage, an integration)? That last one is a major scope disclosure: "a
+  shop is a cart and a checkout, not one page", and it goes first in the Step 3 message.
+- **Destructive, either way**: if the request deletes, removes or overwrites existing
+  content or data, it never passes without the person seeing that said back to them.
+
+Follow the edges out from the request; do not audit what the request does not touch.
+**"Could not find it" is not "it is not there"**: when the investigation can neither
+confirm nor rule out something the person would care about, that is a decision for
+Step 3, not a silent proceed. Keep notes; nothing of this goes into the task as paths
+or code.
 
 ### The checklist (features and enhancements)
 
@@ -183,7 +201,14 @@ decision, and decisions reach the person in **one message**, ordered by impact: 
 changes the size of the task first, then behaviour, then polish. Merge decisions that
 hang on the same choice.
 
-Every decision is written like this, in the conversation's language:
+The message opens with **how you understood the request, at its true size** — two or
+three sentences in product words. This is where the person learns that you read their
+ask as bigger or smaller than they meant it, before any decision is put to them:
+
+> You want team members to delete their own comments. Today nothing removes a comment.
+> That touches the comment's attachments and what other readers see afterwards.
+
+Then the decisions, each written like this, in the conversation's language:
 
 ```
 <The decision as one product sentence>
@@ -191,6 +216,33 @@ What it affects: <who, and what they would notice>
 Proposed: <your recommended answer>. Recommended — <why, one clause>.
 Alternative: <the other option and what it would mean>.
 ```
+
+**Translate the fork, never the mechanism.** A decision can be technical underneath; the
+sentence the person reads is about the outcome. Ready forms for the common forks:
+
+| Underneath | What the person reads |
+|---|---|
+| A fixed option versus a repeatable content type | "Is this a fixed set you will rarely touch, or will you add, edit and remove these regularly?" |
+| Extend an existing component versus build new | "Should this match <the section they already know>, or look different?" |
+| Static versus computed or per-user | "Is this the same for everyone, or does it change per user, plan or date?" |
+| Hard delete versus hide or archive | "Gone for good, or kept somewhere it can be brought back from?" |
+| Synchronous versus background | "Do they wait and see the result, or get told when it is done?" |
+
+**For something new, propose its shape; do not hand over a blank page.** When the request
+creates something the product does not have, the checklist alone cannot fill the task:
+there is no screen to look at. So propose a concrete shape and let the person cross out
+and add — that is far easier than inventing from nothing. Build it from what the product
+already has (its lists, menus, dialogs, flows), so the new thing feels native; say
+plainly when a part comes from common practice rather than from their product ("a usual
+example, not from your product"); ask openly when the domain is one you do not know.
+When the new thing is large — a whole area, several screens — agree the top level first
+(structure, boundaries, order) and leave each screen's detail to its own task later.
+
+> Proposed shape: an "Archive" view next to the existing List and Board switch. Archived
+> tasks show as the same row as in the list, without dragging, and each has "Restore"
+> in its menu instead of "Archive". The board never shows them. A restored task goes to
+> the end of the column it came from. This follows how the list views already work.
+> What to cross out or add?
 
 Two things belong in this message besides decisions:
 
@@ -206,7 +258,9 @@ Two things belong in this message besides decisions:
 
 The person answers in whatever form: accept the proposal, pick the alternative, give their
 own answer, or say the answer depends on someone else. Nothing is filled in by guessing.
-When the message needs no decisions at all, skip it: proceed to the draft.
+A second round is allowed only when their answers open a genuinely new decision; it is
+not a way to drip questions. When the message needs no decisions at all, skip it:
+proceed to the draft.
 
 **Priority** is yours to propose, not theirs to pick from a list: `high` only when they
 are blocked or users are losing money, data or access; `low` for polish; `medium` otherwise.
@@ -361,6 +415,9 @@ they can read with `track-tasks`. Do not poll; the person asks when they want an
 | A question to the person with no proposed answer | Not finished. Add the proposal and the alternative. |
 | An engineering question to the person | Decide it yourself; show them only what changes the product. |
 | "The request is bigger than they think, but I'll do what they asked" | Say it and propose the scope. Silence narrows the task without their knowing. |
+| "I could not find anything that depends on it, so nothing does" | Could not find is not is not there. Say what you could not confirm; it is a decision. |
+| A request that deletes or overwrites data, written up without saying so back to them | Say it back at its true size; a destructive change never passes on silence. |
+| A feature task whose questions start from a blank page ("where should it go? how should it look?") | Propose the shape from what the product has; they cross out and add. |
 | "I found a bug nearby; it belongs here" | One line in the chat, a separate task on a yes. |
 | A "must" in *Done when* with no "must not" or boundary next to it | Add the negatives, or say in the chat why there are none. |
 | A decision the person could take now, parked in *Open questions* | Ask it in Step 3. *Open questions* is for what depends on someone else. |
