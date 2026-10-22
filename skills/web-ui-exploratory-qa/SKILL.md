@@ -22,9 +22,10 @@ description: >
 An **autonomous compare-and-fix loop**: pick a target, capture it from **Figma** (in
 Figma mode) and from **Chrome**, compare, then fix it yourself or escalate it with a
 proposed fix. What makes this skill different from a plain visual check is the
-**auto-fix philosophy** (Step 4): the obvious is fixed on the spot and proven; anything
-that touches the user's flow or functionality is escalated, always with a proposition,
-never as a bare question. Nothing is ever committed.
+**auto-fix philosophy** (Step 4): whatever the product was already supposed to do is
+fixed on the spot and proven, in whichever layer the cause lives; whatever changes what
+the product should do is escalated, always with a proposition, never as a bare
+question. Nothing is ever committed.
 
 **Not exhaustive.** Catch what is obvious to a human eye — critical, high and medium
 impact. Pixel-perfect fidelity, sub-pixel spacing, font rendering nuances, hover states
@@ -377,14 +378,18 @@ Every claim goes in exactly one bucket. When two fit, the more conservative one.
 
 | Bucket | The finding is… | Action |
 |---|---|---|
-| **Fix it yourself** | obvious, technical, and **does not influence the user's flow or functionality**: a wrong token or hardcoded style value, spacing / radius / font-size / weight / line-height, a missing hover or focus treatment, a layout property the frame settles at both widths, an obvious typo-level markup slip (a stray class, a wrong breakpoint prefix), a console warning with a one-line cause | fix, prove by re-capture, log it under *Fixed by agent* in `defects.md` |
-| **Escalate with a proposition** | anything that changes behaviour, data, flow, structure, copy, or that is ambiguous or unsettled by the frame | write the defect entry **with a concrete proposed fix** (Step 8), then ask the user to decide |
+| **Fix it yourself** | **technical**: what the product should do here is already settled — by the frame, the docs, the product's own sibling screens, a stated intent in the code — and the fix makes it do that. A wrong token or hardcoded value; a missing hover or focus treatment; a layout the frame settles; a control that does nothing because a handler was never wired; a dialog that does not close because the state never resets; a route that drops its query on Back; a list that shows stale data because the cache is not invalidated; a request that sends twice; a server handler that returns the wrong status for an input the contract already defines; a console error with a traceable cause. The layer does not matter — markup, style, state, hooks, routing, server code — the settled intent does | recommend → research → apply → verify → record (the protocol below); log it under *Fixed by agent* in `defects.md` |
+| **Escalate with a proposition** | **business**: resolving it requires deciding what the product *should* do — a behaviour nothing settles, a rule, a threshold, a default, copy, who may see or do what, which of two disagreeing sources is the truth, a component the design never drew; or a technical fix whose research did not converge, spreads beyond the finding, or would change observable behaviour after all | write the defect entry **with a concrete proposed fix** (Step 8), then ask the user to decide |
 | **Not a defect** | out of scope · a design gap · a non-canonical theme or ignored node · content length · a gap from capturing too early | drop; note it in the ledger's Notes so it is not re-raised |
 
-**The one rule behind the buckets:** a finding is yours to fix only when the fix keeps
-**everything a user can observe identical** — what they see, receive, or can do, in
-what order. If the change would alter any of that, it is an escalation, however small
-the edit; "it is a one-line change" never moves a finding into the first bucket.
+**The one rule behind the buckets:** a finding is yours to fix when the fix changes
+nothing about **what the product is supposed to do** — it only makes the product do
+it. The test is not which file you would touch, nor how many lines: a screen defect
+is very often the visible end of a state, routing or server slip, and that slip is
+yours when the intended behaviour is already on record. The moment the fix would
+decide a behaviour — what a user sees, receives or can do that nothing has settled —
+it is an escalation, however small the edit; and "it is a one-line change" never
+moves a finding into the first bucket.
 
 **When in doubt, escalate.** But escalating is not asking a question — it is handing the
 user a decision that is ready to take: what is wrong, why it counts, what you would
@@ -394,17 +399,35 @@ accusation: assume there was a product reason, and name the one you suspect ("th
 hides items past 50 with no indicator — if that is a deliberate cap, a 'showing 50 of
 120' line makes it visible; if it is a leftover, the cap goes").
 
-**Never on your own:** adding, removing or reordering components; anything changing
-what data is shown, fetched or written; state, hooks, routing, server code; copy
-strings; more than a handful of lines in one file; a second visit to a file this run
-without re-reading it; anything on a read-only environment.
+**Never on your own, whatever the layer:** deciding a behaviour nothing has settled;
+changing copy; changing what data a role may see; anything on a read-only
+environment; a second visit to a file this run without re-reading it. These are not
+layers — they are the places where the fix would be a product decision.
 
-**Protocol for a self-fix:** take the value from the design-system sources, never
-invent one → surgical edit → re-capture to `browser/<id>--after.png` and compare
-again → if the fix does not show, **revert your own edit** (never `git checkout`) and
-escalate → log it. When the iteration's fixes are done, run the project's own quality
-gate (lint, typecheck, tests, as the repo defines it) and revert any fix that reddens
-it. **Never commit, never push.**
+**Protocol for a self-fix** — a sequence, never a single edit:
+
+1. **Recommend** — one or two sentences: what is wrong, where the cause is, what the
+   change is, and what settles the intended behaviour (the frame, the doc, the
+   sibling screen, the stated intent). No settled source → it is business; escalate.
+2. **Research** — read the cause, not just the symptom: follow the control to its
+   handler, the state to where it is set, the request to the server code. Match how
+   the rest of the project already solves the same concern (an adjacent component, a
+   test, the project's conventions); a style value comes from the design-system
+   sources, never invented. If the research does not converge on one change, or the
+   change would spread beyond the finding, stop and escalate with what you found.
+3. **Apply** — a surgical edit at the cause, not a patch over the symptom.
+4. **Verify** — re-capture to `browser/<id>--after.png` and compare; exercise the
+   same interaction again (Lens 2) when the fix was behavioural; run the project's
+   own quality gate (lint, typecheck, the tests that cover the touched area, as the
+   repo defines it). A fix that does not show, or a red check, is **reverted — your
+   own edit only, never `git checkout`** — and escalated with the evidence.
+5. **Record** — log it under *Fixed by agent*: the change, the files, the proof, and
+   what settled the intent.
+
+Downgrade a fix to an escalation, with the reason, whenever research does not
+converge, the change spreads beyond the finding, verification fails for a reason other
+than the change itself, or applying it would after all change what a user can do.
+**Never commit, never push.**
 
 **Escalations the user approves** are applied the same way — edit, re-capture, prove,
 log — and recorded in the final table as *fixed from escalation*.
@@ -559,7 +582,8 @@ findings clustered.>
 | # | Defect | Screens · widths | Why it counted | Fixed by | Change | Proof |
 |---|---|---|---|---|---|---|
 | F1 | Plan card border was the wrong grey | Billing · 1440 | frame settles it; token-level | agent | `CurrentPlanCard.tsx:41` `border-input` → `border-border` | [before](browser/billing@1440--default.png) · [after](browser/billing@1440--default--after.png) |
-| F2 | "Save changes" did nothing | Settings, Profile dialog · 1440, 375 | core action could not complete | escalation, approved | `ChangePasswordDialog.tsx` await + toast | [after](browser/settings@1440--default--after.png) |
+| F2 | "Save changes" did nothing | Settings, Profile dialog · 1440, 375 | core action could not complete; the dialog's own copy and the docs say it saves | agent | `ChangePasswordDialog.tsx` missing await + toast | [after](browser/settings@1440--default--after.png) |
+| F3 | Invoice total stayed old after a payment | Billing · 1440, 375 | the docs say the total updates on payment; the cache was never invalidated | escalation, approved — fix spread to the query store | `useInvoices.ts` invalidate on `payment.succeeded` | [after](browser/billing@1440--paid--after.png) |
 
 ## Escalated
 
@@ -692,8 +716,10 @@ user.
 | A finding with no *Why it counts* | Add the reason or drop the finding |
 | An escalation that is only a question | Add the proposed fix: what, where, size, what users would notice, risk — and your recommendation |
 | Asking the user an engineering question — which environment, which tracker, which design source, whether to add a tool | Decide, say what it means for the product, get it confirmed |
-| Self-fixing anything that touches flow, data, behaviour, copy | Escalate with a proposition |
-| Self-fixing on production, or with no design-system source | Escalate |
+| Escalating a defect only because its cause is in state, a hook, a route or server code | The layer is not the test; if the intended behaviour is already settled, trace the cause and fix it through the protocol |
+| Self-fixing something nothing has settled — a rule, a default, a threshold, copy, who sees what | Escalate with a proposition; that is a product decision |
+| Patching the symptom in the view when the cause is one layer down | Research to the cause; a symptom patch leaves the defect and adds a second |
+| Self-fixing on production, or a style value with no design-system source | Escalate |
 | Leaving a fix the re-capture did not confirm | Revert your own edit, escalate |
 | Filing a missing widget the user said is out of scope | Drop it; it is in the scope block of `targets.md` |
 | Judging from `get_design_context` JSX or a 1024px thumbnail | Screenshot the node at natural width and look |
