@@ -37,6 +37,7 @@ Development know-how the agent picks up on its own when the task calls for it. T
 - `unit-testing` — works out what a unit promises and writes or judges its tests against that: asserts the contract, leaves accidents alone, catches assertions that pass whatever the code does.
 - `integration-testing` — holds several real parts to what they jointly promise (a flow and its database, components and their store), mocking only where the slice's own code ends. Builds on `unit-testing`.
 - `web-ui-exploratory-qa` — explores a running web app in a real browser the way an experienced tester would, screen by screen and in both themes, against the Figma design or by experience — what a person would notice, not pixel-perfect verification: fixes the obvious styling slips itself and hands over everything that touches what users see or do as a defect with a proposed fix and its consequence. Needs the Chrome DevTools MCP (and the Figma MCP in design mode); the skill walks through their setup.
+- `decision-review` — a skeptical read of a specification, a task, an implementation plan or the code itself, at whichever point of the cycle it is: it settles every technical question on its own and brings you only the decisions that change what the product does, each as a proposition in product language.
 
 Both need the server connected; without it they say so.
 
