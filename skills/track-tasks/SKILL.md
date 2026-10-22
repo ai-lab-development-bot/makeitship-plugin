@@ -1,13 +1,13 @@
 ---
 name: track-tasks
-description: Read the Makeitship board — what is open, what a task says, the replies on it — and comment or move a task; when the person asks "what is on the board", "what is still open", "any news from Makeitship", "what did the team say", "move this to done", or wants to answer a reply.
+description: Read the Makeitship board — what is open, what a task says, what it is linked to, the replies on it — and comment, move, link or attach to a task; when the person asks "what is on the board", "what is still open", "any news from Makeitship", "what did the team say", "move this to done", "this is part of #12", "attach the PR to the task", or wants to answer a reply.
 ---
 
 # Track the tasks on the Makeitship board
 
 Without the makeitship MCP server connected this skill does nothing: say so and point the person at the Connect agent page of their Makeitship dashboard.
 
-Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__list_task_statuses`, `…__list_tasks`, `…__get_task`, `…__add_task_comment`, `…__update_task`, `…__delete_task`.
+Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__list_task_statuses`, `…__list_tasks`, `…__get_task`, `…__add_task_comment`, `…__update_task`, `…__delete_task`, `…__add_task_relation`, `…__remove_task_relation`, `…__add_task_resource`, `…__remove_task_resource`.
 
 ## A task is its number
 
@@ -23,7 +23,29 @@ Call `list_task_statuses` first, once per conversation. It answers the board's c
 
 ## What a task says
 
-For a task the person names, call `get_task` with its `number` and read its description, its status and its comments. Report what a reply said in its own words where it matters (a question, a decision needed), and say what the person has to do next, if anything.
+For a task the person names, call `get_task` with its `number` and read its description, its status, its comments, and what it is linked to. Report what a reply said in its own words where it matters (a question, a decision needed), and say what the person has to do next, if anything.
+
+## What a task is linked to
+
+`get_task` answers two lists besides the comments. `relations` — the other tasks this one is linked to, each with a `kind`, a `direction`, and the other task's `number`, `title` and `status`:
+
+| `kind` | `direction: out` | `direction: in` |
+|---|---|---|
+| `subtask` | the other task is a sub-task of this one | this task is part of the other one (its parent) |
+| `blocks` | this task blocks the other one | this task is blocked by the other one |
+| `related` | related, no direction | related, no direction |
+
+`resources` — links on the task (a pull request, a document, a design), each with a `url`, an optional `title` and a `kind`.
+
+Say them back in one line each, as the person would: "part of #12 Title", "sub-tasks: #13 Title (Done), #14 Title (To do)", "blocked by #9 Title", "blocks #15 Title", "related: #7 Title", then the links by title. Say a sub-task's or a blocker's status name when it matters to what the person can do next — a parent whose sub-tasks are all in a final column, a blocker still open. Leave out a list that is empty.
+
+A relation is a hint for people and agents, never a rule: it does not move a task, it does not stop one from moving, and it is not a reason to refuse anything the person asks. Say "blocked by #9, which is still open" and let them decide.
+
+## Linking and attaching
+
+When the person says how two tasks relate — "#13 is part of #12", "#9 blocks this one", "these two are related" — call `add_task_relation` with this task's `number`, the other task's `related_number`, the `kind` and the `direction` from the table above (`out` is the default: this task is the parent or the blocker). Find both numbers first (`list_tasks` with `search` when they named a task by its words). When the person gives you a link for a task — a pull request, a document, a design — call `add_task_resource` with the `number`, the `url` and a short `title`; a link you produced yourself while working on that task (the pull request you opened, the document you wrote) goes on the task the same way, and you say so.
+
+Link only what the person said or what you did for that task; do not infer relations from titles. The tool refuses a link that already exists, a task linked to itself, and a task with too many links — say the refusal back; do not retry it. Remove a relation (`remove_task_relation`, the same two numbers and `kind`) or a link (`remove_task_resource`, the `number` and the `url`) only on an explicit ask; say it back as `#12 Title` first.
 
 ## Commenting and moving
 

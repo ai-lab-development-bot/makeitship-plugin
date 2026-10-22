@@ -423,6 +423,15 @@ Call `create_task` (`mcp__plugin_makeitship_makeitship__create_task`) with:
 When the person agreed to a second task in Step 3 (a split-off scope, a defect noticed
 nearby), create it next with its own key, after the first is confirmed.
 
+**Link the task to the one it grew out of.** A task often starts from another task — a
+split-off scope, a defect found while looking at `#12`, a piece of work the person wants
+tracked as part of a bigger one. Then, once it is created, link the two with
+`add_task_relation` (`mcp__plugin_makeitship_makeitship__add_task_relation`): `kind`
+`subtask` with the parent's `number` and the new task's `related_number` when it is part
+of the other one, `related` when they only belong together. Only when the other task
+exists on the board and the link is what the person said or plainly meant; never from
+a guess. A document the task points at is a link in its text (Step 2.5), not a resource.
+
 ## Report back
 
 Tell the person the task was created as `#12 Title` — the task's number (the `number` in
@@ -430,7 +439,8 @@ the answer, shown as `#12` on the board) and its title — the column it landed 
 priority. When the answer carries a `url`, make the name the link: `[#12 Title](url)`
 opens the task on their board. If they chose to attach a screenshot or file themselves
 (2b), that link is where they add it. The number and the title are how people know a task; never name it by any other
-identifier. If a second task was created, the same line for it. Replies appear as comments
+identifier. If a second task was created, the same line for it, and the link between the
+two when one was made ("part of #12"). Replies appear as comments
 they can read with `track-tasks`. Do not poll; the person asks when they want an update.
 
 ## When the call is refused
