@@ -1,6 +1,6 @@
 # Makeitship plugin
 
-Put work on your Makeitship board as tasks — for you, for your agent, or for the Makeitship team — and follow it, from the agent you already use. The plugin adds the Makeitship MCP server and two skills; approving the connection happens in your browser the first time — no keys to paste.
+Put work on your Makeitship board as tasks — for you, for your agent, or for the Makeitship team — and follow it, from the agent you already use. The plugin adds the Makeitship MCP server and its skills; approving the connection happens in your browser the first time — no keys to paste.
 
 ## Claude Code
 
@@ -25,7 +25,7 @@ codex mcp login makeitship
 
 ## Skills
 
-- `delegate-task` — creates a task on your board from the conversation, with a title, the context and what done looks like; handing work to the Makeitship team is one reason among others.
+- `create-task` — makes a well-formed task on your board from the conversation: decides whether it is a feature, an enhancement or a bug, investigates what the product does today and what the request entails — in the code when the agent is in the repository, otherwise in the running product through a browser (the way `web-ui-exploratory-qa` opens it), settles the open decisions with you as propositions, and writes the task in the format its type needs (a defect is reported differently from a feature). Who does the task is a separate question.
 - `track-tasks` — reads the board by its own statuses, what a task says and its replies; a comment back, a move between columns.
 
 The board's statuses are your workspace's own (rename, recolour, add your own under Task settings in the dashboard); an agent learns them with `list_task_statuses` and names one by its slug.
