@@ -55,7 +55,7 @@ The deploy from `main` failed at the DNS step; `www.acme.com` still points at th
 
 ## Report back
 
-Tell the person the task was created, with its title, its id and the column it landed in, and that replies appear as comments they can read with `track-tasks`. Do not poll; the person asks when they want an update.
+Tell the person the task was created as `#12 Title` — the task's number (the `number` in the answer, shown as `#12` on the board) and its title — and the column it landed in, and that replies appear as comments they can read with `track-tasks`. The number and the title are how people know a task; never name it by any other identifier. Do not poll; the person asks when they want an update.
 
 ## When the call is refused
 

@@ -47,4 +47,4 @@ Add the server yourself with the server URL from the Connect agent page of your 
 
 ## Versioning
 
-Semantic versions in the manifests. Tools are only added or gain optional fields; a rename is a new tool plus the old one marked deprecated in its description for one minor release. 0.3.0 is the one exception so far: statuses became the workspace's own, so a status is a slug from `list_task_statuses` and the fixed `new` / `in_progress` / `done` vocabulary of 0.2.x is gone (there were no production customers yet).
+Semantic versions in the manifests. Tools are only added or gain optional fields; a rename is a new tool plus the old one marked deprecated in its description for one minor release. 0.3.0 is the one exception so far: statuses became the workspace's own, so a status is a slug from `list_task_statuses` and the fixed `new` / `in_progress` / `done` vocabulary of 0.2.x is gone (there were no production customers yet). 0.6.0 is the second: tasks are addressed by number — the `#12` a person sees on the board — in every tool that names one, and the UUIDs of 0.5.x are gone from tool inputs and outputs.
