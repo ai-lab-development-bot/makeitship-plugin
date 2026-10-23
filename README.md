@@ -26,6 +26,7 @@ codex mcp login makeitship
 ## Board skills
 
 - `create-task` — makes a well-formed task on your board from the conversation: decides whether it is a feature, an enhancement or a bug, investigates what the product does today and what the request entails — in the code when the agent is in the repository, otherwise in the running product through a browser (the way `web-ui-exploratory-qa` opens it), settles the open decisions with you as propositions, and writes the task in the format its type needs (a defect is reported differently from a feature). A decision you already took, or a document you bring, is taken as settled and linked, not reopened. Who does the task is a separate question.
+- `work-with-insights` — reads a task's Development Insights (the points the team's catalog raised for it, each with what to take into account and why), places each point at the stage of the work where it belongs, acts on it through the skill it names, and reports back per point; a task from the board is never worked without its insight.
 - `track-tasks` — reads the board by its own statuses, what a task says, what it is linked to (sub-tasks, a parent, what blocks it, related tasks, the links on it) and its replies; a comment back, a move between columns, a link between two tasks, a pull request or document attached to one.
 
 Both need the server connected; without it they say so. The board's statuses are your workspace's own (rename, recolour, add your own under Task settings in the dashboard).
