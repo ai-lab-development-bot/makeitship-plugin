@@ -1,0 +1,9 @@
+{
+  "name": "idle-cpu-audit-scripts",
+  "private": true,
+  "description": "Measuring scripts of the idle-cpu-audit skill. Run `npm install` here once.",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "playwright-core": "1.63.0"
+  }
+}

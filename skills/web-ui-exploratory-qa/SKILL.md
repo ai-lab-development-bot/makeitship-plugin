@@ -660,7 +660,9 @@ conversation's language:
 2. the **Fixed** table from `defects.md`, verbatim;
 3. the **Escalated** list as one line per entry — number, title, priority, decision —
    with the full entries left in the file;
-4. the files you touched, if any fix was applied;
+4. the files you touched, if any fix was applied — and when a fix changed what an
+   implementation doc describes, that doc updated first (the `document-implementation`
+   skill in this plugin);
 5. the path to `defects.md`.
 
 Then offer to turn confirmed defects into tracked work: name the tracker the project

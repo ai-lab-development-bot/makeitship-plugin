@@ -81,8 +81,9 @@ product shows what users see, the code shows why).
 ### 2a. The code, when you are in the project (read-only)
 
 1. **Locate the area**: the screen, flow, component, server function, migration or doc the
-   request touches. Read the project's docs and agent instructions for what the area is,
-   then the code for what it actually does.
+   request touches. Read the project's docs and agent instructions for what the area is
+   (when the project has `docs/INDEX.md`, the `consult-project-docs` skill in this plugin
+   picks the docs the area needs), then the code for what it actually does.
 2. **Establish today** as the code proves it — not as the docs or the person describe it.
    Docs are hypotheses; where a doc and the code disagree, the code is today, and the
    disagreement is worth a sentence to the person.
@@ -283,6 +284,15 @@ When the new thing is large — a whole area, several screens — agree the top 
 > the end of the column it came from. This follows how the list views already work.
 > What to cross out or add?
 
+**When the shape is easier seen than read** — a new screen, a layout, a flow, an asset —
+offer once, in one line, to show it: the `design-directions` skill in this plugin puts
+a few different takes side by side and returns the one the person chose. Follow that
+skill for the round; its outcome is a decision like any other in this message. The
+mock-up only illustrates the task: every decision it settled is written into *Change*
+and *Done when* in words, so the task reads and works the same without it, and the link
+sits on the word that says what it shows (`the [mock-up](url)`) once the person has
+shared the page with the task's readers, as that skill says.
+
 Two things belong in this message besides decisions:
 
 - **What the request entails.** When Step 2 showed the request is bigger than its wording
@@ -423,6 +433,15 @@ Call `create_task` (`mcp__plugin_makeitship_makeitship__create_task`) with:
 When the person agreed to a second task in Step 3 (a split-off scope, a defect noticed
 nearby), create it next with its own key, after the first is confirmed.
 
+**Link the task to the one it grew out of.** A task often starts from another task — a
+split-off scope, a defect found while looking at `#12`, a piece of work the person wants
+tracked as part of a bigger one. Then, once it is created, link the two with
+`add_task_relation` (`mcp__plugin_makeitship_makeitship__add_task_relation`): `kind`
+`subtask` with the parent's `number` and the new task's `related_number` when it is part
+of the other one, `related` when they only belong together. Only when the other task
+exists on the board and the link is what the person said or plainly meant; never from
+a guess. A document the task points at is a link in its text (Step 2.5), not a resource.
+
 ## Report back
 
 Tell the person the task was created as `#12 Title` — the task's number (the `number` in
@@ -430,7 +449,8 @@ the answer, shown as `#12` on the board) and its title — the column it landed 
 priority. When the answer carries a `url`, make the name the link: `[#12 Title](url)`
 opens the task on their board. If they chose to attach a screenshot or file themselves
 (2b), that link is where they add it. The number and the title are how people know a task; never name it by any other
-identifier. If a second task was created, the same line for it. Replies appear as comments
+identifier. If a second task was created, the same line for it, and the link between the
+two when one was made ("part of #12"). Replies appear as comments
 they can read with `track-tasks`. Do not poll; the person asks when they want an update.
 
 ## When the call is refused
@@ -457,6 +477,7 @@ they can read with `track-tasks`. Do not poll; the person asks when they want an
 | "I could not find anything that depends on it, so nothing does" | Could not find is not is not there. Say what you could not confirm; it is a decision. |
 | A request that deletes or overwrites data, written up without saying so back to them | Say it back at its true size; a destructive change never passes on silence. |
 | A feature task whose questions start from a blank page ("where should it go? how should it look?") | Propose the shape from what the product has; they cross out and add. |
+| "The mock-up shows it, so the task can say less" | The task is complete without it; the mock-up only illustrates. |
 | Proposing an alternative to a decision the person's document already states | Settled is settled. Flag it only where it contradicts today or itself. |
 | Retelling a spec in the task, or pasting it | Say what the reader needs, link or path the document for the rest. |
 | "I found a bug nearby; it belongs here" | One line in the chat, a separate task on a yes. |

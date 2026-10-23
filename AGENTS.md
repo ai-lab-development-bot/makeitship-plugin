@@ -4,4 +4,12 @@ This repository is a Claude Code plugin and its own marketplace (`.claude-plugin
 
 - Skills live in `skills/<name>/SKILL.md`. Inside the plugin the server's tools are named `mcp__plugin_makeitship_makeitship__<tool>`; a person who added the server by hand sees `mcp__makeitship__<tool>`. Name the plugin form in skills.
 - Bump `version` in both `plugin.json` files on every release: it is the update signal Claude Code compares.
+
+Both ecosystems read the same `skills/`, so these hold at all times; breaking one ships a broken release:
+
+- `version` is identical in `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`; both are bumped together.
+- `description` is identical in both manifests.
+- Every `SKILL.md` has at least `name` and `description` in its frontmatter — the only fields Codex requires.
+- No skill exists for one ecosystem only: every skill lives in `skills/<name>/` and works in both.
+- A `SKILL.md` hard-codes no tool-specific paths or harness-only tools; where one harness has a better tool (Claude's `Artifact`), the skill names it and says what the others do instead.
 - Before a release: `claude plugin validate .`, a local `claude plugin marketplace add <path>` + install, the same with `codex plugin marketplace add <path>`, and a manual `create-task` run in each CLI.
