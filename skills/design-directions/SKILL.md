@@ -69,9 +69,13 @@ inline diagram, do that. Never offer twice when they ignored the offer.
 
 ## 2. Pick the surface (detect, never assume)
 
-Surfaces differ between Claude apps, Claude Code, Codex and API deployments. Check which
-tools exist in this session and use the first that fits. Never hardcode artifact URLs or
-ids — they differ per account.
+Surfaces differ between agents and deployments, and new ones appear. Check which tools
+exist in this session and use the first that fits. Never hardcode artifact URLs or ids —
+they differ per account.
+
+Claude (Claude Code, the Claude apps) uses its Artifact tool, steps 1–2. Codex and other
+agents use their own equivalent of a published visual page or canvas when they have
+one, following the same layout rules; otherwise steps 3–4.
 
 1. **An Artifact tool that lists types**: list the types once. If a **Design** type
    (a canvas with artboards) is listed, create the work from it and follow the
@@ -85,8 +89,9 @@ ids — they differ per account.
 3. **An inline visual tool only**: render the directions inline, one per call with a
    sentence of framing between them; say that a canvas would let the person keep and
    edit them.
-4. **No visual tool**: a single self-contained `design-directions.html` (no external
-   dependencies beyond allowed CDNs and fonts); tell the person to open it in a browser.
+4. **No visual tool**: plain HTML, CSS and JavaScript files, self-contained (no external
+   dependencies beyond CDNs and web fonts); tell the person how to open them in a
+   browser.
 
 If the person named a tool or a format (Figma, a `.png`, a `.pptx`), use that and skip
 this ladder.
@@ -283,10 +288,9 @@ the direction and the round when the canvas holds several.
 **Who can open the link.** A published artifact is private to the person by default; the
 people who will read the task cannot open it until the person shares it. Before the link
 goes anywhere, tell them in one line that the page must be opened for access for the
-task's readers, and how; never imply a link works for others when it does not. A local
-file (`design-directions.html`) is linkable only once it lives somewhere shareable: its
-repository-relative path when the person commits it into the project, otherwise the
-person attaches it to the task from the task view.
+task's readers, and how; never imply a link works for others when it does not. Files
+made without a publishing tool are shared in whichever way is most convenient for the
+person and the task's readers, so that the readers can open them.
 
 When you were called from `create-task`, return the decision and the link to it; it
 writes the task.
