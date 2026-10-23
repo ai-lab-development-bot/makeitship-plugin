@@ -63,7 +63,8 @@ layout.
 are noisier than a local build's, and fix nothing — there is nothing to fix in. The outcome is
 the findings and, for the ones worth doing, tasks (Section 2).
 
-**Analysis changes nothing.** No project code is edited until the plan is agreed.
+**Analysis changes nothing.** No project code is edited while you measure: the baseline must be
+the page as it is.
 
 **The scripts** are in the `scripts/` folder next to this file, wherever the skill is installed.
 They need Node 18+ and `playwright-core`; when `scripts/node_modules` is missing (a first run, or
@@ -110,7 +111,8 @@ Show the person a **findings table** in the chat, in their words, sorted by impa
 pages): what keeps moving and where a visitor would meet it, on how many pages, what it costs
 on its own, whether it keeps running when nobody can see it, and the proposed fix with what the
 visitor would see differently. The engineering detail (library, file, rAF/s) goes into the plan
-file, not the chat.
+file, not the chat. The table is a report, not a gate: when no finding needs their decision,
+carry straight on into the plan and the first stage.
 
 **Options rule.** Only effective fixes; never a weak one offered for the sake of choice.
 
@@ -136,7 +138,7 @@ makeitship server connected, give the person the task texts instead.
 
 ## 3. Plan file (with the code)
 
-Once the person has seen the findings and taken the visible-change decisions, create the plan
+Once the findings are measured and any visible-change decision is taken, create the plan
 file from `references/plan-template.md` — in the project's docs folder if it has one
 (`docs/idle-cpu-plan.md`), else the root (`IDLE-CPU-PLAN.md`). It is a temporary working log:
 findings, decisions, stages, and a history of every fix with before/after numbers. If the
@@ -147,8 +149,7 @@ fix into sub-stages, usually by **page type** (or by component), each verified a
 before the next — e.g. a runtime patch enabled behind an opt-in attribute per template. One
 stage = one reviewable change. Each stage lists what must still work and where.
 
-Show the person the stages in a few lines, in their words — what changes for whom, in which
-order — and start when they say so.
+Then start the first stage; the stages are part of your next report, not a question.
 
 ## 4. Fix, one stage at a time
 
@@ -175,12 +176,13 @@ order — and start when they say so.
 ## 5. Close
 
 When the stages are done: a final pass of `audit.cjs` on every page type, the before/after
-summary table in the plan file, and a proposal for the file — recommended: fold its summary into
-the project's changelog or backlog when it has one and delete the file, otherwise keep it in the
-docs; the person confirms. A cost left on purpose (a design the person chose to keep) is named
-in that summary, with what it costs and where. If the project has agent rules (AGENTS.md,
-CLAUDE.md), propose adding the default rule — "an ambient animation never runs off screen; use
-the shared helper" — so future work keeps it.
+summary table in the plan file, and the file itself settled by you: its summary folded into the
+project's changelog or backlog and the file deleted when the project keeps one, otherwise the
+file kept in the docs. A cost left on purpose (a design the person chose to keep) is named in
+that summary, with what it costs and where. The closing report says, in a few lines, what
+changed and the before → after per page type; if the project has agent rules (AGENTS.md,
+CLAUDE.md), it ends with one line offering to add the default rule — "an ambient animation
+never runs off screen; use the shared helper" — so future work keeps it.
 
 ## Red flags
 
@@ -194,7 +196,8 @@ the shared helper" — so future work keeps it.
 | One IntersectionObserver per file | One shared helper per project. |
 | A new block with an ambient animation, without the helper | It stops off screen, hidden and under reduced motion — always, unasked. |
 | Saved CPU, broken menu | Not done. Verify behaviour on every stage. |
-| Editing code during the analysis | Analysis changes nothing until the plan is agreed. |
+| Editing code during the analysis | The baseline is the page as it is; edit only once it is measured. |
+| Waiting for a "start" when no finding needs their decision | Carry on. The person is asked only what a visitor would see differently. |
 | Fixing the live site without the code | Without the code the outcome is findings and tasks. |
 | Asking the person to run `npm install` | Run it yourself in `scripts/`. |
 | Headless Chrome for the numbers | Headed, off screen; headless lies about frames and CPU. |
