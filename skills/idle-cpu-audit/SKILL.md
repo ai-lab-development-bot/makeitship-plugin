@@ -12,7 +12,7 @@ description: >
   build or change a block with an ambient animation (landing pages, motion, visualisations):
   every such animation stops off screen, in a hidden tab and under reduced motion. Without
   the code it measures the live site and proposes tasks instead of fixing. Not for scroll
-  smoothness, load speed (LCP) or bundle size.
+  smoothness or bundle size; load speed (PageSpeed, LCP) is `page-speed-audit`.
 ---
 
 # Idle CPU audit
