@@ -73,11 +73,16 @@ Surfaces differ between agents and deployments, and new ones appear. Check which
 exist in this session and use the first that fits. Never hardcode artifact URLs or ids —
 they differ per account.
 
-Claude (Claude Code, the Claude apps) uses its Artifact tool, steps 1–2. Codex and other
-agents use their own equivalent of a published visual page or canvas when they have
-one, following the same layout rules; otherwise steps 3–4.
+Claude (Claude Code, the Claude apps) uses its Artifact tool (the `Artifact` tool,
+which publishes a page to claude.ai), steps 1–2. **When that tool is in the session, it
+is the surface**: never fall back to plain files while it is available — its design
+canvas and its shareable page are what this skill is for. Codex and other agents use
+their own equivalent of a published visual page or canvas when they have one, following
+the same layout rules; otherwise steps 3–4.
 
-1. **An Artifact tool that lists types**: list the types once. If a **Design** type
+1. **An Artifact tool that lists types** (`Artifact`, starting with its `quickstart`
+   action, intent `design` — or `slides` for a presentation): it names the types and
+   design systems the account has. If a **Design** type
    (a canvas with artboards) is listed, create the work from it and follow the
    instructions it returns. If a **Design System** type is listed and one is marked
    default (or the person names theirs), build with it — unless the product already has
@@ -322,6 +327,7 @@ writes the task.
 | Designing a screen of an existing product without looking at it | Read the code or open the product first (Section 3). |
 | "The mock-up shows it, so the task can say less" | The task is complete without it. The mock-up only illustrates. |
 | Putting an artifact link into a task without a word about access | Tell the person it must be shared first. |
+| "The `Artifact` tool is here, but a local HTML file is simpler" | The tool is the surface whenever it exists; files are the fallback for agents without one. |
 | Overwriting the previous round | A new row; they may want to go back. |
 | Offering the canvas again after they ignored it | Once is the limit. |
 | Leaving the browser window open after looking | Close it as `web-ui-exploratory-qa` Step 10 says. |
