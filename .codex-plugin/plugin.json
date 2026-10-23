@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Makeitship",
     "shortDescription": "Track work on your Makeitship board as tasks",
-    "longDescription": "Create well-formed tasks from a conversation on your Makeitship board — for you, for your agent, or for the Makeitship team — read the board by its statuses and reply on tasks, and bring engineering skills (testing, exploratory UI QA, design directions, idle CPU audit, decision review) that work in any repository — from Codex.",
+    "longDescription": "Create well-formed tasks from a conversation on your Makeitship board — for you, for your agent, or for the Makeitship team — read the board by its statuses and reply on tasks, and bring engineering skills (testing, exploratory UI QA, design directions, idle CPU audit, decision review, implementation docs) that work in any repository — from Codex.",
     "developerName": "Makeitship",
     "category": "Productivity",
     "capabilities": [

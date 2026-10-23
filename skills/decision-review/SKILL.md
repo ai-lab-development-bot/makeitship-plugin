@@ -79,7 +79,7 @@ You MUST follow these phases sequentially. Do not skip phases (with the single e
 Before mapping, check whether the project has implementation documentation indexed at `docs/INDEX.md` (also check one level deeper for monorepos, e.g. `packages/*/docs/INDEX.md`).
 
 - **No `INDEX.md` found** → silently skip this phase and proceed to Phase 1. Missing documentation must never block the review, and the review never nudges anyone to write it.
-- **`INDEX.md` found** → read it, then load the implementation docs whose `description` (or `triggers`) match the target under review: match on the noun or module the user named, expand one level via the `related` field of each loaded doc, cap at 3–5 docs total. If you would load more, ask the user which area to focus on — one question, in the product's words.
+- **`INDEX.md` found** → read it, then load the implementation docs whose `description` (or `triggers`) match the target under review: match on the noun or module the user named, expand one level via the `related` field of each loaded doc, cap at 3–5 docs total — the selection the `consult-project-docs` skill in this plugin describes. When the target spans more, start with the docs closest to it and load the rest as the review reaches them.
 
 Loaded docs are **additional context, not authority**. They are typically AI-authored and may themselves be wrong, outdated, or aspirational. Their role is to:
 
@@ -247,7 +247,7 @@ Every investigated finding is classified before it is reported. The class decide
 - an implementation that fails to honor an intent the code comments or docs already state (the contract is documented; only the mechanism is missing)
 - duplicated or redundant computation, dead code, hidden constants
 - hardening that closes an exploit without changing what any legitimate user can do
-- doc/code drift where git history and tests make the code evidently the deliberate current truth — update the doc
+- doc/code drift where git history and tests make the code evidently the deliberate current truth — update the doc (the `document-implementation` skill in this plugin)
 - in text mode: a gap with exactly one defensible answer given the codebase (a missing timeout, an undefined contract between two proposed components)
 
 **When in doubt, the class is Business.** If the fix would change anything a user can observe, or depends on an intent you could not verify, escalate.

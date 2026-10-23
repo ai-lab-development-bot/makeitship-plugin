@@ -152,7 +152,8 @@ Then start the first stage; the stages are part of your next report, not a quest
 
 1. Follow the project's branch rules.
 2. Implement the stage. Reuse the shared helper; keep fixes in the shared code that owns the
-   animation, not per page.
+   animation, not per page. Document what the stage changed — the shared helper, how each
+   animation behaves at rest — with the `document-implementation` skill in this plugin.
 3. **Verify behaviour, not just numbers** — a fix that saves CPU and breaks a menu is not done:
    - the animation still runs on screen, stops off screen, resumes on return (and in the same
      state, not restarted, unless restarting was the design);

@@ -81,8 +81,9 @@ product shows what users see, the code shows why).
 ### 2a. The code, when you are in the project (read-only)
 
 1. **Locate the area**: the screen, flow, component, server function, migration or doc the
-   request touches. Read the project's docs and agent instructions for what the area is,
-   then the code for what it actually does.
+   request touches. Read the project's docs and agent instructions for what the area is
+   (when the project has `docs/INDEX.md`, the `consult-project-docs` skill in this plugin
+   picks the docs the area needs), then the code for what it actually does.
 2. **Establish today** as the code proves it — not as the docs or the person describe it.
    Docs are hypotheses; where a doc and the code disagree, the code is today, and the
    disagreement is worth a sentence to the person.
