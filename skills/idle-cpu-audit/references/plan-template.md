@@ -2,8 +2,7 @@
 
 <!-- Created by the idle-cpu-audit skill on <date>. This file is the working log of the
      optimisation: the findings, the plan, every fix and every measurement before and after.
-     Keep it current with each fix; when the plan is closed, ask the user whether to keep it,
-     fold its summary into the project's changelog/backlog, or delete it. -->
+     Keep it current with each fix; delete it once every stage is done. -->
 
 **Scope:** whole site | page `<url>` | block `<selector>` on `<url>`
 **Branch:** `<branch>` · **Measured on:** local build `<url>` · Chrome <version>, headed,

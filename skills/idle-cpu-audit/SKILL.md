@@ -55,9 +55,7 @@ Three scopes; take it from the request:
 - **Block** — a selector, a component, or "the hero on /pricing": find the selector yourself.
 
 **With the code** (you are in the project): measure a **local build** or dev server, not
-production — CDN caching, analytics and consent banners add noise. Read the project's own rules
-(AGENTS.md, CLAUDE.md, README); they win over this skill on branches, commits, releases and file
-layout.
+production — CDN caching, analytics and consent banners add noise.
 
 **Without the code** (only the site's address): measure the live site, say once that live numbers
 are noisier than a local build's, and fix nothing — there is nothing to fix in. The outcome is
@@ -141,8 +139,7 @@ makeitship server connected, give the person the task texts instead.
 Once the findings are measured and any visible-change decision is taken, create the plan
 file from `references/plan-template.md` — in the project's docs folder if it has one
 (`docs/idle-cpu-plan.md`), else the root (`IDLE-CPU-PLAN.md`). It is a temporary working log:
-findings, decisions, stages, and a history of every fix with before/after numbers. If the
-project keeps a changelog or backlog, link the plan from there rather than copying it.
+findings, decisions, stages, and a history of every fix with before/after numbers.
 
 **Stages.** Invisible, high-impact, low-risk fixes first; slow or risky ones last. Split a large
 fix into sub-stages, usually by **page type** (or by component), each verified and released
@@ -175,14 +172,12 @@ Then start the first stage; the stages are part of your next report, not a quest
 
 ## 5. Close
 
-When the stages are done: a final pass of `audit.cjs` on every page type, the before/after
-summary table in the plan file, and the file itself settled by you: its summary folded into the
-project's changelog or backlog and the file deleted when the project keeps one, otherwise the
-file kept in the docs. A cost left on purpose (a design the person chose to keep) is named in
-that summary, with what it costs and where. The closing report says, in a few lines, what
-changed and the before → after per page type; if the project has agent rules (AGENTS.md,
-CLAUDE.md), it ends with one line offering to add the default rule — "an ambient animation
-never runs off screen; use the shared helper" — so future work keeps it.
+When the stages are done: a final pass of `audit.cjs` on every page type, then the closing
+report — in a few lines, what changed and the before → after per page type, and any cost left on
+purpose (a design the person chose to keep) with what it costs and where.
+
+Then **delete the plan file.** It is a working log, and once every stage is done it is clutter.
+Keep it only while there is a reason to: stages still open, or a fix waiting for a release.
 
 ## Red flags
 
