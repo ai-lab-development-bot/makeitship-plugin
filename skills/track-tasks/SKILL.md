@@ -25,6 +25,8 @@ Call `list_task_statuses` first, once per conversation. It answers the board's c
 
 For a task the person names, call `get_task` with its `number` and read its description, its status, its comments, and what it is linked to. Report what a reply said in its own words where it matters (a question, a decision needed), and say what the person has to do next, if anything.
 
+**A task on the Makeitship board comes with its Development Insights.** Whenever you read a task to work on it — not only to answer what it says — read its insight too (`get_task_insights`) and work the task the way `work-with-insights` says: each point placed at its stage of the work, acted on through the skill it names, and reported on before the task is called done. A task from this board is never worked without its insight.
+
 ## What a task is linked to
 
 `get_task` answers two lists besides the comments. `relations` — the other tasks this one is linked to, each with a `kind`, a `direction`, and the other task's `number`, `title` and `status`:
