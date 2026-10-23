@@ -290,7 +290,10 @@ skill for the round; its outcome is a decision like any other in this message. T
 mock-up only illustrates the task: every decision it settled is written into *Change*
 and *Done when* in words, so the task reads and works the same without it, and the link
 sits on the word that says what it shows (`the [mock-up](url)`) once the person has
-shared the page with the task's readers, as that skill says.
+shared the page with the task's readers, as that skill says. Where the session has no
+design or artifact tool (Codex, other agents), the mock-up is made as plain HTML, CSS and
+JavaScript files and shared in whichever way is most convenient for the person and the
+task's readers.
 
 Two things belong in this message besides decisions:
 
