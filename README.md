@@ -44,10 +44,15 @@ Development know-how the agent picks up on its own when the task calls for it. T
 - `document-implementation` — keeps living reference docs of how each part of the product works and why, written as part of finishing every implementation, each listed in a `docs/INDEX.md` table. In a project that already keeps docs another way, it first proposes the index once and explains what changes.
 - `consult-project-docs` — before work on something that exists, reads that table and loads only the few docs the task needs, so the agent neither works blind nor rereads everything.
 - `decision-review` — a skeptical read of a specification, a task, an implementation plan or the code itself, at whichever point of the cycle it is: it settles every technical question on its own and brings you only the decisions that change what the product does, each as a proposition in product language.
+- `security-audit` — looks for real security holes in the code (someone reading other customers' data, taking over an account, running code where they should not), for the whole project or for one task's change: isolated agents hunt, fresh ones try to disprove every lead, and only what survives is reported, in product words. It tells you what a run will cost before it starts, then fixes what was found through a fresh agent with an independent check, or hands it on as tasks. Needs the code and Node.js; never probes a live site. Based on Cloudflare's [security-audit-skill](https://github.com/cloudflare/security-audit-skill).
 
 ## Without the plugin
 
 Add the server yourself with the server URL from the Connect agent page of your Makeitship dashboard: `claude mcp add --transport http --scope user makeitship <url>`, or `codex mcp add makeitship --url <url>` then `codex mcp login makeitship`. Claude Desktop: Customize → Connectors → Add custom connector with the same URL.
+
+## Third-party material
+
+`skills/security-audit/` is based on Cloudflare's security-audit-skill under the MIT License; see `THIRD_PARTY_NOTICES.md`.
 
 ## Versioning
 
