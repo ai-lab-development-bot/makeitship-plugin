@@ -1,18 +1,18 @@
 ---
 name: page-speed-audit
 description: >
-  Find and fix what makes a web page load slowly — a low PageSpeed Insights or Lighthouse score,
-  poor Core Web Vitals (LCP, INP, CLS), a slow first screen on mobile — for a whole site, one page
-  or one element. Measures with the PageSpeed Insights API (the lab, the environment PageSpeed and
-  Googlebot see) and the Chrome UX Report API (what real visitors experienced), finds the causes —
-  render-blocking CSS and fonts, the LCP element, JavaScript, third parties, images, layout shift,
-  the server — and heavy elements (3D / WebGL / three.js scenes, Spline, canvas, video, Lottie,
-  maps, widgets) that should start only where the device can carry them, then fixes the ones a
-  visitor cannot see first, with before/after numbers. Use when asked about page speed, the
-  PageSpeed or Lighthouse score, Core Web Vitals, "the site is slow on mobile", or when a page
-  with a heavy hero element is built. Never by recognising the measuring tool. Without the code
-  it measures and proposes tasks. Not for what keeps the CPU busy after the page has loaded and
-  sits at rest — that is `idle-cpu-audit`.
+  Find and fix what makes a web page load slowly — a low PageSpeed Insights or Lighthouse
+  score, poor Core Web Vitals (LCP, INP, CLS), a slow first screen on mobile — for a whole
+  site, one page or one element. Measures with the PageSpeed Insights API (the lab) and
+  the Chrome UX Report API (real visitors), finds the causes — render-blocking CSS and
+  fonts, the LCP element, JavaScript, third parties, images, layout shift, the server —
+  and heavy elements (3D / WebGL / three.js scenes, Spline, canvas, video, Lottie, maps,
+  widgets) that should start only where the device can carry them, then fixes the ones a
+  visitor cannot see first, with before/after numbers. Use when asked about page speed,
+  the PageSpeed or Lighthouse score, Core Web Vitals, "the site is slow on mobile", or
+  when a page with a heavy hero element is built. Without the code it measures and
+  proposes tasks. Not for what keeps the CPU busy after the page has loaded — that is
+  `idle-cpu-audit`.
 ---
 
 # Page speed audit

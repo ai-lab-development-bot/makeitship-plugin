@@ -20,3 +20,12 @@ jobs:
             echo "$found"
             exit 1
           fi
+
+  # claude.ai keeps at most 1024 characters of a skill's description and drops the rest
+  # (marketplace sync warnings, 2026-10-26).
+  skill-descriptions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every skill description fits claude.ai and parses whole
+        run: python3 scripts/check-skill-descriptions.py

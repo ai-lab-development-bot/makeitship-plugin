@@ -2,18 +2,16 @@
 name: web-ui-exploratory-qa
 description: >
   Use when the user asks to visually check, QA, compare against Figma, or explore a
-  screen, component, or state of a running web app in a browser: "check this page
-  against the design", "QA the billing screen", "compare the sidebar with Figma", "run
-  UI exploratory QA", "does this screen match the design", "test it on mobile", "is the
-  layout broken at other widths". An exploratory pass, not pixel-perfect verification:
-  the agent examines each screen the way an experienced tester would — what a person
-  would notice, how it behaves, where it breaks — and catches what is obvious to a
-  human eye. A compare-and-fix loop over a web app in a real browser: the person picks
-  the mode (Figma MCP or exploratory) up front from a plain description of both, then
-  the agent captures each target from Figma (in Figma mode) and from the running app
-  through the Playwright CLI, compares, fixes the obvious on its own, and
-  escalates the rest as defect propositions that each carry a proposed fix and its
-  consequence for users. It never switches mode on its own and reports in the language
+  screen, component, or state of a running web app in a browser: "check this page against
+  the design", "QA the billing screen", "compare the sidebar with Figma", "run UI
+  exploratory QA", "does this screen match the design", "test it on mobile", "is the
+  layout broken at other widths". An exploratory pass, not pixel-perfect verification: the
+  agent examines each screen the way an experienced tester would and catches what is
+  obvious to a human eye. The person picks the mode (Figma MCP or exploratory) up front;
+  the agent captures each target from Figma (in Figma
+  mode) and from the running app through the Playwright CLI, compares, fixes the obvious
+  on its own, and escalates the rest as defect propositions, each with a proposed fix and
+  its consequence for users. It never switches mode on its own and reports in the language
   of the conversation. Project-agnostic; the Figma file is asked for each run.
 ---
 
@@ -832,7 +830,11 @@ After posting the Step 9 summary in the chat, from the run folder:
 4. Say in the chat, in one line, that the browser was closed. If a session will not
    close, say so; `pw kill-all` force-kills **every** Playwright browser process on the
    machine, other agents' and the user's own tools included, so it is run only on the
-   user's yes.
+   user's yes. It also leaves the browsers themselves running while `pw list` already shows
+   none: afterwards look for headless Chrome or Chromium processes whose command line
+   carries `playwright_chromiumdev_profile` and whose parent process id is 1, i.e. orphaned (macOS and Linux:
+   `ps -eo pid,ppid,command | grep '[p]laywright_chromiumdev_profile'`), and stop only
+   those.
 
 Do not skip this because the run was short or found nothing; do not leave it to the
 user.
