@@ -5,15 +5,14 @@ description: >
   enhancement, a bug report or a docs change. Use when the person says "create a task",
   "track this", "put this on the board", "file a bug", "report a bug", "log this", "make a
   task from this spec", says something is broken or not working, or describes work they
-  want tracked. Not a transcript of what they said: the skill decides the task's type,
-  investigates first — in the code when it is there, otherwise in the running product
-  through a browser — finds what the request actually entails, settles the open decisions
-  with the person as propositions in product language, and writes the task in the format
-  its type needs (a defect is reported differently from a feature). A decision the person
-  already took, or a document they bring, is taken as settled and linked, not reopened;
-  only its gaps and contradictions come back as questions. Creates the task through the
-  makeitship MCP server and reports back. Who does the task — the person, the agent or the Makeitship team — is a
-  separate question this skill does not decide.
+  want tracked. Not a transcript: the skill decides the task's type, investigates first —
+  in the code when it is there, otherwise in the running product through a browser — finds
+  what the request actually entails, settles the open decisions with the person as
+  propositions in product language, and writes the task in the format its type needs (a
+  defect is reported differently from a feature). A decision already taken, or a document
+  they bring, is settled and linked, not reopened; only its gaps come back as questions.
+  Creates the task through the makeitship MCP server. Who does the task is a separate
+  question this skill does not decide.
 ---
 
 # Create a task
@@ -104,7 +103,7 @@ This is the common case for a product owner: they are looking at the product, so
 is wrong or missing, and there is no repository in the session. You go and look.
 
 The browser mechanics are those of the `web-ui-exploratory-qa` skill in this plugin —
-**its "The browser: Chrome DevTools MCP, and nothing else" section for opening the
+**its "The browser: Playwright CLI, and nothing else" section for opening the
 product, its Step 7 for capturing a screen or a state properly (scroll, wait for media,
 one screen at a time), and its Step 10 for closing the browser when you are done.** Read
 those sections and follow them; do not re-derive them here. What you do **not** take

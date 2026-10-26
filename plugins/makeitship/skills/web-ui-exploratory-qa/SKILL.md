@@ -2,25 +2,23 @@
 name: web-ui-exploratory-qa
 description: >
   Use when the user asks to visually check, QA, compare against Figma, or explore a
-  screen, component, or state of a running web app in a browser: "check this page
-  against the design", "QA the billing screen", "compare the sidebar with Figma", "run
-  UI exploratory QA", "does this screen match the design", "test it on mobile", "is the
-  layout broken at other widths". An exploratory pass, not pixel-perfect verification:
-  the agent examines each screen the way an experienced tester would — what a person
-  would notice, how it behaves, where it breaks — and catches what is obvious to a
-  human eye. A compare-and-fix loop over a web app in a real browser: the person picks
-  the mode (Figma MCP or exploratory) up front from a plain description of both, then
-  the agent captures each target from Figma (in Figma mode) and from the running app
-  through the Chrome DevTools MCP, compares, fixes the obvious on its own, and
-  escalates the rest as defect propositions that each carry a proposed fix and its
-  consequence for users. It never switches mode on its own and reports in the language
+  screen, component, or state of a running web app in a browser: "check this page against
+  the design", "QA the billing screen", "compare the sidebar with Figma", "run UI
+  exploratory QA", "does this screen match the design", "test it on mobile", "is the
+  layout broken at other widths". An exploratory pass, not pixel-perfect verification: the
+  agent examines each screen the way an experienced tester would and catches what is
+  obvious to a human eye. The person picks the mode (Figma MCP or exploratory) up front;
+  the agent captures each target from Figma (in Figma
+  mode) and from the running app through the Playwright CLI, compares, fixes the obvious
+  on its own, and escalates the rest as defect propositions, each with a proposed fix and
+  its consequence for users. It never switches mode on its own and reports in the language
   of the conversation. Project-agnostic; the Figma file is asked for each run.
 ---
 
 # Web UI Exploratory QA
 
 An **autonomous compare-and-fix loop**: pick a target, capture it from **Figma** (in
-Figma mode) and from **Chrome**, compare, then fix it yourself or escalate it with a
+Figma mode) and from **the browser**, compare, then fix it yourself or escalate it with a
 proposed fix. What makes this skill different from a plain visual check is the
 **auto-fix philosophy** (Step 4): whatever the product was already supposed to do is
 fixed on the spot and proven, in whichever layer the cause lives; whatever changes what
@@ -29,8 +27,9 @@ question. Nothing is ever committed.
 
 **Not exhaustive.** Catch what is obvious to a human eye — critical, high and medium
 impact. Pixel-perfect fidelity, sub-pixel spacing, font rendering nuances, hover states
-on mobile and accessibility are out of scope unless asked for. The latest Chrome on this
-machine is the whole environment matrix.
+on mobile and accessibility are out of scope unless asked for. One Chromium-family
+browser — the machine's Chrome, or the Chromium the environment provides — is the whole
+environment matrix.
 
 **Write for a non-technical reader.** Defects describe what the user sees ("the Save
 button does nothing"), never the internal cause — that belongs only in the *Proposed
@@ -159,37 +158,148 @@ file access), then recommend one way forward with its consequence:
 The run waits for the answer. The switch happens only on the user's confirmation,
 never on the agent's own, and it goes into `targets.md` with the reason.
 
-### The browser: Chrome DevTools MCP, and nothing else
+### The browser: Playwright CLI, and nothing else
 
 **This is a hard requirement, not a preference.** Every navigation, emulation,
-snapshot, click, form fill, script evaluation and screenshot in this skill goes through
-its tools (`mcp__plugin_chrome-devtools-mcp_chrome-devtools__*`). Playwright MCP, a
-Vitest browser run, `curl`, a headless script, a screenshot the user pastes, or "I looked
+snapshot, tap, click, form fill, script evaluation and screenshot in this skill goes
+through **one real browser driven by the Playwright CLI**, run as a shell command. It
+needs nothing installed into the agent: no MCP server, no session restart, so it works
+the same in a local terminal, in a cloud session and in Codex. A Vitest browser run,
+`curl`, a Node or Python script of your own, a screenshot the user pastes, or "I looked
 at the code instead" are **not substitutes** — a run that uses any of them is not a run
 of this skill and must not be reported as one.
 
-Before the first page opens, **prove the MCP is alive**: call `list_pages` (or
-`new_page`) and get a real answer. If the tools are absent or fail:
+**The command, pinned in this one place.** Every `pw …` in this skill means
 
-1. install — `/plugin marketplace add ChromeDevTools/chrome-devtools-mcp`, then
-   `/plugin install chrome-devtools-mcp@chrome-devtools-plugins`; the same
-   `/reload-plugins` → `/exit` + `claude --continue` sequence as for Figma applies;
-2. if it still does not answer, **stop**. Tell the user in plain words what is missing
-   and what to try (a stuck Chrome, a stale plugin, a session that needs restarting).
-   Do not start the iteration, do not capture anything by another route, do not offer
-   a "lighter" run. Testing resumes only when the DevTools MCP answers.
+```bash
+npx -y @playwright/cli@0.1.22 …
+```
 
-**If the user has never heard of either tool**, point them here — these are the
-sources of truth for setup, and the agent reads them too when an install goes wrong:
+always this exact version, never `@latest`, and never piped into another command when
+it opens a browser (`pw open … | head` never returns: the browser keeps the pipe open;
+redirect to a file when the output must be trimmed). Raising the version means
+re-checking this section and Step 7 against the new release first. The CLI's own guide
+for agents ships inside the package
+(`playwright-core/lib/tools/skills/playwright-cli/SKILL.md`, path printed by
+`pw --help`); read it for any command this skill does not spell out.
+
+**Where it runs from.** Every `pw` command runs with the run folder
+(`ui-exploratory-qa/<run>/`, Step 5) as the current directory: `cd` into it in the same
+command (`cd ui-exploratory-qa/<run> && pw -s=desktop …`). The folder holds a
+`.playwright/` subfolder, and that folder is what makes the run its own workspace for
+the CLI: `pw list` and `pw close-all` there see only this run's browsers, never another
+agent's or another run's, and every relative path (`--filename=browser/<id>.png`)
+lands inside the run. A skill that borrows this section without a run folder
+(`create-task`, `design-directions`) makes the same layout in a temporary folder
+outside the repository — the session's scratch directory, or the system temp
+directory — and removes it when it closes the browser.
+
+**One session per device class**, each opened with its own config file in
+`.playwright/`:
+
+| Session | Config | `contextOptions` |
+|---|---|---|
+| `-s=desktop` | `.playwright/desktop.json` | `"viewport": { "width": 1440, "height": 900 }, "deviceScaleFactor": 1` |
+| `-s=mobile` | `.playwright/mobile.json` | `"viewport": { "width": 375, "height": 812 }, "deviceScaleFactor": 3, "isMobile": true, "hasTouch": true` |
+| `-s=tablet` | `.playwright/tablet.json` | `"viewport": { "width": 768, "height": 1024 }, "deviceScaleFactor": 2, "isMobile": true, "hasTouch": true` |
+
+```json
+{
+  "browser": {
+    "contextOptions": { "viewport": { "width": 375, "height": 812 }, "deviceScaleFactor": 3, "isMobile": true, "hasTouch": true }
+  },
+  "outputDir": ".playwright/out"
+}
+```
+
+`outputDir` is **required** in every config: without it the CLI drops its snapshots
+and console logs into a `.playwright-cli/` folder in whatever directory it was started
+from, and from there they reach a commit. Open a session with
+`pw -s=mobile open <url> --config=.playwright/mobile.json`; later commands name only the
+session.
+
+**Which browser — decided by what the machine has, never by guessing where you are.**
+Open the desktop session with the config above first:
+
+1. **It opens** → the CLI found the machine's own Google Chrome (its default). Done.
+2. **It fails because Chrome is not there** (a container, a CI-like box) → look for a
+   Chromium already provided: in the folder `$PLAYWRIGHT_BROWSERS_PATH` names, or else
+   Playwright's cache (`~/.cache/ms-playwright` on Linux,
+   `~/Library/Caches/ms-playwright` on macOS, `%LOCALAPPDATA%\ms-playwright` on
+   Windows), the executable inside the newest `chromium-*` folder
+   (`chrome-linux*/chrome`, `chrome-mac*/…/Google Chrome for Testing`,
+   `chrome-win*/chrome.exe`). Put it into every config as
+   `"browserName": "chromium", "launchOptions": { "executablePath": "<that file>" }`. A
+   build older than the one the CLI expects still works; that is the normal case in a
+   prepared container.
+3. **The process runs as root** (`id -u` prints `0`, the usual case in a container) →
+   add `"chromiumSandbox": false` to `launchOptions`: Chromium refuses to start its own
+   sandbox under root ("Chromium sandboxing failed!").
+4. **No browser at all** → `pw install-browser chromium` downloads one (a few hundred
+   megabytes). Say so to the user first, in one line, as the price of the run, and
+   install on their yes.
+
+Before the first page, **prove it is alive**: `pw -s=desktop open <url> --config=…`,
+then `pw list` shows the session `open`. If it will not open after the steps above,
+**stop**. Tell the user in plain words what is missing and what was tried. Do not start
+the iteration, do not capture anything by another route, do not offer a "lighter" run.
+The app must be served over `http(s)` (the CLI refuses `file:` pages).
+
+**Headless by default, headed when a person has to act.** The browser runs without a
+window. Open a session with `--headed` when the user has to do something in it — sign
+in (Step 2, *Login*), or watch the run because they asked to — on a machine with a
+display. A cloud session or a container has no display: headless only, and anything a
+person must do in the browser is done the way *Login* describes.
+
+**In Codex**, the default sandbox blocks the network and, on macOS, kills the browser on
+start; neither is a defect of the app. Run every `pw` command outside the sandbox (ask
+for that once, at the first `pw` command, and say why: "the check drives a real
+browser, which the sandbox does not allow"). This was confirmed failing inside the
+sandbox; a full run outside it in Codex has not been verified yet.
+
+**Working with the page:**
+
+- **Refs.** `pw snapshot` prints the page as a tree with a ref per element (`e15`);
+  after `open`, `goto` and actions the CLI writes the tree to a file in
+  `.playwright/out` and prints a link to it — read that file. Refs change when the page
+  changes: take a fresh `snapshot` (or `pw find "<text>"`) after every action that
+  changes what is on screen.
+- **Acting:** `click`, `hover`, `fill`, `type`, `press`, `select`, `check` on a ref;
+  `goto`, `reload`, `go-back`; `eval "<function>"` and `run-code "async page => { … }"`
+  for anything else; `console [error|warning]` and `requests` for Lens 4.
+- **Tapping — hard requirement on the mobile and tablet sessions.** Every action a
+  finger would do goes through a real tap, never `click`:
+
+  ```bash
+  pw -s=mobile run-code "async page => { await page.locator('aria-ref=e15').tap(); }"
+  ```
+
+  `click` sends mouse events even on an emulated phone (`pointerdown:mouse → mousedown
+  → click:mouse`); `tap()` sends what a finger does (`pointerdown:touch → touchstart →
+  touchend → click:touch`). A defect that shows only on touch — a menu that opens on
+  hover, a control listening for touch events, a double-fire — never reproduces under
+  `click`. Typing (`fill`, `type`, `press`) stays as it is. A swipe (a carousel, a
+  drawer, a swipe-to-dismiss) is a sequence of touch points sent through the browser's
+  own protocol:
+
+  ```bash
+  pw -s=mobile run-code "async page => { const cdp = await page.context().newCDPSession(page); const p = x => [{ x, y: 300 }]; await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: p(300) }); for (const x of [250, 200, 150, 100]) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: p(x) }); await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }); }"
+  ```
+
+  Long press and pinch are not covered; a control that needs one is noted as `blocked`
+  for that interaction, never reported as working.
+
+**If the user has never heard of these tools**, point them here — these are the sources
+of truth for setup, and the agent reads them too when something goes wrong:
 
 | Tool | Documentation | Needs |
 |---|---|---|
-| Chrome DevTools MCP | https://github.com/ChromeDevTools/chrome-devtools-mcp | Node.js LTS, current stable Chrome, npm |
+| Playwright CLI | https://github.com/microsoft/playwright-cli | Node.js 18+ with `npx`, network access to npm; Google Chrome or a Chromium |
 | Figma MCP | https://help.figma.com/hc/en-us/articles/32132100833559 and https://github.com/figma/mcp-server-guide | a Figma account with access to the file |
 | Claude Code plugins (how `/plugin` works) | https://code.claude.com/docs/en/plugins | — |
 | Claude Code MCP (manual setup without a plugin) | https://code.claude.com/docs/en/mcp | — |
 
-The plugin commands above are the fast path. If the plugin marketplace is unavailable,
+The Figma plugin command is the fast path. If the plugin marketplace is unavailable,
 the MCP docs page shows how to add the same server by hand with `claude mcp add`.
 
 ## Step 2 — Scope, and do we have everything?
@@ -208,7 +318,23 @@ Settle these before opening the first page, and write them at the top of `target
   get it confirmed (one named in the request counts). On **production** the loop is
   read-only: no auto-fix, no interaction that writes — say so, as the consequence of
   choosing it.
-- **Login** — a role that can see the screens under test; say which.
+- **Login** — a role that can see the screens under test; say which. Then the way in,
+  chosen by what the machine allows:
+  - **A display is there** (a local terminal): open the desktop session `--headed`, ask
+    the user to sign in in the window that opened, however the app signs in, and wait
+    for their word. Then `pw -s=desktop state-save .playwright/auth.json`; every other
+    session runs `state-load .playwright/auth.json` and `reload` after it opens.
+  - **No display** (a cloud session, a container): the agent signs in with `fill` on
+    the app's own form, using an account the user gives for this run — a test account,
+    never their personal one. A step only a person can do (a one-time code, a
+    confirmation link) is asked for at the moment the app asks for it; a sign-in no one
+    can complete from the chat (a captcha, a hardware key, a single sign-on page that
+    needs their device) means this environment cannot reach the screens — say so and
+    recommend running locally.
+  - If the app shows its sign-in screen again after `state-load`, it keeps its session
+    where a saved state does not reach; sign in in each session instead.
+  - `auth.json` is a live session: it stays in `.playwright/`, never appears in the
+    chat, and is deleted in Step 10.
 - **Out of scope** — what the design draws that the product knowingly lacks. An absence
   on that list is never a defect.
 - **Design-system sources** — where the project's tokens and styling rules live, read
@@ -273,10 +399,10 @@ rot: a value hardcoded in one component while everything around it follows the t
 a token whose dark value was guessed, a theme added late by a generated patch that
 covered the common surfaces and missed the rest. **Every target is captured in both
 themes**; the canonical theme (Step 2) gets the frame comparison, the other one gets
-this pass. Switch through the app's own control; if the app follows the system
-setting, use the DevTools MCP's colour-scheme emulation when it offers it, otherwise
-set the attribute or class the app reads (`evaluate_script`) and verify the page
-actually changed before capturing. Target ids carry the theme as part of the state
+this pass. Switch through the app's own control (tapped, on the mobile and tablet
+sessions); if the app follows the system setting, use `pw -s=<session>
+set-color-scheme dark` (or `light`), otherwise set the attribute or class the app reads
+(`eval`) and verify the page actually changed before capturing. Target ids carry the theme as part of the state
 (`billing@1440--default--dark`).
 
 Flag, in the terms a user would notice:
@@ -322,7 +448,8 @@ target, and name the family in the entry rather than filing each instance.
 
 *Does every interactive element do what it promises?*
 
-Snapshot the interactive elements, act on each, snapshot again. Flag: a control that
+Snapshot the interactive elements, act on each (a tap on the mobile and tablet
+sessions), snapshot again. Flag: a control that
 does nothing or does the wrong thing; a submit that can be sent twice; a dialog that
 does not close, or closes without restoring focus; a flow that cannot be resumed after
 cancel, close, navigate-away-and-back, or the browser's Back button; a second click on
@@ -447,17 +574,20 @@ ui-exploratory-qa/<YYYY-MM-DD>-<scope-slug>/
   defects.md                 # THE RESULT — Fixed table, then the numbered Escalated list
   figma/<target-id>.png      # design side (Figma mode)
   browser/<target-id>.png    # built side; <target-id>--after.png proves a fix
+  .playwright/               # the browser's own: the session configs, out/, auth.json while signed in
 ```
 
-Three files, no more. `targets.md` opens with the scope block from Step 2 (mode and who
+Three files, no more (`.playwright/` is the browser's working folder, not a report). `targets.md` opens with the scope block from Step 2 (mode and who
 chose it, environment, login, out-of-scope list, design-system sources, budget) and is
 followed by the ledger; a `Notes` column carries what a run log would ("clean",
 "finding → #4", "blocked: emulation failed"). `defects.md` is the one file the user
 reads.
 
-Save every screenshot with `take_screenshot`'s `filePath` **as a path relative to the
-project root** (`ui-exploratory-qa/<run>/browser/<id>.png`). The MCP refuses any path
-outside the workspace, so a scratch or temp directory fails with "Access denied".
+Save every screenshot with `pw -s=<session> screenshot --filename=browser/<id>.png`,
+run from the run folder (the path is relative to the current directory, not to
+`outputDir`); one element is `screenshot <ref> --filename=…`. The file is at CSS-pixel
+size; add `--hires` for device pixels when a small detail needs it (and mind the limits
+in `reference.md`).
 
 Target id = `<screen-or-component>@<width>--<state>`, e.g. `billing@1440--default`,
 `nav@375--drawer-open`; the other theme appends `--dark` or `--light`
@@ -508,22 +638,25 @@ flattens small text: ask for at least the node's natural width, double it for a 
 detail, re-request if `original_width` shows clamping. `curl` the PNG into
 `figma/<id>.png` and `Read` it; never judge from the thumbnail or the JSX
 `get_design_context` returns. `get_metadata` finds the sub-node behind a claim.
-**Emulate the frame's own width**, read from `original_width`.
+**Take the frame's own width** (read from `original_width`) with `resize` in the matching device session.
 
-**Chrome** — `emulate` viewport format `<width>x<height>x<dpr>[,mobile][,touch]`.
+**The browser** — one session per device class (the browser section of Step 1), opened
+at the class's frame width; every other width of the class is a `pw -s=<session> resize
+<width> <height>` inside that session, which keeps its touch and its pixel density.
 
-| Device | Frame width first | Then a quick pass at | Emulation |
+| Device | Session | Frame width first | Then a quick pass at (`resize`) |
 |---|---|---|---|
-| Desktop | 1440 | 1280 · 1536 · 1920 · 2560 | `1440x900x1` |
-| Mobile | 375 | 360 · 390 · 393 · 414 · 430 | `375x812x3,mobile,touch` |
-| Tablet | 768 | 810 · 1024 | `768x1024x2,mobile,touch` |
+| Desktop | `desktop` (DPR 1) | 1440 | 1280 · 1536 · 1920 · 2560 |
+| Mobile | `mobile` (DPR 3, mobile, touch) | 375 | 360 · 390 · 393 · 414 · 430 |
+| Tablet | `tablet` (DPR 2, mobile, touch) | 768 | 810 · 1024 |
 
-**A mobile or tablet capture without `mobile,touch` is invalid — hard requirement.**
-A narrow desktop window is not a phone: it still answers `pointer: fine` and
-`hover: hover`, so hover-only controls look fine, scrollbars steal width, the meta
-viewport is handled the desktop way, and touch-only defects never appear. Keep both
-flags at tablet widths too; never apply a phone preset at a tablet width. Before the
-first capture at each mobile or tablet width, **prove the emulation took**:
+**A mobile or tablet capture outside a session opened with `isMobile` and `hasTouch` is
+invalid — hard requirement.** A narrow desktop window is not a phone: it still answers
+`pointer: fine` and `hover: hover`, so hover-only controls look fine, scrollbars steal
+width, the meta viewport is handled the desktop way, and touch-only defects never
+appear. Never `resize` the desktop session down to a phone width, and never take a
+phone width in the tablet session or the reverse. Before the first capture at each
+mobile or tablet width, **prove the emulation took** (`pw -s=<session> eval "…"`):
 
 ```js
 () => ({
@@ -537,8 +670,11 @@ first capture at each mobile or tablet width, **prove the emulation took**:
 All three booleans must be `true` and `width` must equal the intended width. Run the
 check **on the app's page**, not on a blank tab: a page without a `<meta viewport>`
 legitimately reports 980 under mobile emulation, which is correct device behaviour,
-not a failed emulation. If the check fails on the app, re-run `emulate`; if it still
-fails, the target is `blocked`, not captured.
+not a failed emulation; likewise a `width` wider than intended that equals
+`document.documentElement.scrollWidth` means the page itself is wider than the screen
+— a Lens 1 finding (horizontal scroll), not a failed emulation. If the check fails on
+the app, close that session and open it again from its config; if it still fails, the
+target is `blocked`, not captured.
 **All of these widths are always in scope; do not ask the user to confirm them each
 run.** Figma usually draws only one desktop and one mobile frame, so only those two
 widths get a design comparison. **Every other width — the quick-pass widths, tablet,
@@ -551,8 +687,15 @@ overlap, horizontal scroll, images scaling wrong, a critical action that stops w
 - **Never trust "loaded".** Scroll down and back up, then confirm no image is
   `!complete || naturalWidth === 0` and no video has `readyState < 2`. Media that stays
   missing while taking up space is a defect; a gap you caused by capturing early is not.
-  After opening a dialog wait ~600ms or you capture the fade-in.
-- **Capture screen by screen, never one tall image.** Chrome repeats the page from the
+  After opening a dialog, and after the page's own entrance animations, wait ~600ms or
+  for the settled state (`run-code "async page => { await page.waitForTimeout(600); }"`)
+  or you capture the motion half-way.
+- **Overlays on the first screen** — a cookie or consent banner, a promo, a chat
+  bubble. The first screen is captured once with it, since it is part of what a visitor
+  sees and is judged like any other surface; then it is dismissed the way a visitor
+  would (a tap on the mobile and tablet sessions), and the dismissal is written in the
+  target's Notes. Never hide it with a script.
+- **Capture screen by screen, never one tall image.** Chromium repeats the page from the
   top past 16384 screen pixels (height × dpr), and any image is shrunk to 2000px on its
   longest side before you see it. A page-tall shot is for composition only, and only
   when `scrollHeight * devicePixelRatio < 16384`. `reference.md` has the measurements.
@@ -673,27 +816,25 @@ not a choice of trackers.
 
 ## Step 10 — Clean up the browser (required, every iteration)
 
-The Chrome DevTools MCP launches **its own Chrome window** with a dedicated profile,
-`~/.cache/chrome-devtools-mcp/chrome-profile`. Its `close_page` tool refuses to close
-the last tab, so the window survives every run and piles up on the user's desktop
-unless you close it. **The iteration is not finished until that window is gone.**
+Every session runs a browser in the background — headless with no window, or the
+window a headed session opened for a sign-in — and a headless one otherwise stays alive
+for up to an hour after its last command. **The iteration is not finished until every
+browser this run opened is gone, and its saved sign-in with it.**
 
-After posting the Step 9 summary in the chat:
+After posting the Step 9 summary in the chat, from the run folder:
 
-1. `list_pages`, then `close_page` for every page the run opened. The last page cannot
-   be closed by the tool; leave it.
-2. Quit the MCP's Chrome — and only it — by its profile directory:
-
-   ```bash
-   pkill -f "user-data-dir=$HOME/.cache/chrome-devtools-mcp/chrome-profile"
-   ```
-
-   This matches nothing but the MCP-launched browser; the user's own Chrome, which
-   runs on its default profile, is untouched. The MCP relaunches a fresh window on the
-   next tool call, so nothing is lost.
-3. Confirm: `pgrep -f chrome-devtools-mcp/chrome-profile` prints nothing.
-4. Say in the chat that the browser window was closed. If the kill was refused or the
-   process survived, say so and give the user the command to run themselves.
+1. `pw close-all` — it closes this run's sessions only (the `.playwright/` folder makes
+   the run its own workspace), never the user's own Chrome or another agent's browser.
+2. Confirm: `pw list` prints `(no browsers)`.
+3. Delete `.playwright/auth.json` if a sign-in was saved.
+4. Say in the chat, in one line, that the browser was closed. If a session will not
+   close, say so; `pw kill-all` force-kills **every** Playwright browser process on the
+   machine, other agents' and the user's own tools included, so it is run only on the
+   user's yes. It also leaves the browsers themselves running while `pw list` already shows
+   none: afterwards look for headless Chrome or Chromium processes whose command line
+   carries `playwright_chromiumdev_profile` and whose parent process id is 1, i.e. orphaned (macOS and Linux:
+   `ps -eo pid,ppid,command | grep '[p]laywright_chromiumdev_profile'`), and stop only
+   those.
 
 Do not skip this because the run was short or found nothing; do not leave it to the
 user.
@@ -746,9 +887,14 @@ source files a fix changed, nothing outside `ui-exploratory-qa/`.
 | Debugging "the Figma tools are missing right after install" as a broken plugin | It is the session: `/reload-plugins`, then `/exit` + `claude --continue`; check again |
 | A summary or report that does not say which mode was applied | Add it; the reader must know what the findings are based on |
 | Writing `defects.md` or a chat message in a language other than the conversation's | Rewrite before saving or posting |
-| Opening a page with anything but the Chrome DevTools MCP — Playwright, Vitest browser, curl, a script, a pasted screenshot | Stop. Get the DevTools MCP answering first; there is no fallback browser |
-| Proposing a "lighter" run because the DevTools MCP is down | Stop and report the blocker; the iteration waits |
-| Capturing a mobile or tablet width without `mobile,touch`, or without proving it took | Re-emulate and run the check; a narrow desktop window is not a device |
+| Opening a page with anything but the Playwright CLI — a script of your own, Vitest browser, curl, a pasted screenshot | Stop. Get `pw open` working first; there is no fallback browser |
+| Proposing a "lighter" run because the browser will not open | Stop and report the blocker; the iteration waits |
+| Running `pw` with `@latest`, another version, or from outside the run folder | The pinned command, `cd` into the run folder in the same command |
+| Opening a session with a config that has no `outputDir` | Add it; otherwise `.playwright-cli/` lands in the working tree |
+| Guessing the browser from "this looks like a cloud machine" | Try the machine's Chrome, then a provided Chromium, then root → no sandbox, then ask to install |
+| Capturing a mobile or tablet width outside the `mobile` / `tablet` session, or without proving the emulation took | Open the class's session, `resize` inside it, run the check; a narrow desktop window is not a device |
+| `click` on a mobile or tablet session | `locator('aria-ref=<ref>').tap()` through `run-code`; a click sends mouse events, so touch-only defects never show |
+| Typing the user's personal password, or showing `auth.json` in the chat | A test account for the run; the saved state stays in `.playwright/` and goes in Step 10 |
 | Filing "does not match the design" with no frame | Senior exploratory mode: judge, and say why |
 | Filing a 1280 or tablet finding against the 1440 or 375 frame | That width has no frame; judge it by good sense |
 | Capturing a target in one theme only, or filing the other theme against the canonical frame | Both themes, every target; the second theme is Lens 1's second pass, judged by the token sources and good sense |
@@ -772,7 +918,8 @@ source files a fix changed, nothing outside `ui-exploratory-qa/`.
 | Writing an entry without searching `defects.md` for it first | Search, then extend the existing entry or write a new one |
 | Creating a plan, log, report or per-page defect file | Three files only: `targets.md`, `defects.md`, the screenshots |
 | Ending an iteration without the Fixed table and the Escalated list in the chat | Step 9 is not optional |
-| Ending an iteration with the MCP's Chrome window still open | Step 10: close the pages, quit that Chrome by its profile dir, confirm |
+| Ending an iteration with a browser session still open, or a saved sign-in still on disk | Step 10: `pw close-all` from the run folder, `pw list` shows none, delete `auth.json` |
+| Reaching for `pw kill-all` on your own | It kills every Playwright browser on the machine; only on the user's yes |
 | Leaving the run folder in the working tree after every defect is fixed, filed or decided | Step 11: remove it, say so in one line |
 | Removing the run folder while an escalated entry is still open, or wiping an earlier run's folder unasked | Leave it; name the folder and the open entries |
 | Mixing fixed and escalated defects in one list or table | Fixed → the table; escalated → the numbered list |

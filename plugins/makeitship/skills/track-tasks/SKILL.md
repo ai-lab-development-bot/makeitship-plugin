@@ -1,6 +1,11 @@
 ---
 name: track-tasks
-description: Read the Makeitship board — what is open, what a task says, what it is linked to, the replies on it — and comment, move, link or attach to a task; when the person asks "what is on the board", "what is still open", "any news from Makeitship", "what did the team say", "move this to done", "this is part of #12", "attach the PR to the task", or wants to answer a reply.
+description: >
+  Read the Makeitship board — what is open, what a task says, what it is linked to, the
+  replies on it — and comment, move, link or attach to a task; when the person asks "what
+  is on the board", "what is still open", "any news from Makeitship", "what did the team
+  say", "move this to done", "this is part of #12", "attach the PR to the task", or wants
+  to answer a reply.
 ---
 
 # Track the tasks on the Makeitship board

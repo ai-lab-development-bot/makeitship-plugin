@@ -6,14 +6,13 @@ description: >
   icons, illustrations, banners, social posts and posters — or describes a UI in words
   that would be clearer seen than read ("show me what it could look like", "mock up the
   archive screen", "make an icon for…"). Steers the work onto a visual canvas (a design
-  artifact when the session has one, otherwise the best visual surface present) and
-  always puts several genuinely different directions side by side before converging —
-  different answers to the problem, not different skins — each with the bet it makes,
-  who it suits and what it gives up, and one of them recommended. Grounded in the
-  product as it is: its design system and its screens, read in the code or seen in the
-  running product. Also the visual round of `create-task` when a task proposes the
-  shape of something new; a mock-up only ever illustrates a task, it never replaces a
-  word of its text.
+  artifact, or the best visual surface present) and always puts several genuinely
+  different directions side by side before converging — different answers to the problem,
+  not different skins — each with the bet it makes, who it suits and what it gives up, and
+  one of them recommended. Grounded in the product as it is: its design system and its
+  screens, read in the code or seen in the running product. Also the visual round of
+  `create-task` when a task proposes the shape of something new; a mock-up only ever
+  illustrates a task, it never replaces a word of its text.
 ---
 
 # Design directions
@@ -112,7 +111,7 @@ live next to:
   the one being designed, the product's own design guidance if the repository has one.
 - **In the running product, when there is no code**: look at it through a browser. The
   browser mechanics are those of the `web-ui-exploratory-qa` skill in this plugin — **its
-  "The browser: Chrome DevTools MCP, and nothing else" section for opening the product,
+  "The browser: Playwright CLI, and nothing else" section for opening the product,
   its Step 7 for capturing a screen properly, and its Step 10 for closing the browser
   when you are done.** Read those sections and follow them. Its lenses, its loop, its
   artefact folder and its fix protocol are not yours: you are looking, not auditing, and

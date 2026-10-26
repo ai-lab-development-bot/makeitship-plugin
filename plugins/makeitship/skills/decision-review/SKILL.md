@@ -8,11 +8,10 @@ description: >
   "critique this design doc", "review this feature critically", "question this
   implementation", "find non-obvious things in this module", or hands over any text that
   says what will be built (a task body, a user story, requirements, an RFC, a plan) or any
-  code that already was. Also when the user wants to know why something is built in a
-  surprising way, or is pressure-testing a document before work starts. Not a linter, a
-  style checker, a bug finder, or a browser check of a running screen. It asks "why?",
-  resolves every purely technical finding itself, and brings the product owner only the
-  decisions that change what the product does — each as a proposition in product
+  code that already was; also when asking why something is built in a surprising way. Not
+  a linter, a style checker, a bug finder, or a browser check of a running screen. It asks
+  "why?", resolves every purely technical finding itself, and brings the product owner
+  only the decisions that change what the product does — each as a proposition in product
   language, never as an engineering question.
 ---
 

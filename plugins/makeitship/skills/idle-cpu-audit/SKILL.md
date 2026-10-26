@@ -2,17 +2,17 @@
 name: idle-cpu-audit
 description: >
   Find and fix what keeps a web page's CPU busy while nobody touches it — infinite CSS
-  animations, requestAnimationFrame loops, marquees and tickers, Lottie, autoplay video and
-  video embeds, canvas / WebGL / 3D scenes, smooth-scroll libraries, GSAP, Webflow IX2 — for
-  a whole site, one page or one block. Measures what each source costs on its own, proposes
-  fixes (the ones a visitor cannot see first), keeps a plan-and-history file, and rolls fixes
-  out in stages with before/after numbers. Use when asked about idle or background CPU, a
-  page that heats the laptop or drains the battery, "main thread busy", heavy or laggy
-  ambient animations, optimising background or decorative animation — and whenever you
-  build or change a block with an ambient animation (landing pages, motion, visualisations):
-  every such animation stops off screen, in a hidden tab and under reduced motion. Without
-  the code it measures the live site and proposes tasks instead of fixing. Not for scroll
-  smoothness or bundle size; load speed (PageSpeed, LCP) is `page-speed-audit`.
+  animations, requestAnimationFrame loops, marquees and tickers, Lottie, autoplay video
+  and video embeds, canvas / WebGL / 3D scenes, smooth-scroll libraries, GSAP, Webflow IX2
+  — for a whole site, one page or one block. Measures what each source costs on its own,
+  proposes fixes (the ones a visitor cannot see first) and rolls them out in stages with
+  before/after numbers. Use when asked about idle or background CPU, a page that heats the
+  laptop or drains the battery, "main thread busy", heavy or laggy ambient animations,
+  optimising background or decorative animation — and whenever you build or change a block
+  with an ambient animation (landing pages, motion, visualisations): every such animation
+  stops off screen, in a hidden tab and under reduced motion. Without the code it measures
+  the live site and proposes tasks. Not for scroll smoothness or bundle size; load speed
+  (PageSpeed, LCP) is `page-speed-audit`.
 ---
 
 # Idle CPU audit

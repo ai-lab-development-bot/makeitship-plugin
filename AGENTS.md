@@ -10,6 +10,7 @@ Both ecosystems read the same `plugins/makeitship/skills/`, so these hold at all
 - `version` is identical in `plugins/makeitship/.claude-plugin/plugin.json` and `plugins/makeitship/.codex-plugin/plugin.json`; both are bumped together.
 - `description` is identical in both manifests.
 - Every `SKILL.md` has at least `name` and `description` in its frontmatter — the only fields Codex requires.
+- A skill's `description` is at most 1024 characters, written as a folded block (`description: >`): claude.ai keeps only the first 1024 and drops the rest, and a one-line value is cut by YAML at an unquoted ` #`. CI (`repo-hygiene`, `scripts/check-skill-descriptions.py`) fails a pull request that breaks either.
 - No skill exists for one ecosystem only: every skill lives in `plugins/makeitship/skills/<name>/` and works in both.
 - A `SKILL.md` hard-codes no tool-specific paths or harness-only tools; where one harness has a better tool (Claude's `Artifact`), the skill names it and says what the others do instead.
 - No file the operating system drops into a folder is ever committed: `.DS_Store`, `Thumbs.db`, `desktop.ini`, `._*`. `.gitignore` ignores `.DS_Store`; check `git status` before every commit, and never `git add -A` or `git add .` over a folder you have not looked at. A tracked `skills/.DS_Store` broke the marketplace sync on claude.ai (2026-10-26); CI (`repo-hygiene`) fails a pull request that tracks one.
