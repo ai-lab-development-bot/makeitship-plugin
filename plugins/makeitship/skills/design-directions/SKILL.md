@@ -112,7 +112,7 @@ live next to:
   the one being designed, the product's own design guidance if the repository has one.
 - **In the running product, when there is no code**: look at it through a browser. The
   browser mechanics are those of the `web-ui-exploratory-qa` skill in this plugin — **its
-  "The browser: Chrome DevTools MCP, and nothing else" section for opening the product,
+  "The browser: Playwright CLI, and nothing else" section for opening the product,
   its Step 7 for capturing a screen properly, and its Step 10 for closing the browser
   when you are done.** Read those sections and follow them. Its lenses, its loop, its
   artefact folder and its fix protocol are not yours: you are looking, not auditing, and

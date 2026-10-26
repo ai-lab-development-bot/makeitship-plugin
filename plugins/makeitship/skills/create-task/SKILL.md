@@ -104,7 +104,7 @@ This is the common case for a product owner: they are looking at the product, so
 is wrong or missing, and there is no repository in the session. You go and look.
 
 The browser mechanics are those of the `web-ui-exploratory-qa` skill in this plugin —
-**its "The browser: Chrome DevTools MCP, and nothing else" section for opening the
+**its "The browser: Playwright CLI, and nothing else" section for opening the
 product, its Step 7 for capturing a screen or a state properly (scroll, wait for media,
 one screen at a time), and its Step 10 for closing the browser when you are done.** Read
 those sections and follow them; do not re-derive them here. What you do **not** take

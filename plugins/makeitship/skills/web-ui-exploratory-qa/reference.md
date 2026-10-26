@@ -12,7 +12,7 @@ ceiling:
 
 | | What it is | Its limit | What happens past the limit |
 |---|---|---|---|
-| **The browser's capture** | the picture Chrome paints of the page | **16384 screen pixels** tall | the picture repeats the page from the top; far past it, the browser crashes |
+| **The browser's capture** | the picture Chromium paints of the page | **16384 screen pixels** tall | the picture repeats the page from the top; far past it, the browser crashes |
 | **What you actually see** | the picture as it reaches you for inspection | **2000 pixels** on the longest side | the whole picture is shrunk to fit; fine detail disappears first |
 
 They are independent. A capture can be perfectly valid for the browser and still be
@@ -20,7 +20,7 @@ useless to you because it arrived shrunk twentyfold.
 
 ## Limit 1 — what the browser can capture
 
-Chrome paints at most 16384 pixels into a single capture. The budget is counted in
+Chromium (Chrome included) paints at most 16384 pixels into a single capture. The budget is counted in
 **screen** pixels — the page height multiplied by the pixel density being emulated — so
 emulating a phone at density 3 spends the budget three times faster than density 1.
 
