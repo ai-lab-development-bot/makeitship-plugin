@@ -53,7 +53,7 @@ Add the server yourself with the server URL from the Connect agent page of your 
 
 ## Third-party material
 
-`skills/security-audit/` is based on Cloudflare's security-audit-skill under the MIT License; see `THIRD_PARTY_NOTICES.md`.
+`plugins/makeitship/skills/security-audit/` is based on Cloudflare's security-audit-skill under the MIT License; see [`THIRD_PARTY_NOTICES.md`](plugins/makeitship/THIRD_PARTY_NOTICES.md).
 
 ## Versioning
 

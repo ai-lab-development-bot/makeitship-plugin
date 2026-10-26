@@ -5,7 +5,7 @@
   "plugins": [
     {
       "name": "makeitship",
-      "source": ".",
+      "source": "./plugins/makeitship",
       "description": "Put work on your Makeitship board as tasks and follow it, plus engineering skills that work in any repository."
     }
   ]
