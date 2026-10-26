@@ -25,7 +25,7 @@ Call `list_task_statuses` first, once per conversation. It answers the board's c
 
 For a task the person names, call `get_task` with its `number` and read its description, its status, its comments, and what it is linked to. Report what a reply said in its own words where it matters (a question, a decision needed), and say what the person has to do next, if anything.
 
-**A task on the Makeitship board comes with its Development Insights.** Whenever you read a task to work on it — not only to answer what it says — read its insight too (`get_task_insights`) and work the task the way `work-with-insights` says: each point placed at its stage of the work, acted on through the skill it names, and reported on before the task is called done. A task from this board is never worked without its insight.
+**A task on the Makeitship board comes with its Development Insights**, and `get_task` says so in its `insight` summary. Whenever you read a task to work on it — not only to answer what it says — take it through `work-on-task`: its insight read before the plan (`get_task_insights`), every point a step of the plan, done or disputed and reported, and the task moved to the status its outcome deserves. A task from this board is never worked without its insight.
 
 ## What a task is linked to
 
@@ -51,7 +51,7 @@ Link only what the person said or what you did for that task; do not infer relat
 
 ## Commenting and moving
 
-When the person answers a question or adds information, call `add_task_comment` with the task's `number` and their words as Markdown. Confirm it was posted. Move a task between statuses only when the person says to (`update_task` with the `number` and `status` = the slug of the column they name); the person and the Makeitship team move tasks otherwise. If a status slug is refused as unknown, call `list_task_statuses` again — the workspace changed it — and ask which column the person means.
+When the person answers a question or adds information, call `add_task_comment` with the task's `number` and their words as Markdown. Confirm it was posted. Move a task when the person says to (`update_task` with the `number` and `status` = the slug of the column they name), and move the tasks you work on yourself, as the work goes, the way `work-on-task` says: into work when you start, to review or done by the outcome. Do not ask before a move that is part of the work. A move answers `insight_open` when points of the task's insight still have no report: close them (`work-with-insights`). If a status slug is refused as unknown, call `list_task_statuses` again — the workspace changed it — and ask which column the person means.
 
 ## Deleting
 

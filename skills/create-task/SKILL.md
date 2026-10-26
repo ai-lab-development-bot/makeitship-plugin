@@ -487,4 +487,4 @@ they can read with `track-tasks`. Do not poll; the person asks when they want an
 | Changing code, or anything in the product, while creating the task | Never. The task is the output. |
 | Leaving the browser window open after looking | Close it as `web-ui-exploratory-qa` Step 10 says. |
 | Asking the person to pick a priority | Propose one; they overrule. |
-| Starting on the task you just created | Creating is the output here. If you are then asked to do it, read its insight first (`work-with-insights`). |
+| Starting on the task you just created | Creating is the output here. If you are then asked to do it, take it through `work-on-task`, its insight first. |
