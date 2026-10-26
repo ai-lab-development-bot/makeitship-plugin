@@ -1,0 +1,22 @@
+name: repo-hygiene
+
+# A file the operating system drops into a folder (.DS_Store, Thumbs.db, ._*) must never be
+# tracked: a marketplace sync on claude.ai failed while skills/.DS_Store was committed (2026-10-26).
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  no-os-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: No OS metadata files are tracked
+        run: |
+          found=$(git ls-files | grep -E '(^|/)(\.DS_Store|Thumbs\.db|desktop\.ini|\._[^/]*)$' || true)
+          if [ -n "$found" ]; then
+            echo "::error::OS metadata files are tracked; remove them with git rm --cached:"
+            echo "$found"
+            exit 1
+          fi
