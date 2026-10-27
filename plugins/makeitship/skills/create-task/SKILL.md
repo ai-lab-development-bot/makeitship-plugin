@@ -283,10 +283,13 @@ When the new thing is large — a whole area, several screens — agree the top 
 > the end of the column it came from. This follows how the list views already work.
 > What to cross out or add?
 
-**When the shape is easier seen than read** — a new screen, a layout, a flow, an asset —
-offer once, in one line, to show it: the `design-directions` skill in this plugin puts
-a few different takes side by side and returns the one the person chose. Follow that
-skill for the round; its outcome is a decision like any other in this message. The
+**When the task changes anything a person will see** — a new or changed page, screen,
+element, state, layout, text, flow, animation or asset — the visual round is a required
+step of this one, not an offer: the `design-directions` skill in this plugin puts a few
+different takes side by side and returns the one the person chose. Follow that skill
+for the round, including when it may be skipped (a finished design to build as drawn,
+or the person saying so); its outcome is a decision like any other in this message, and
+a skip is written into the task with the person's words. The
 mock-up only illustrates the task: every decision it settled is written into *Change*
 and *Done when* in words, so the task reads and works the same without it, and the link
 sits on the word that says what it shows (`the [mock-up](url)`) once the person has
@@ -476,6 +479,7 @@ they can read with `track-tasks`. Do not poll; the person asks when they want an
 | "I could not find anything that depends on it, so nothing does" | Could not find is not is not there. Say what you could not confirm; it is a decision. |
 | A request that deletes or overwrites data, written up without saying so back to them | Say it back at its true size; a destructive change never passes on silence. |
 | A feature task whose questions start from a blank page ("where should it go? how should it look?") | Propose the shape from what the product has; they cross out and add. |
+| A visible change written up with its shape in words only | Run the visual round first (`design-directions`); only the person skips it. |
 | "The mock-up shows it, so the task can say less" | The task is complete without it; the mock-up only illustrates. |
 | Proposing an alternative to a decision the person's document already states | Settled is settled. Flag it only where it contradicts today or itself. |
 | Retelling a spec in the task, or pasting it | Say what the reader needs, link or path the document for the rest. |

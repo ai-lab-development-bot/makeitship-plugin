@@ -56,6 +56,8 @@ The plan holds:
 
 A point that has no place in this task is still a step: the step is to dispute it, with the reason against its intent.
 
+**A change a person will see gets a design round before the build, insight or not.** When the task adds or changes anything visible in the interface (a page, screen, element, state, layout, text or animation), the plan's first building step is a round of `design-directions` on a canvas, and nothing visible is built until the person has picked a direction. That skill says when the round may be skipped: a finished design to build as drawn, or the person saying so. The decision is never yours: reusing existing blocks, a shape agreed in words or a change that is cheap to redo are not reasons. Waiting for that choice is not a ceremonial gate: which look ships is theirs. An insight point that asks for the round is this step, reported when it ends.
+
 ## 3. Build
 
 Work through the plan in its order.
@@ -104,3 +106,5 @@ Then tell the person, in a few lines: what was done, where to see it (the link),
 | "`update_task` mentioned open points, but the task has moved" | Close those points; the reminder means the work is not finished. |
 | "The board has no review column; I'll pick something" | Ask once which column to use, with your recommendation. |
 | "Shall I show you the plan before I start?" | No gate. Start; bring only the decisions that change what users see or pay. |
+| "The page is built from existing blocks; I'll skip the canvas" | A visible change gets a design round before the build. Only the person skips it. |
+| "I'll build it and they can react to the result" | They react on the canvas, before the build, in minutes rather than after a whole cycle. |

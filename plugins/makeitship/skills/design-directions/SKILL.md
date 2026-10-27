@@ -10,9 +10,9 @@ description: >
   different directions side by side before converging — different answers to the problem,
   not different skins — each with the bet it makes, who it suits and what it gives up, and
   one of them recommended. Grounded in the product as it is: its design system and its
-  screens, read in the code or seen in the running product. Also the visual round of
-  `create-task` when a task proposes the shape of something new; a mock-up only ever
-  illustrates a task, it never replaces a word of its text.
+  screens, read in the code or seen in the running product. Also a required step before
+  building any visible change in a task (`create-task`, `work-on-task`) unless the person
+  declines; a mock-up only illustrates a task, never replacing its text.
 ---
 
 # Design directions
@@ -46,6 +46,31 @@ have to speak the vocabulary of the craft.
 
 ## 1. When to use it
 
+### Required: any visible change in work you are doing
+
+When you create, plan or carry out a task, and the result is something a person will see
+in the interface — a new or changed page, screen, dialog, element, block, state, layout,
+text or animation — **the round is a required step before any code is written**, not an
+offer. The person sees and picks the look on a canvas first, so their feedback lands in
+minutes instead of after a whole build; then the chosen direction is built. Size the
+round to the change: a few takes on one element for a small change, whole screens for a
+new page.
+
+Only two things skip it:
+
+- **A finished design to build as drawn** (a Figma frame, screenshots, a chosen
+  direction from an earlier round): the person has already seen the look.
+- **The person said so**, in so many words, for this change ("no canvas, just build
+  it"). An ignored offer or silence is not a no: ask once more, plainly, and wait.
+
+Never decide it for them. "It is built from blocks the product already has", "we agreed
+the shape in words", "it is cheap to change later" and "it is a small change" are not
+reasons to skip: what ships is a look the person has not seen, and which look ships is
+their decision. Record a skip in the task or the report with their words.
+
+The rest of this section, the offers and "never offer twice", is for ordinary
+conversation, where nobody has asked for anything to be built.
+
 **Use directly** when the person asks to design, mock up, wireframe, redesign, "show what
 it could look like", or make a visual asset (screen, flow, landing page, dashboard,
 component, poster, ad, social post, app icon, illustration, banner, invite).
@@ -63,8 +88,9 @@ component, poster, ad, social post, app icon, illustration, banner, invite).
 > Want me to put three quite different takes on this screen side by side, so you can
 > compare them before we decide?
 
-Do not hijack: if the person only wants code, an explanation, a small tweak or a quick
-inline diagram, do that. Never offer twice when they ignored the offer.
+Do not hijack: if the person only wants an explanation or a quick inline diagram, do
+that. Never offer twice when they ignored the offer. Neither applies to a visible change
+you are about to build: that round is required (above).
 
 ## 2. Pick the surface (detect, never assume)
 
@@ -328,5 +354,7 @@ writes the task.
 | Putting an artifact link into a task without a word about access | Tell the person it must be shared first. |
 | "The `Artifact` tool is here, but a local HTML file is simpler" | The tool is the surface whenever it exists; files are the fallback for agents without one. |
 | Overwriting the previous round | A new row; they may want to go back. |
-| Offering the canvas again after they ignored it | Once is the limit. |
+| Offering the canvas again after they ignored it | Once is the limit in conversation; before building a visible change, ask again and wait. |
+| "Built from existing blocks / agreed in words / cheap to change — no round needed" | Not yours to waive. The round is required before building; only the person skips it. |
+| "Too small a change for a canvas" | Make the round small (a few takes on that element), not absent. |
 | Leaving the browser window open after looking | Close it as `web-ui-exploratory-qa` Step 10 says. |
