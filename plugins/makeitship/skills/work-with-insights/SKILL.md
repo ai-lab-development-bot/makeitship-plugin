@@ -29,6 +29,8 @@ The team keeps a catalog of things worth taking into account when working on a t
 
 **Every point is part of the work.** The insight says what this task asks beyond its description, and each point is to be done, as surely as the description is. Take it critically all the same: the team wrote the intent so that you can judge whether the point serves this task as it actually is. When it does, do it. When it does not, **dispute it**: report it `not_applicable` with the reason, argued against its intent. Those are the only two outcomes; a point left without a report is a point skipped, and skipping is not one of the options. `required` means the model is quite sure the point applies; `suggested` means it may, so the first question is whether it does, and a dispute is more often right there. Both get a report. You are the only one who closes points — people read them.
 
+**A point that settles what the person will see is theirs to decline, not yours.** A point asking for a design round, a mock-up, or a choice between looks before building (`makeitship:design-directions`) is never disputed on your own judgement when the task changes anything visible: "it is built from existing blocks", "we agreed the shape in words" or "it is cheap to change later" are not reasons, because which look ships is the person's decision. Do it; or, when the person says to skip it, report it `not_applicable` with their words ("the person declined: …"). A finished design to build as drawn is the one dispute you may argue yourself, naming the design.
+
 ## When to read
 
 - **On taking a task.** Call `get_task_insights` right after `get_task`, before planning; `get_task` itself carries an `insight` summary that says how many points the task has and how many have no report yet. The task's description and its insight are read together: one says what to achieve, the other what else the work must include. Taking a task through from the plan to its status is `work-on-task`.
@@ -80,6 +82,7 @@ A report on a point the current insight does not have (the insight was regenerat
 | "I did the work; the reports can wait" | Report each point when its work ends; a point without a report reads as untouched. |
 | "Done." as a summary | A summary says what was done so that a person can check it. |
 | "Not applicable — not relevant" | Give the reason against the intent, or do the point. |
+| "The canvas point is cheap to skip here; I'll dispute it" | A point about what the person sees is theirs to decline. Do the round, or report their words. |
 | "The description changed, but my reports stand" | Read the new insight; judge each previous report against the change. |
 | "The insight is generating; I'll plan without it" | Wait a few seconds and read again. |
 | "A point names a skill I would not have chosen" | The point is the reason the team raised; use the skill, or say in the report why not. |
