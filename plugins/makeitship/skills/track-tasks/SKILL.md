@@ -24,7 +24,7 @@ Call `list_task_statuses` first, once per conversation. It answers the board's c
 
 ## What is open
 
-`list_tasks` returns one status at a time, in the board's manual order unless you ask for another (`order`: `position`, `created_desc`, `created_asc`, `priority`). "What is open" is every status that is not final: call `list_tasks` once per non-final status, in board order. Finished work is the final statuses; list those only when the person asks. If the person names a status, list that one only. Summarise as one line per task — `#12 Title`, status name, created date. Do not paste descriptions.
+`list_tasks` returns one status at a time, in the board's manual order unless you ask for another (`order`: `position`, `created_desc`, `created_asc`, `priority`). "What is open" is every status that is not final: call `list_tasks` once per non-final status, in board order. Finished work is the final statuses; list those only when the person asks. If the person names a status, list that one only. Summarise as one line per task — `#12 Title`, status name, created date, and "with a Makeitship expert" when its `assignee` is `expert`. "What did I hand to the experts" is `list_tasks` with `assignee: "expert"`, once per status. Do not paste descriptions.
 
 ## What a task says
 
@@ -56,7 +56,7 @@ Link only what the person said or what you did for that task; do not infer relat
 
 ## Commenting and moving
 
-When the person answers a question or adds information, call `add_task_comment` with the task's `number` and their words as Markdown. Confirm it was posted. Move a task when the person says to (`update_task` with the `number` and `status` = the slug of the column they name), and move the tasks you work on yourself, as the work goes, the way `work-on-task` says: into work when you start, to review or done by the outcome. Do not ask before a move that is part of the work. A move answers `insight_open` when points of the task's insight still have no report: close them (`work-with-insights`). If a status slug is refused as unknown, call `list_task_statuses` again — the workspace changed it — and ask which column the person means.
+When the person answers a question or adds information, call `add_task_comment` with the task's `number` and their words as Markdown. Confirm it was posted. Hand a task to the Makeitship team when the person says to (`update_task` with `assignee: "expert"`), and back to the agent the same way with `"ai"`; confirm it in one line. Move a task when the person says to (`update_task` with the `number` and `status` = the slug of the column they name), and move the tasks you work on yourself, as the work goes, the way `work-on-task` says: into work when you start, to review or done by the outcome. Do not ask before a move that is part of the work. A move answers `insight_open` when points of the task's insight still have no report: close them (`work-with-insights`). If a status slug is refused as unknown, call `list_task_statuses` again — the workspace changed it — and ask which column the person means.
 
 ## Deleting
 

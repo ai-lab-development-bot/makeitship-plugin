@@ -424,6 +424,9 @@ comment are removed with it.
 
 Call `create_task` (`mcp__plugin_makeitship_makeitship__create_task`) with:
 
+- `assignee: "expert"` only when the person asked to hand the task to the Makeitship team
+  (their team of experts does it instead of the agent); otherwise leave it out — a task
+  starts with the workspace's AI agent.
 - `title`, `description_md`, `priority` (`low` | `medium` | `high`), and `status` only when
   the person named a column — then call `list_task_statuses`
   (`mcp__plugin_makeitship_makeitship__list_task_statuses`) and pass that column's `slug`;

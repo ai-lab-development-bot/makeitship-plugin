@@ -30,6 +30,7 @@ The person is most likely the product owner, not an engineer. They asked for the
 ## 1. Take the task
 
 1. `get_task` with the task's number. Read the description, the comments, the relations and the `insight` summary it carries: how many points, how many have no report yet, whether the insight is stale.
+   **A task whose `assignee` is `expert` is the Makeitship team's**: the person handed it to an expert. Do not start it — no plan, no code, no move. Say so in one line ("#12 Title is with a Makeitship expert") and stop. You may still read it and comment on it when the person asks. If the person tells you to do it yourself after all, first take it back with `update_task` and `assignee: "ai"`, say that you did, then carry on from step 2.
 2. `get_task_insights`, always, before you plan. On `status: "generating"`, wait a few seconds and read again; do not plan around an insight you have not seen. On `"unavailable"`, say so in one line and work on the task alone. How to read a point, judge it, and report on it is `work-with-insights`; follow it.
 3. A task blocked by another open task, or with sub-tasks still open: say it in one line ("blocked by #9 Title, still open") and carry on unless the block makes the work impossible. A relation never stops you.
 4. Move the task into work: `update_task` with the slug of the in-progress column (below). A task already there stays.
