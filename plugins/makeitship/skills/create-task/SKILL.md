@@ -290,8 +290,9 @@ different takes side by side and returns the one the person chose. Follow that s
 for the round, including when it may be skipped (a finished design to build as drawn,
 or the person saying so); its outcome is a decision like any other in this message, and
 a skip is written into the task with the person's words. The
-mock-up only illustrates the task: every decision it settled is written into *Change*
-and *Done when* in words, so the task reads and works the same without it, and the link
+mock-up only illustrates the task: every decision it settled — the chosen direction, its
+settled values (density, colour amount and the like), and whether it moves and how — is
+written into *Change* and *Done when* in words, so the task reads and works the same without it, and the link
 sits on the word that says what it shows (`the [mock-up](url)`) once the person has
 shared the page with the task's readers, as that skill says.
 
