@@ -165,7 +165,10 @@ mixes, or asks for others (§8).
 
 **Round 2 — the chosen direction, finished.** The remaining screens of a flow, every state that
 matters (empty, loading, error, success), the illustrations (`references/illustration.md`), the
-knob values the person settled. Skipped when nothing is left to add.
+knob values the person settled. When the value is in how it feels to use — onboarding, gestures,
+a flow of several steps, a game or a playful product — round 2 is a **clickable prototype** of
+the chosen direction: working buttons, state changes, links between its screens, simple
+feedback; not another set of static states. Skipped when nothing is left to add.
 
 **The motion question.** When round 2 is done, ask whether to add motion — always, with a
 recommendation (`references/motion.md` §1). On a yes, the motion round designs it on the chosen
