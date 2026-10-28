@@ -56,11 +56,12 @@ links to), then:
 
 ```
 pw eval "$(cat <this skill's folder>/scripts/video-strip.js)"
-pw resize 1440 200
+pw resize 1440 <stripHeight from the result>
 pw screenshot
 ```
 
-The page becomes one strip of six evenly spaced frames — no video tools needed.
+The page becomes one strip of six evenly spaced frames — no video tools needed. A result with
+`error` means the browser cannot play that file: record it and move on.
 
 ## Judging what you found
 

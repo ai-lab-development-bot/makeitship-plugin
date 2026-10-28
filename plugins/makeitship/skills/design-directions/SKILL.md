@@ -59,8 +59,10 @@ after a whole build; then the chosen direction is built.
 
 Only two things skip it:
 
-- **A finished design to build as drawn** (a Figma frame, screenshots, a chosen direction from
-  an earlier round): the person has already seen the look.
+- **A finished design to build as drawn** (a Figma frame, screenshots, a direction from an
+  earlier round that passed its gate — §4): the person has already seen the look. A direction
+  that was only picked, with round 2 or the motion question still owed, is not finished: run
+  what is owed.
 - **The person said so**, in so many words, for this change ("no canvas, just build it"). An
   ignored offer or silence is not a no: ask once more, plainly, and wait.
 
@@ -113,8 +115,8 @@ same layout rules; otherwise steps 3–4.
 4. **No visual tool**: plain HTML, CSS and JavaScript files, self-contained (no external
    dependencies beyond CDNs and web fonts); tell the person how to open them in a browser.
 
-Whatever the surface, **write each artboard as a local file first**: that is what you review
-(§7) before anything is published. If the person named a tool or a format (Figma, a `.png`, a
+Whatever the surface, **write each artboard as a local file first**, in a temporary run folder
+(never the person's repository): that is what you review (§7) before anything is published. If the person named a tool or a format (Figma, a `.png`, a
 `.pptx`), use that and skip this ladder.
 
 ## 3. The product first, then the brief
@@ -131,6 +133,9 @@ nobody can ship. Before the first artboard, find out what the new thing must liv
   screen properly, and its Step 10 for closing the browser when you are done.** Read those
   sections and follow them. Its lenses, its loop, its artefact folder and its fix protocol are
   not yours: you are looking, not auditing, and you change nothing.
+- **Neither the code nor a browser**: read the product's pages as text with a page fetch, ask the
+  person for two or three screenshots, and say in one line what you could not see. The round
+  goes on.
 - **A new product, or a person with no product yet**: nothing to inherit.
 
 Every round starts from the product as it is: nothing about it is stored between rounds, and
@@ -167,8 +172,9 @@ recommendation (`references/motion.md` §1). On a yes, the motion round designs 
 direction, with reference research when a case needs it (`references/references-research.md`).
 Only the person can decline.
 
-**The gate.** Nothing visible is built until the direction is chosen, round 2 is done and the
-motion question is answered.
+**The gate.** Nothing visible is built until the direction is chosen, round 2 is done (or there
+was nothing left for it) and the motion question is answered — for a small change, only when
+the element appears, disappears or changes; one that does not move has no motion question.
 
 **A small change** — one element, one state — gets a reduced round: two or three takes on that
 element only, inside the identity lock, reviewed like any round; round 2 only if something is
@@ -292,8 +298,9 @@ tell them in one line that the page must be opened for access for the task's rea
 never imply a link works for others when it does not. Files made without a publishing tool are
 shared in whichever way is most convenient for the person and the task's readers.
 
-When you were called from `create-task`, return the decision and the link to it; it writes the
-task.
+When you were called from `create-task`, take the chosen direction through its gate first —
+round 2 and the motion question (§4) — then return the decision and the link to it; it writes
+the task.
 
 ## Red flags
 
@@ -312,7 +319,7 @@ task.
 | A mix that lands between the two directions | Averaging. One stays dominant; the other lends one discipline. |
 | Invented clients, logos, numbers or testimonials | Never. Marked examples and placeholders only. |
 | A badly drawn person, object or scene "for warmth" | Make it well, choose another way, or leave an honest slot. |
-| Skipping the motion question because "nothing much moves" | Ask, with your recommendation. Only the person declines. |
+| Skipping the motion question because "nothing much moves" | If anything appears, disappears or changes, ask, with your recommendation. Only the person declines. |
 | "The product has a design system, but a fresh look is more interesting" | Its language binds. A new look only when they asked for one. |
 | "Built from existing blocks / agreed in words / cheap to change — no round needed" | Not yours to waive. A small change gets a small round. |
 | Card that says "information architecture" or "primary axis" to the person | Your notes, not their words. Say what a user would notice. |

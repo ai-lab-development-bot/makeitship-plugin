@@ -7,9 +7,14 @@ the review itself — only one line about it.
 ## 1. Capture
 
 - **Screenshot your local copy**, not the published page. Write every artboard to a local file
-  before you publish it, and capture that file with the browser (the Playwright CLI mechanics of
-  `web-ui-exploratory-qa`): a published canvas is private to the person, and a headless browser
-  cannot open it without their login.
+  in a temporary run folder (never the person's repository) before you publish it, and capture
+  that file with the browser (the Playwright CLI mechanics of `web-ui-exploratory-qa`): a
+  published canvas is private to the person, and a headless browser cannot open it without
+  their login.
+- **Opening a local file.** The CLI refuses `file:` pages by default. Give the run's config file
+  the top-level setting `"allowUnrestrictedFileAccess": true` and open the artboard as
+  `file:///<absolute path>` — the config only reaches files you wrote; the person's product is
+  still opened over `http(s)`.
 - **One screenshot per artboard**, at its real size; a phone-width capture for any page meant to
   work on a phone.
 - **A capture is evidence only when it is valid**: entrance motion finished or disabled (an
@@ -18,7 +23,15 @@ the review itself — only one line about it.
 - **In the motion round**, add a three-frame filmstrip per moving element (`motion.md` §6) and
   the motion spec table.
 
-## 2. The critic
+## 2. The mechanical pass, kept apart
+
+Before the critic sees anything, run the measurable half of the craft floor yourself on the
+captures and the computed styles: contrast ratios, body size and measure, spacing above and below
+headings, overflow at phone width, missing states. Write the misses down and fix them. Do **not**
+hand this list to the critic: numbers anchor judgement, and the critic's job is the half that
+needs eyes. Merge the two lists only when you fix (§4).
+
+## 2b. The critic
 
 **With a subagent tool**, the critic is a fresh subagent that has not seen this conversation —
 a reviewer who inherits your conversation inherits your framing and your optimism. Give it only:
@@ -28,8 +41,9 @@ a reviewer who inherits your conversation inherits your framing and your optimis
 - the identity lock (an existing product) or the rut you named (`directions.md`),
 - each direction's one-line bet,
 - the motion spec, in the motion round,
-- the paths of `anti-slop.md`, `craft-floor.md`, `directions.md` and, in the motion round,
-  `motion.md`, with this file's §3–§4 as its instructions.
+- the **absolute** paths of `anti-slop.md`, `craft-floor.md`, `directions.md` and, in the motion
+  round, `motion.md`, with this file's §3–§4 as its instructions — a fresh subagent has no skill
+  folder of its own.
 
 Tell it to **describe what each screenshot shows in its own words first**, before it reads the
 bets and the brief: a review anchored on the builder's intent sees what was meant, not what was
@@ -53,8 +67,9 @@ round is never blocked by the environment.
    category fit unchanged? What would someone describe an hour later — an idea, or a mood?
 4. **The rut and the defaults.** Is it the category's default page, its predictable opposite,
    one of the AI clusters, or full of `anti-slop.md` entries no brief earned?
-5. **The craft floor** (`craft-floor.md`): contrast, depth, spacing, type, real content, states,
-   the browser surfaces, phone width; and any picture meets the bar of `illustration.md`.
+5. **The craft floor, by eye** (`craft-floor.md`): what the mechanical pass (§2) cannot measure —
+   depth, rhythm, hierarchy, real content, the browser surfaces — and any picture meets the bar
+   of `illustration.md`.
 6. **Real divergence.** Do the directions differ on different primary axes and come from
    different families, or are they one idea in several colours (`directions.md` §4)? Under an
    identity lock, did any drift off it?

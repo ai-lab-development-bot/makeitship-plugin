@@ -5,8 +5,9 @@ designed after the static round, on the chosen direction, and only when the pers
 
 ## 1. Ask first
 
-When the static round is chosen, ask whether to add motion — always with a recommendation, in
-product words:
+When round 2 is done — or, for a small change, in the same message as its reduced round — ask
+whether to add motion, always with a recommendation, in product words. (A small change that
+neither appears, disappears nor changes has no motion question.)
 
 - something on the screen appears, disappears, changes state or responds to the person: *"The
   card turns into a receipt after Confirm. I recommend a motion round: it is where the change
