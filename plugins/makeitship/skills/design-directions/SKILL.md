@@ -172,8 +172,9 @@ motion question is answered.
 
 **A small change** — one element, one state — gets a reduced round: two or three takes on that
 element only, inside the identity lock, reviewed like any round; round 2 only if something is
-left; the motion question only when the element appears, disappears or changes; no reference
-research.
+left; no reference research. When the element appears, disappears or changes state, the motion
+question rides in the **same message as the round**, with its recommendation — a reduced round
+usually has no round 2 to wait for, so asking "later" means never asking.
 
 ## 5. Diverge
 
@@ -305,6 +306,8 @@ task.
 | "I'll just show them and ask which they like" | Recommend one, with its reason; they confirm or overrule. |
 | Showing a round you have not looked at rendered | Review first (§7). Every round. |
 | "The critic's points are small, I'll mention them instead" | Fix them, then show. The person chooses; they do not proofread. |
+| A reply that presents the round without the review line | The person cannot tell a reviewed round from an unreviewed one. One line, every round (§7). |
+| A small change that changes state, shown without the motion question | Ask it in the same message as the round (§4). |
 | "Show me others" answered with variants of the same set | The whole set missed. Other families. |
 | A mix that lands between the two directions | Averaging. One stays dominant; the other lends one discipline. |
 | Invented clients, logos, numbers or testimonials | Never. Marked examples and placeholders only. |
