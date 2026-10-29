@@ -21,7 +21,8 @@ direction's idea.
 - **Real content.** The product's real labels, data and copy, at their real lengths, including
   the longest one. No lorem ipsum, no "Feature one".
 - **States.** The states that matter for this screen: default, hover and focus on the controls
-  shown, and the empty, loading, error and success states the brief touches.
+  shown, and the empty, loading, error and success states the brief touches. In an existing
+  product, hover, focus and press are the product's own (`directions.md` §2), never invented.
 - **The browser surfaces.** The parts nobody draws ship with browser defaults unless you theme
   them: text selection, the caret, focus rings, scrollbars, link underline offset, tabular
   numerals in numbers that line up. Theme them from the palette; it is the cheapest sign a page

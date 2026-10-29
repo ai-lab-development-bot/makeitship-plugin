@@ -28,6 +28,14 @@ This **identity lock** binds every direction: they read as the same brand side b
 it, directions vary their expression (§4). A new token is allowed only as a flagged extension
 (name, value, why — on the card), and a token keeps its role (`craft-floor.md`, Token roles).
 
+**The lock includes how the product moves and answers.** Read it, never assume it: on the live
+product run the skill's `scripts/motion-grammar.js` (as `references-research.md` describes,
+here on the product itself), and in the code read its motion variables and the components'
+hover, focus and press styles. Write down, in real values, how its buttons, links, tabs and
+switches answer hover, focus and press (a colour change, a text roll, an underline wipe), its
+curves and durations, and how its sections enter. Every direction's controls answer the same
+way; their hover and focus states are the product's, never invented.
+
 A new identity — different palette, different type — is a **departure**, and happens only when
 the person asked for one in so many words ("a completely new look", "redesign from scratch").
 Unsure means no departure: three on-brand directions that feel close can be pushed; three

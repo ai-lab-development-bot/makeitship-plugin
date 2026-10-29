@@ -53,7 +53,8 @@ a reviewer who inherits your conversation inherits your framing and your optimis
 - the brief in two or three lines, and the mode (`modes.md`),
 - the identity lock (an existing product) or the rut you named (`directions.md`),
 - each direction's one-line bet,
-- the motion spec, in the motion round,
+- the motion spec and, for an existing product, its own motion as the identity lock records it,
+  in the motion round,
 - the **absolute** paths of `anti-slop.md`, `craft-floor.md`, `directions.md` and, in the motion
   round, `motion.md`, with this file's §3–§4 as its instructions — a fresh subagent has no skill
   folder of its own.
@@ -87,7 +88,9 @@ round is never blocked by the environment.
    different families, or are they one idea in several colours (`directions.md` §4)? Under an
    identity lock, did any drift off it?
 7. **Motion, in the motion round.** Does the spec match the filmstrips? Does every moving
-   element pass the gate, and the timing fit the mode (`motion.md`)?
+   element pass the gate, and the timing fit the mode (`motion.md`)? In an existing product: does
+   every element the product already has keep the product's motion, and is any departure named
+   with its reason?
 
 ## 4. The verdict
 

@@ -19,7 +19,16 @@ Only the person can decline. You never skip the question on your own.
 
 ## 2. Grammar first, then the elements
 
-Work top-down, then bottom-up:
+**The product's motion comes first.** An existing product usually has its own: the motion part
+of the identity lock (`directions.md` §2), read from the live product and the code. Everything
+the product already has — buttons, links, tabs, switches, menus, section entrances — keeps the
+product's motion, unchanged, even where the gate or the table below would choose otherwise; the
+anti-slop motion entries do not override it. New motion is only for what is new in this
+design, and is built from the product's own curves and durations. The table and the easings of
+§4 apply only where the product has no motion of its own. Name any departure from the product's
+motion in the spec, with its reason, for the person to accept.
+
+Then work top-down, then bottom-up:
 
 1. **The grammar.** One or two principles for the whole composition, derived from the product's
    character and the direction's world — *"things settle like paper on a desk: quick to arrive,
