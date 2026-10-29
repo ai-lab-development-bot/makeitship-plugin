@@ -7,9 +7,9 @@ description: >
   seen than read ("show me what it could look like", "mock up the archive screen", "how
   should this animate?"). Puts several genuinely different directions on a visual canvas,
   each grounded in the product as it is and derived from its audience's world, never the
-  category's default; reviews its own work against a quality bar before showing it; one
-  direction recommended, then the chosen one refined, its states, illustrations and — when
-  the person says yes — its motion. Also a required step before building any visible change
+  category's default, each shown whole with the states and imagery it depends on; reviews its
+  own work against a quality bar before showing it; one direction recommended, then the chosen
+  one finished and — when the person says yes — its motion. Also a required step before building any visible change
   in a task (`create-task`, `work-on-task`) unless the person declines; a mock-up only
   illustrates a task, never replacing its text.
 ---
@@ -61,8 +61,8 @@ Only two things skip it:
 
 - **A finished design to build as drawn** (a Figma frame, screenshots, a direction from an
   earlier round that passed its gate — §4): the person has already seen the look. A direction
-  that was only picked, with round 2 or the motion question still owed, is not finished: run
-  what is owed.
+  that was only picked, with the motion question or the motion round still owed, is not
+  finished: run what is owed.
 - **The person said so**, in so many words, for this change ("no canvas, just build it"). An
   ignored offer or silence is not a no: ask once more, plainly, and wait.
 
@@ -165,32 +165,41 @@ one or two questions. Otherwise state your assumptions in one line at the top an
 
 ## 4. The rounds
 
-**Round 1 — directions.** Two to five directions (three by default), each as **one key screen
-or state at full fidelity**: the product's tokens, real content, the craft floor met. Never a
-wireframe — the person judges by looking, and a grey box convinces nobody. The person picks,
-mixes, or asks for others (§8).
+**Round 1 — directions, each shown whole.** Two to five directions (three by default). The
+person can only judge a whole proposal, so each direction arrives complete, at full fidelity —
+the product's tokens, real content, the craft floor met; never a wireframe, a grey box convinces
+nobody:
 
-**Round 2 — the chosen direction, finished.** The remaining screens of a flow, every state that
-matters (empty, loading, error, success), the illustrations (`references/illustration.md`), the
-knob values the person settled. When the value is in how it feels to use — onboarding, gestures,
-a flow of several steps, a game or a playful product — round 2 is a **clickable prototype** of
-the chosen direction: working buttons, state changes, links between its screens, simple
-feedback; not another set of static states. Skipped when nothing is left to add.
+- **every screen** it needs — its key screen and, for a flow, the rest of the flow;
+- **every state that matters**, laid out on the canvas and visible without playing anything —
+  the result of its main action, empty, loading, error, success, whichever the screens have;
+- **its phone width** when the page is meant for phones;
+- **the imagery it relies on**, made to the bar or as an honest slot
+  (`references/illustration.md`);
+- a **clickable prototype** of it when the value is in how it feels to use — onboarding,
+  gestures, a flow of several steps, a game or a playful product: working buttons, state
+  changes, links between its screens, simple feedback.
 
-**The motion question.** When round 2 is done, ask whether to add motion — always, with a
-recommendation (`references/motion.md` §1). On a yes, the motion round designs it on the chosen
-direction, with reference research when a case needs it (`references/references-research.md`).
-Only the person can decline.
+The person picks, mixes, pushes, or asks for others (§8); a correction to the chosen direction
+is applied to it, and never changes what they did not ask to change.
 
-**The gate.** Nothing visible is built until the direction is chosen, round 2 is done (or there
-was nothing left for it) and the motion question is answered — for a small change, only when
-the element appears, disappears or changes; one that does not move has no motion question.
+**The motion question.** When a direction is chosen, ask whether to add motion — always, with a
+recommendation (`references/motion.md` §1). Only the person can decline.
 
-**A small change** — one element, one state — gets a reduced round: two or three takes on that
-element only, inside the identity lock, reviewed like any round; round 2 only if something is
-left; no reference research. When the element appears, disappears or changes state, the motion
-question rides in the **same message as the round**, with its recommendation — a reduced round
-usually has no round 2 to wait for, so asking "later" means never asking.
+**Round 2 — motion, and only motion.** On a yes, the motion round designs the chosen
+direction's motion, with reference research when a case needs it
+(`references/references-research.md`). It adds no screen, state, image or restyling: anything
+of the kind belongs to round 1, and a reviewer's point that would change the look reaches the
+person as a proposal, not as an edit.
+
+**The gate.** Nothing visible is built until the direction is chosen and the motion question is
+answered — and, on a yes, the motion round is done. For a small change the question applies
+only when the element appears, disappears or changes; one that does not move has none.
+
+**A small change** — one element, one state — gets a reduced round 1: two or three takes on
+that element only, each with its states, inside the identity lock, reviewed like any round; no
+reference research. When the element appears, disappears or changes state, the motion question
+rides in the **same message as the round**, with its recommendation, so it is never forgotten.
 
 ## 5. Diverge
 
@@ -263,7 +272,7 @@ in one sentence, and a prompt for reaction — not a recap of what they can alre
 Each round is a new section or row of artboards; **never overwrite** earlier rounds — the
 person may want to go back. React to what they say:
 
-- **Pick** → round 2 on that direction (§4).
+- **Pick** → the motion question, then the motion round on a yes (§4).
 - **Mix** ("A's colours with B's layout") → one direction stays dominant, the other lends one
   named discipline, never an average (`references/directions.md` §6); plus one alternative mix
   they did not ask for.
@@ -309,7 +318,7 @@ never imply a link works for others when it does not. Files made without a publi
 shared in whichever way is most convenient for the person and the task's readers.
 
 When you were called from `create-task`, take the chosen direction through its gate first —
-round 2 and the motion question (§4) — then return the decision and the link to it; it writes
+the motion question, and the motion round on a yes (§4) — then return the decision and the link to it; it writes
 the task.
 
 ## Red flags

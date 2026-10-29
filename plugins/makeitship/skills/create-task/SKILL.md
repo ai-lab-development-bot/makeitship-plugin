@@ -287,7 +287,7 @@ When the new thing is large — a whole area, several screens — agree the top 
 element, state, layout, text, flow, animation or asset — the visual round is a required
 step of this one, not an offer: the `design-directions` skill in this plugin puts a few
 different takes side by side and returns the one the person chose, finished through
-that skill's gate (its second round and the motion question). Follow that skill
+that skill's gate (the motion question, and its motion round on a yes). Follow that skill
 for the round, including when it may be skipped (a finished design to build as drawn,
 or the person saying so); its outcome is a decision like any other in this message, and
 a skip is written into the task with the person's words. The

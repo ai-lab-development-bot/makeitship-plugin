@@ -1,11 +1,11 @@
 # Motion
 
-Load this for the motion round, and for any direction whose idea is in how it moves. Motion is
-designed after the static round, on the chosen direction, and only when the person said yes.
+Load this for the motion round — round 2 — and for any direction whose idea is in how it moves.
+Motion is designed after round 1, on the chosen direction, and only when the person said yes.
 
 ## 1. Ask first
 
-When round 2 is done — or, for a small change, in the same message as its reduced round — ask
+When a direction is chosen — or, for a small change, in the same message as its reduced round — ask
 whether to add motion, always with a recommendation, in product words. (A small change that
 neither appears, disappears nor changes has no motion question.)
 

@@ -1,6 +1,7 @@
 # Illustration
 
-Load this when a direction would say more with an image than with text alone.
+Load this when a direction would say more with an image than with text alone — in round 1, while
+the direction is built: its imagery is part of what the person chooses, never added after.
 
 ## Where it earns its place
 
@@ -28,8 +29,8 @@ scene reads as amateur and drags the whole direction down; the critic rejects it
 - **A style you can execute exactly:** flat shapes, a limited palette, a clear silhouette, a
   consistent stroke — pictures built from forms you can specify, not imitated brushwork or
   shading.
-- **Variants:** offer two or three illustration takes for the chosen direction and let the
-  person pick.
+- **Variants:** when the image decides a direction, put two or three takes of it beside the
+  direction in round 1 and let the person pick.
 - **An honest slot:** when none of these reaches the bar, keep the image's place at its real
   size with a one-line art direction, and say what it should become (`craft-floor.md`, Media
   role). Never fill it with a weak fake, never collapse the direction into text.
