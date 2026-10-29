@@ -19,6 +19,15 @@ asks for the review: run it.
   the top-level setting `"allowUnrestrictedFileAccess": true` and open the artboard as
   `file:///<absolute path>` — the config only reaches files you wrote; the person's product is
   still opened over `http(s)`.
+- **An artboard of a Design canvas** (a `.dc.html` file) renders only with the canvas's own
+  runtime, which it loads as `./support.js`. Read the canvas's `artifact-type/dc-runtime.js`
+  once with the `Artifact` tool (`read` with that `path`), save it as `support.js` beside the
+  artboards in the run folder, and put a copy of each uploaded asset at `_blob/<its id>` in the
+  run folder, so the artboards' `/_blob/…` addresses resolve unchanged. The runtime fetches its
+  own page, so `file:` fails here: serve the run folder over HTTP on `127.0.0.1` (any static
+  server, such as `python3 -m http.server`), capture `http://127.0.0.1:<port>/<artboard>`, and
+  stop the server when the review is done. The artboard's controls work, so an interactive one
+  can be clicked through its states.
 - **One screenshot per artboard**, at its real size; a phone-width capture for any page meant to
   work on a phone.
 - **A capture is evidence only when it is valid**: entrance motion finished or disabled (an

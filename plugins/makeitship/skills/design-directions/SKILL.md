@@ -133,6 +133,13 @@ nobody can ship. Before the first artboard, find out what the new thing must liv
   screen properly, and its Step 10 for closing the browser when you are done.** Read those
   sections and follow them. Its lenses, its loop, its artefact folder and its fix protocol are
   not yours: you are looking, not auditing, and you change nothing.
+- **A site that will not load in a cloud session** (a blocked-host or connection error, while
+  the site works for the person): the environment's network access is the cause — by default a
+  cloud environment reaches only package registries and GitHub. Tell the person once, plainly,
+  how to open it, then carry on with the next bullet until they have: in the environment
+  selector under the message box, the gear next to the cloud environment → **Network access** →
+  **Full** → **Save changes**, then start a new session. The same opens the reference galleries
+  for the motion round.
 - **Neither the code nor a browser**: read the product's pages as text with a page fetch, ask the
   person for two or three screenshots, and say in one line what you could not see. The round
   goes on.
