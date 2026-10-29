@@ -90,7 +90,8 @@ round is never blocked by the environment.
 7. **Motion, in the motion round.** Does the spec match the filmstrips? Does every moving
    element pass the gate, and the timing fit the mode (`motion.md`)? In an existing product: does
    every element the product already has keep the product's motion, and is any departure named
-   with its reason?
+   with its reason? Does anything below a switch (tabs, filters, an answer and its result) move
+   when it is used — the footer's position before, during and after each switch?
 
 ## 4. The verdict
 

@@ -90,6 +90,11 @@ screen needs, the feedback, and the budget (what is expensive and how often it r
 - **Interruptible.** State changes that can repeat quickly use transitions, which retarget,
   rather than keyframes, which restart.
 - **Hover motion** only where hover exists: `@media (hover: hover) and (pointer: fine)`.
+- **A switch between views of different heights never moves the rest of the page** (tabs,
+  filters, an answer replaced by its result). First look at how the product itself handles it —
+  in its styles and on the live product, with the rest of its motion — and do the same. With no
+  precedent in the product: reserve the height of the tallest view, or put nothing below the
+  switch. Name any departure from the product's way in the spec, with its reason.
 
 ## 5. The motion spec
 
