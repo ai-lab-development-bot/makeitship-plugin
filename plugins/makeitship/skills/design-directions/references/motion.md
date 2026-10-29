@@ -96,8 +96,10 @@ screen needs, the feedback, and the budget (what is expensive and how often it r
   the same. With no precedent in the product: the rest of the page moves to its new place **in
   step with the new content's entrance** — the same moment, duration and curve, by `transform`
   (measure where it was, swap the content, slide it from there), never by animating height; or
-  reserve the height, when that leaves no dead area (`craft-floor.md`, Spacing). Name any
-  departure from the product's way in the spec, with its reason.
+  reserve the height, when that leaves no dead area (`craft-floor.md`, Spacing). When the
+  product's own way jumps or leaves a dead area, do not copy the defect: propose the smooth
+  variant to the person as a named departure from the product, with its reason, and build it
+  only once they agree. Name any departure from the product's way in the spec, with its reason.
 
 ## 5. The motion spec
 
