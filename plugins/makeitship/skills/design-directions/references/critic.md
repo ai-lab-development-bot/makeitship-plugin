@@ -108,6 +108,11 @@ Your account of what you fixed is not evidence: the next review looks at new scr
 most **two fix rounds**; after the second, show the round and name, in one line, what is still
 open.
 
+**A change after the last review** — a fix to what it found, or to what the person reports —
+is never shipped on one look. Recapture every state and every width it touches, run the
+mechanical pass (§2) on them again, including dead areas and anything a switch moves, and tell
+the person in one line that this change was not seen by the reviewer.
+
 ## 5. What the person sees
 
 One line with the round, never the report: *"Reviewed before showing — one round of fixes

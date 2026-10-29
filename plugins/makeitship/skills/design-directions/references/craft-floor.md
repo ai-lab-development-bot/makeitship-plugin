@@ -13,7 +13,9 @@ direction's idea.
 - **Depth.** A shadow has an offset and a soft blur. A zero-offset coloured halo is decoration.
   One elevation system per element: a border or a shadow, not both.
 - **Spacing.** Related things close, groups clearly apart, more space above a heading than
-  below it. One spacing scale, read from the product when it has one.
+  below it. One spacing scale, read from the product when it has one. **No dead area**: an empty
+  run taller than the product's gap between sections, in any state at any width, is a defect —
+  measure it in every state and at phone width, not only in the state you screenshot first.
 - **Type.** Body text 16 px or the product's body size; a reading measure of 65–75 characters;
   headings balanced (`text-wrap: balance`), body without a lone last word
   (`text-wrap: pretty`); distinct steps between heading, body, label and metadata; display
