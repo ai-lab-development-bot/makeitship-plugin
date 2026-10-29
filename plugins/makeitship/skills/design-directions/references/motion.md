@@ -90,11 +90,14 @@ screen needs, the feedback, and the budget (what is expensive and how often it r
 - **Interruptible.** State changes that can repeat quickly use transitions, which retarget,
   rather than keyframes, which restart.
 - **Hover motion** only where hover exists: `@media (hover: hover) and (pointer: fine)`.
-- **A switch between views of different heights never moves the rest of the page** (tabs,
-  filters, an answer replaced by its result). First look at how the product itself handles it —
-  in its styles and on the live product, with the rest of its motion — and do the same. With no
-  precedent in the product: reserve the height of the tallest view, or put nothing below the
-  switch. Name any departure from the product's way in the spec, with its reason.
+- **A switch between views of different heights never jumps and never leaves a dead area**
+  (tabs, filters, "show more", an answer replaced by its result). First look at how the product
+  itself handles it — in its styles and on the live product, with the rest of its motion — and do
+  the same. With no precedent in the product: the rest of the page moves to its new place **in
+  step with the new content's entrance** — the same moment, duration and curve, by `transform`
+  (measure where it was, swap the content, slide it from there), never by animating height; or
+  reserve the height, when that leaves no dead area (`craft-floor.md`, Spacing). Name any
+  departure from the product's way in the spec, with its reason.
 
 ## 5. The motion spec
 
