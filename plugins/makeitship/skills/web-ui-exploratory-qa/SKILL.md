@@ -1,24 +1,24 @@
 ---
 name: web-ui-exploratory-qa
 description: >
-  Use when the user asks to visually check, QA, compare against Figma, or explore a
-  screen, component, or state of a running web app in a browser: "check this page against
-  the design", "QA the billing screen", "compare the sidebar with Figma", "run UI
-  exploratory QA", "does this screen match the design", "test it on mobile", "is the
-  layout broken at other widths". An exploratory pass, not pixel-perfect verification: the
-  agent examines each screen the way an experienced tester would and catches what is
-  obvious to a human eye. The person picks the mode (Figma MCP or exploratory) up front;
-  the agent captures each target from Figma (in Figma
-  mode) and from the running app through the Playwright CLI, compares, fixes the obvious
-  on its own, and escalates the rest as defect propositions, each with a proposed fix and
-  its consequence for users. It never switches mode on its own and reports in the language
-  of the conversation. Project-agnostic; the Figma file is asked for each run.
+  Use when the user asks to visually check, QA, compare against the design (a design
+  canvas or Figma), or explore a screen, component, or state of a running web app in a
+  browser: "check this page against the design", "QA the billing screen", "compare the
+  sidebar with Figma", "run UI exploratory QA", "does this screen match the design", "test
+  it on mobile", "is the layout broken at other widths". An exploratory pass, not
+  pixel-perfect: each screen examined the way an experienced tester would. The person
+  picks the mode (against the design or by experience) up front; the design is the
+  direction chosen on the design-round canvas, or Figma. It captures each target from the
+  design and the app through the Playwright CLI, compares, fixes the obvious on its own,
+  and escalates the rest as defect propositions, each with a proposed fix and its
+  consequence for users. It never switches mode on its own and reports in the language of
+  the conversation. Project-agnostic.
 ---
 
 # Web UI Exploratory QA
 
-An **autonomous compare-and-fix loop**: pick a target, capture it from **Figma** (in
-Figma mode) and from **the browser**, compare, then fix it yourself or escalate it with a
+An **autonomous compare-and-fix loop**: pick a target, capture it from **the design** (in
+design mode: the direction chosen on a design canvas, or Figma) and from **the browser**, compare, then fix it yourself or escalate it with a
 proposed fix. What makes this skill different from a plain visual check is the
 **auto-fix philosophy** (Step 4): whatever the product was already supposed to do is
 fixed on the spot and proven, in whichever layer the cause lives; whatever changes what
@@ -43,7 +43,7 @@ a breakpoint is, and they should never have to. Every choice this skill contains
 yours to make and theirs only to confirm, stated in the terms of their product:
 
 - **The decision** — one line, about the product: "I will compare the screens against
-  your Figma file, so anything that differs from the design counts as a finding."
+  the direction you chose on the design canvas, so anything that differs from the design counts as a finding."
 - **What it means for them** — what they get and what they give up: "without the
   design I can only judge by experience, so 'does not match the design' will not
   appear in the report; everything else is checked the same way."
@@ -52,7 +52,7 @@ yours to make and theirs only to confirm, stated in the terms of their product:
 Never "which environment?", never "which tracker?", never "MCP or stub?" as a bare
 question. Recommend one, say why in product terms, and let them confirm the
 consequence rather than pick the mechanism. The exceptions are facts only they hold —
-whether a design exists for these screens, the Figma file URL, a login, what the
+whether a design exists for these screens and where (the canvas, a Figma file), a login, what the
 product knowingly lacks — and those are asked once, in one message, in product words,
 with the reason the run needs them. The mode (Step 1) is the first of these: the agent
 cannot know whether a design exists, so it describes both modes and lets them choose.
@@ -69,32 +69,46 @@ written in another language is rewritten before it is posted or saved.
 Before any other action — before opening a page, before checking any tool — stop and
 describe the two modes in product terms, then wait for the choice. Whether a design
 exists for these screens is a fact only the user holds: the repository may carry no
-trace of a Figma file that exists, or a stale trace of one that no longer applies, so
+trace of a design that exists, or a stale trace of one that no longer applies, so
 the agent never infers the answer and never skips the question.
 
+**Where the design is: the canvas first, Figma second.** A visible change is normally
+designed before it is built, in a round of `design-directions`: several directions on a
+design canvas, one of them chosen. So the expected design source is **that canvas, and
+the direction chosen on it**. Look for it before you write the message: the task being
+checked (its description, its links and resources, its comments), the conversation, an
+earlier session's summary. A Figma file is the other source, used when the person says
+the design is there or no canvas exists. Do not ask for Figma access while a canvas from
+the round is at hand.
+
 > *"This check runs in one of two ways — which one fits this round?*
-> *— **Against the design**: I compare every screen with your Figma file, so anything
-> that drifted from the design is caught, not only what looks broken. I will need the
-> file link.*
+> *— **Against the design**: I compare every screen with the direction you chose on the
+> design canvas (or with your Figma file), so anything that drifted from the design is
+> caught, not only what looks broken. I will need the link.*
 > *— **By experience**: there is no design to compare with, so I judge each screen
 > the way an experienced tester would — broken, confusing or unfinished is still
 > caught, but nothing will be reported as 'differs from the design'."*
 
 Both options, each with what it gives and what it does not, and the user picks. When
-the request or the repository shows a sign of a design (a Figma URL, a design skill, a
-tokens reference), say so in the same message as a hint — "I see a Figma link in the
-project; if that is the current design, the first option is the stronger check" — and
-still let them choose; a hint is not a default. The agent does not probe Figma to
-decide, and does not start on its own. **Nothing starts until the choice is
-explicit.** A mode named in the request itself ("compare with Figma", "no design, just
-explore") counts as the choice; anything less does not.
+the request, the task or the repository shows a sign of a design (a canvas link from the
+design round, a Figma URL, a design skill, a tokens reference), say so in the same
+message as a hint — "I see the design canvas from the round on this task, with
+direction B chosen; comparing against it is the stronger check" — and still let them
+choose; a hint is not a default. When both a canvas and a Figma file turn up, ask once
+which one is the current design, recommending the newer one. The agent does not probe
+Figma to decide, and does not start on its own. **Nothing starts until the choice is
+explicit.** A mode named in the request itself ("compare with the canvas", "compare with Figma",
+"no design, just explore") counts as the choice; anything less does not.
 
 **The answer fixes the mode for the whole iteration.** There is no automatic switching
-in either direction:
+in either direction. Below, *design mode* is the first option whatever its source; a
+step that names Figma or the canvas applies to that source only, and a design *frame* is
+a Figma frame or a canvas artboard alike.
 
-- **Figma mode chosen** → Figma is *required*. Do the full setup below. If Figma still
-  does not answer after it, **stop and ask** (see *When Figma does not answer*). Never
-  drop into exploratory mode because Figma was hard.
+- **Design mode chosen** → the design is *required*. Do the setup of its source below
+  (*The design canvas* or *Figma MCP setup*). If the design still does not answer after
+  it, **stop and ask** (see *When the design does not answer*). Never drop into
+  exploratory mode because the design was hard to reach.
 - **Exploratory mode chosen** → say plainly that nothing will be filed as "does not
   match the design", and go to Step 2.
 
@@ -102,9 +116,45 @@ The chosen mode, who chose it, and any change to it later are written in the sco
 block of `targets.md` and repeated in the Step 9 summary. A mode change mid-run is a
 user decision recorded with its reason ("Figma up to the Billing screen, exploratory
 from there — user decision, Figma file lost access"); the report always says which
-approach was applied to what.
+approach, and which design source, was applied to what.
 
-### Figma MCP setup (Figma mode only)
+### The design canvas (canvas source only)
+
+The canvas is a page the design round published, usually through Claude's `Artifact`
+tool, and it is private to the person who made it: a headless browser cannot open it
+without their login. So the design side is read through the tool, rendered locally and
+captured from there.
+
+1. **Which direction.** Only the direction that was chosen is the design, with its
+   motion round when there was one. The other directions and the earlier rounds on the
+   same canvas are studies, never a reference to file against. The task, or the
+   decision written after the round, names the chosen one ("direction B", "round 2");
+   when nothing names it, ask once which one was picked.
+2. **Read it.** `Artifact` `read` with the canvas link; `list` with `scope: "files"`
+   shows its artboard files, `scope: "assets"` its uploaded images. A read that is
+   refused means the canvas is not the person's and was not shared with them: ask them
+   to share it, or to run the check from the account that made it.
+3. **Render the chosen artboards locally**, into `design/src/` in the run folder,
+   exactly as `design-directions` renders its own for review (its
+   `references/critic.md`, *Capture*): a Design canvas artboard (`.dc.html`) needs the
+   canvas's runtime saved beside it as `support.js` and each asset at `_blob/<its id>`,
+   served over HTTP on `127.0.0.1` (`python3 -m http.server`, started from
+   `design/src/`); a plain HTML artboard is served the same way. The server is stopped in
+   Step 10.
+4. **What the artboard settles, and what it does not.** It settles the layout, which
+   elements there are and in what order, their hierarchy, the states it draws, the
+   values built from the product's own tokens (colour, spacing, radius, type) and the
+   motion when the round had one. It does not settle content: text, numbers and images
+   marked as an example are demonstration data, never a finding. The decision written
+   in words (in the task, or after the round) is the design's own text: where the words
+   and the artboard disagree, the words win, and the disagreement is an escalated
+   finding, never fixed on your own. The final values of the artboard's controls (its
+   knobs) are its defaults, and the task lists them.
+5. **Without the `Artifact` tool** (Codex, another agent): ask the person for the
+   chosen direction as it is, an export of its files or screenshots at the widths it
+   draws, and save them in `design/`. Say in the scope block which it was.
+
+### Figma MCP setup (Figma source only)
 
 Help with every step the user cannot do alone. Its tools appear as
 `mcp__plugin_figma_figma__*`.
@@ -143,17 +193,19 @@ Help with every step the user cannot do alone. Its tools appear as
    any part of the file is not the real design — superseded studies, scratch boards —
    because only they know that. Record both in the scope block.
 
-### When Figma does not answer
+### When the design does not answer
 
-If, after the setup above, Figma MCP still does not work: **stop.** Tell the user, in
-plain words, what exactly failed and what was tried (install, reload, restart, sign-in,
-file access), then recommend one way forward with its consequence:
+If, after the setup above, the design still cannot be read (Figma MCP does not work, or
+the canvas will not read or render): **stop.** Tell the user, in plain words, what
+exactly failed and what was tried (for Figma: install, reload, restart, sign-in, file
+access; for the canvas: the read, the share, the local render), then recommend one way
+forward with its consequence:
 
-> *"I cannot reach your Figma file right now. I recommend running this pass by
+> *"I cannot reach your design right now. I recommend running this pass by
 > experience instead: everything broken, confusing or unfinished is still caught, but
 > nothing will be reported as 'differs from the design' — that comparison can be a
-> second pass once Figma works. Shall I go ahead that way, or would you rather we fix
-> the connection first?"*
+> second pass once the design is reachable. Shall I go ahead that way, or would you
+> rather we fix the access first?"*
 
 The run waits for the answer. The switch happens only on the user's confirmation,
 never on the agent's own, and it goes into `targets.md` with the reason.
@@ -295,6 +347,7 @@ of truth for setup, and the agent reads them too when something goes wrong:
 | Tool | Documentation | Needs |
 |---|---|---|
 | Playwright CLI | https://github.com/microsoft/playwright-cli | Node.js 18+ with `npx`, network access to npm; Google Chrome or a Chromium |
+| Design canvas | the `design-directions` skill of this plugin, which makes it | the canvas's owner, or a share with them; Python 3 or any static server to render it |
 | Figma MCP | https://help.figma.com/hc/en-us/articles/32132100833559 and https://github.com/figma/mcp-server-guide | a Figma account with access to the file |
 | Claude Code plugins (how `/plugin` works) | https://code.claude.com/docs/en/plugins | — |
 | Claude Code MCP (manual setup without a plugin) | https://code.claude.com/docs/en/mcp | — |
@@ -306,8 +359,9 @@ the MCP docs page shows how to add the same server by hand with `claude mcp add`
 
 Settle these before opening the first page, and write them at the top of `targets.md`:
 
-- **Mode** — Figma or exploratory, and that the user chose it (Step 1). In Figma mode:
-  the file URL, the canonical theme, the ignored nodes.
+- **Mode** — design or exploratory, and that the user chose it (Step 1). In design mode:
+  the source (the canvas link and the chosen direction, or the Figma file URL), the
+  canonical theme, the ignored nodes or rounds.
 - **Themes** — which ones the app offers and how it switches (a control, the system
   setting, both). Both are always in scope: the canonical one gets the frame
   comparison, the other one Lens 1's second pass. An app with one theme says so here.
@@ -352,9 +406,9 @@ tracking is the project's own setup. **Assume it exists** and find it in the rep
 running, no login works, a command is missing — say so plainly and either fix it in the
 session or ask the user to. Never hardcode a workaround into this skill.
 
-**Per target, Figma may still be missing** — a state the file does not draw, a screen
-that was never designed, a node that is only a study. Those targets go through the same
-four lenses (Step 3), with Lens 1 judged by good sense instead of a frame. Mark them `Figma node: —`. That is
+**Per target, the design may still be missing** — a state the file or the canvas does
+not draw, a screen that was never designed, a node that is only a study. Those targets go through the same
+four lenses (Step 3), with Lens 1 judged by good sense instead of a frame. Mark them `Design frame: —`. That is
 a per-target gap, not a mode switch, and the ledger says so.
 
 ## Step 2.5 — Context before the first look
@@ -385,7 +439,7 @@ Notes record which lenses a target has been through.
 
 *Would a careful person accept this screen at this width?*
 
-In Figma mode this is the frame comparison; without a frame it is composition by good
+In design mode this is the frame comparison; without a frame it is composition by good
 sense. Flag: anything cut off, overlapping, misaligned, unreadable, wrapping onto an
 icon, scrolling sideways, an image scaled wrong, a control below the fold on a phone,
 a token-level deviation the frame settles (colour, spacing, radius, weight).
@@ -572,7 +626,8 @@ are (Step 11).
 ui-exploratory-qa/<YYYY-MM-DD>-<scope-slug>/
   targets.md                 # THE LEDGER — scope header + one row per target, updated every cycle
   defects.md                 # THE RESULT — Fixed table, then the numbered Escalated list
-  figma/<target-id>.png      # design side (Figma mode)
+  design/<target-id>.png     # design side (design mode: a Figma frame or a canvas artboard)
+  design/src/                # the canvas's files, rendered locally (canvas source)
   browser/<target-id>.png    # built side; <target-id>--after.png proves a fix
   .playwright/               # the browser's own: the session configs, out/, auth.json while signed in
 ```
@@ -596,14 +651,15 @@ is obvious.
 
 ## Step 6 — The loop
 
-Write the ledger before the first capture: `| # | Target id | Kind | Route / how to reach | Figma node | Status | Notes |`.
+Write the ledger before the first capture: `| # | Target id | Kind | Route / how to reach | Design frame | Status | Notes |`.
 Choose targets in this order: screens whose code changed most recently (ask, or `git
 log`) → each in-scope screen at its desktop and mobile frame widths → the states the
-design draws (dialogs, drawers, in-progress; find them with `get_metadata`) → kit
+design draws (dialogs, drawers, in-progress; in Figma find them with `get_metadata`, on
+a canvas they are the chosen direction's artboards and its controls) → kit
 components when the screen pass raised a suspicion → states the design does not draw.
 
 **Defects cluster — 80% of them live in 20% of the functionality.** This governs the
-loop in every mode, Figma or not:
+loop in every mode, with a design or without:
 
 - **Start where defects are likeliest**: the newest code, the most complex
   interaction, the section with the most states, the place a previous run found
@@ -617,8 +673,8 @@ loop in every mode, Figma or not:
 - **Record the clusters.** The summary in `defects.md` names where the findings
   concentrated, so the next run starts there.
 
-**Cycle** per `todo` row: capture design (Step 7, Figma mode) → capture built (Step 7)
-→ run the four lenses and the step-back pass (Step 3; in Figma mode Lens 1 is the
+**Cycle** per `todo` row: capture design (Step 7, design mode) → capture built (Step 7)
+→ run the four lenses and the step-back pass (Step 3; in design mode Lens 1 is the
 frame comparison) → switch to the other theme, re-capture, run Lens 1's second pass
 (and Lens 2 only where a control's look carries its meaning) → write each finding as a
 *claim* ("the card border is missing on the left column") → bucket each claim (Step 4)
@@ -636,9 +692,17 @@ Report to the user at the end of each screen, not only at the end of the run.
 **Figma** — `get_screenshot({ fileKey, nodeId, maxDimension })`. The default 1024
 flattens small text: ask for at least the node's natural width, double it for a small
 detail, re-request if `original_width` shows clamping. `curl` the PNG into
-`figma/<id>.png` and `Read` it; never judge from the thumbnail or the JSX
+`design/<id>.png` and `Read` it; never judge from the thumbnail or the JSX
 `get_design_context` returns. `get_metadata` finds the sub-node behind a claim.
 **Take the frame's own width** (read from `original_width`) with `resize` in the matching device session.
+
+**The canvas** — the chosen artboard, rendered from `design/src/` (Step 1, *The design
+canvas*), captured in a session of its own, `-s=design`, opened with a config like the
+desktop one at the artboard's own size and DPR 1: a phone artboard is a picture of a
+phone, not a page to emulate, so it is never opened in the `mobile` session.
+`pw -s=design screenshot --filename=design/<id>.png`; the artboard's controls are real,
+so a state it draws is reached by clicking it, and its entrance motion is waited out as
+on the app. **Take the artboard's width** with `resize` in the matching device session.
 
 **The browser** — one session per device class (the browser section of Step 1), opened
 at the class's frame width; every other width of the class is a `pw -s=<session> resize
@@ -676,10 +740,10 @@ not a failed emulation; likewise a `width` wider than intended that equals
 the app, close that session and open it again from its config; if it still fails, the
 target is `blocked`, not captured.
 **All of these widths are always in scope; do not ask the user to confirm them each
-run.** Figma usually draws only one desktop and one mobile frame, so only those two
+run.** A design usually draws only one desktop and one mobile frame, so only those two
 widths get a design comparison. **Every other width — the quick-pass widths, tablet,
-any width the file does not draw — is tested in senior exploratory mode (Step 3),
-with `Figma node: —`.** That is not a mode switch; those screens simply have no frame,
+any width the design does not draw — is tested in senior exploratory mode (Step 3),
+with `Design frame: —`.** That is not a mode switch; those screens simply have no frame,
 and the frame that exists for a neighbouring width is a hint about intent, never a
 reference to file against. The quick pass looks only for the obvious: broken layout,
 overlap, horizontal scroll, images scaling wrong, a critical action that stops working.
@@ -826,7 +890,8 @@ After posting the Step 9 summary in the chat, from the run folder:
 1. `pw close-all` — it closes this run's sessions only (the `.playwright/` folder makes
    the run its own workspace), never the user's own Chrome or another agent's browser.
 2. Confirm: `pw list` prints `(no browsers)`.
-3. Delete `.playwright/auth.json` if a sign-in was saved.
+3. Delete `.playwright/auth.json` if a sign-in was saved, and stop the local server that
+   rendered the canvas, if one was started.
 4. Say in the chat, in one line, that the browser was closed. If a session will not
    close, say so; `pw kill-all` force-kills **every** Playwright browser process on the
    machine, other agents' and the user's own tools included, so it is run only on the
@@ -883,7 +948,11 @@ source files a fix changed, nothing outside `ui-exploratory-qa/`.
 | Running a target through one lens and moving on | Four lenses, one at a time, then the step-back pass; the ledger Notes say which ran |
 | Opening a target without knowing what it is for | Step 2.5: read the docs or the code first; the *Expected* line has to come from somewhere |
 | Probing Figma to decide the mode yourself, inferring "no design" from a repo with no Figma trace, or putting "Figma or exploratory?" as a bare two-word choice | Describe both modes and what each gives; a sign of a design in the repo is a hint in that message, never a default |
-| Figma did not answer, and you moved on in exploratory mode | Stop. Report what failed and what was tried; recommend the way forward with its consequence. The switch is confirmed by the user, never assumed |
+| Asking for Figma access while the task carries a canvas from the design round | The canvas and its chosen direction are the expected design; Figma only when the person says the design is there |
+| Comparing against a direction that was not chosen, or an earlier round | Only the chosen direction is the design; the rest of the canvas is studies |
+| Filing the canvas's example text, numbers or images as a mismatch | Demonstration data; the artboard settles layout, elements, states and token values |
+| Opening the published canvas in the browser, or a phone artboard in the `mobile` session | Read it with the `Artifact` tool, render it locally, capture it in the `design` session |
+| The design did not answer, and you moved on in exploratory mode | Stop. Report what failed and what was tried; recommend the way forward with its consequence. The switch is confirmed by the user, never assumed |
 | Debugging "the Figma tools are missing right after install" as a broken plugin | It is the session: `/reload-plugins`, then `/exit` + `claude --continue`; check again |
 | A summary or report that does not say which mode was applied | Add it; the reader must know what the findings are based on |
 | Writing `defects.md` or a chat message in a language other than the conversation's | Rewrite before saving or posting |
