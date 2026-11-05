@@ -4,8 +4,8 @@ description: >
   Take a Makeitship task through to its outcome: read the task and its Development Insights, move
   it into work, write a local implementation plan in which every insight point is a step at the
   stage where it belongs, build, close every point (done, or disputed with a reason), and move the
-  task to the status its outcome deserves — done, waiting for review, or still in progress. Use
-  whenever the person asks you to do, implement, fix, build, pick up or finish a task from the
+  task to the status its outcome deserves — done, ready to publish, waiting for review, or still
+  in progress. Use whenever the person asks you to do, implement, fix, build, pick up or finish a task from the
   board: "do #12", "work on #12", "take the next task from To do", "finish #12", "implement the
   task about the DNS".
 ---
@@ -14,7 +14,7 @@ description: >
 
 Without the makeitship MCP server connected this skill does nothing: say so and point the person at the Connect agent page of their Makeitship dashboard.
 
-Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__get_task`, `…__list_task_statuses`, `…__list_tasks`, `…__update_task`, `…__add_task_resource`, `…__get_task_insights`, `…__acknowledge_insight_item`, `…__report_insight_item`. A task is named by its `number` (`#12` → `12`), and said back as `#12` followed by its title (`track-tasks`).
+Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__get_task`, `…__list_task_statuses`, `…__list_tasks`, `…__update_task`, `…__add_task_resource`, `…__add_task_comment`, `…__get_task_insights`, `…__acknowledge_insight_item`, `…__report_insight_item`. A task is named by its `number` (`#12` → `12`), and said back as `#12` followed by its title (`track-tasks`).
 
 A task is not an implementation plan. It says what to achieve; its insight says what this task asks beyond its description. The plan is yours to write, and the insight points are part of it.
 
@@ -37,11 +37,12 @@ The person is most likely the product owner, not an engineer. They asked for the
 
 ## The board's columns
 
-The statuses are the workspace's own (`list_task_statuses`, once per conversation). You need three of them:
+The statuses are the workspace's own (`list_task_statuses`, once per conversation). You need four of them:
 
 - **in progress**: the work has started (names such as "In progress", "Doing", "In work");
 - **review**: the work is complete and waits for someone else's check or action (names such as "Review", "In review", "QA", "Testing");
-- **done**: the work is complete and nothing is left to check; a final status (`is_final`) named such as "Done", "Completed", "Shipped". A final status that means the work was dropped ("Cancelled", "Won't do") is never yours to use for a finished task.
+- **ready to publish**: the change is merged into staging and waits for a person to put it live (the slug `ready_to_publish`, or names such as "Ready to publish", "Ready to release"). A board without one uses **review** for it, without asking;
+- **done**: the work is complete and in place — for a code change, live on the production site — and nothing is left to check; a final status (`is_final`) named such as "Done", "Completed", "Shipped". A final status that means the work was dropped ("Cancelled", "Won't do") is never yours to use for a finished task.
 
 Map them from the names and the board's order. When a role has no column, or two columns could fit it and nothing tells them apart, ask once, in their words, with your recommended mapping: "Your board has no review column. When I open a pull request for #12, shall I leave it in In progress until it is merged (recommended), or move it to Done?" Remember the answer for the rest of the conversation.
 
@@ -65,7 +66,28 @@ Work through the plan in its order.
 
 - **Acknowledge a point when its step starts** (`acknowledge_insight_item`), and **report it as soon as its step ends** (`report_insight_item`), not at the end of the task: a report written when the work is fresh is accurate, and a point reported is a point that cannot be forgotten.
 - **When the task's description changes while you work** (a comment says so, or `get_task` shows a stale insight), read the insight again, judge your earlier reports against the change (`work-with-insights`), and add any new point to the plan where it belongs.
-- **Commit, push, open a pull request and deploy only as the project and the person allow.** A pull request you open, or a preview you publish, goes on the task as a link (`add_task_resource`), the way `track-tasks` attaches one.
+- **Every change to the project's files goes through a branch and a pull request into staging** (below). A pull request you open, or a preview you publish, goes on the task as a link (`add_task_resource`), the way `track-tasks` attaches one.
+
+### Branches and pull requests
+
+The Makeitship rules say where a change may go; this is how. Production is put live by a person — with Publish in Makeitship when it is on, otherwise through the project's own release process — never by you.
+
+1. **Start from the latest staging.** Fetch, then cut a branch for this task from the remote staging: `feature/<short-slug>` or `fix/<short-slug>`. One task, one branch; a branch already made for this task is reused.
+2. **Commit only the task's files.** Look at what changed before every commit; a file the task did not touch stays out of it.
+3. **Push and open a pull request into staging**, with the task's number and title in its description. Attach it to the task.
+4. **Before merging, bring the branch up to date**: merge the latest staging into it. Never rebase a pushed branch and never force-push. A conflict inside the task's own changes is yours to resolve; a conflict outside them stops the work, and you tell the person what clashes, in plain words.
+5. **Merge into staging** when the checks pass and the project lets you; otherwise leave the pull request for the person or their reviewer, and the task is in review.
+6. **Report**: what changed, where to see it on staging, and how it goes live from there.
+7. **Undo a change only with a revert** through a new pull request, never by rewriting history.
+
+Never push straight to staging or to the production branch, never merge into the production branch, never start a production deploy. When the person asks you to "put it live", tell them how it goes live in this project and leave it to them.
+
+**A project without a staging branch.** Recommend creating one, named `staging`, before the first change, and explain in plain product words what working without it costs: there is no place to see the finished changes together before visitors do; every change they accept goes live at once; a mistake is seen first by the visitors. Name GitHub or pull requests only as far as the person needs. Then:
+
+- **They agree**: create `staging` from the production branch — creating the branch is the one push to it you make; every change after that reaches it through a pull request — and carry on as above. Until the project has its own staging site, the host's preview of the `staging` branch is where the person sees it; say so.
+- **They explicitly decline**: record the refusal as a comment on this task, in their words. Only then open the pull request into the production branch. A missing staging branch alone never allows it. Give the person two links, both attached to the task: the preview of the change (the host — Vercel, Netlify, Cloudflare — reports it on the pull request) and the pull request itself, saying in one sentence that its Merge button puts the change on the live site. **Never merge it yourself**: the person does, knowing what it does. The task is in review until then.
+
+The refusal holds for this task only: on the next task without staging, recommend it again.
 
 ## 4. Close the insight
 
@@ -81,11 +103,12 @@ Choose by the outcome of the work, then `update_task` with that column's slug:
 
 | The outcome | Column |
 |---|---|
-| The work is complete and in place, with nothing left for anyone to check: merged into the main branch, released, or a change that needs no review (a setting applied, a document written and filed) | **done** |
-| The work is complete and waits for someone else: a pull request opened and not merged, a build published to a preview or test environment for checking, a change waiting for approval | **review** |
+| The work is complete and in place, with nothing left for anyone to check: the change is live on the production site (put there by the person or by Publish), or a change that needs no review (a setting applied, a document written and filed) | **done** |
+| The code change is merged into staging and waits for a person to put it live | **ready to publish** |
+| The work is complete and waits for someone else: a pull request opened and not merged (into staging, or into the production branch in a project without staging), a build published to a preview or test environment for checking, a change waiting for approval | **review** |
 | The work is not complete, or a point is still only acknowledged | **in progress** (it stays) |
 
-When the change is later merged or released (the person tells you, or you see it), move the task from review to done.
+When the change later goes live (the person tells you, or you see it merged into the production branch), move the task to done. Where Makeitship's Publish closes the tasks it releases, it does that itself.
 
 The answer of `update_task` may carry `insight_open`: points of the insight with no report yet, or a note that the insight changed. Treat it as Section 4 not finished: close those points, then set the status again if the outcome changed.
 
@@ -103,6 +126,10 @@ Then tell the person, in a few lines: what was done, where to see it (the link),
 | "This point does not fit; I'll leave it" | Dispute it with the reason against its intent. Silence is not an option. |
 | "Shall I move the task to In progress?" | Moving the task is part of the work. Move it. |
 | "PR opened, so the task is done" | Waiting for a merge or a check is review. Done is when nothing is left to check. |
+| "Merged into staging, so the task is done" | It is ready to publish. Done is when the change is live. |
+| "They asked me to put it live; I'll merge into main" | A person puts production live. Tell them how it goes live here. |
+| "There is no staging, so the pull request goes into main" | Recommend staging first. Only their explicit refusal, recorded on the task, allows it. |
+| "It's a one-line fix; I'll push it straight to staging" | Every change goes through a branch and a pull request. |
 | "Almost finished; Done is close enough" | Not complete is in progress, with one line on what is left. |
 | "`update_task` mentioned open points, but the task has moved" | Close those points; the reminder means the work is not finished. |
 | "The board has no review column; I'll pick something" | Ask once which column to use, with your recommendation. |
