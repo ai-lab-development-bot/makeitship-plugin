@@ -10,7 +10,7 @@ description: >
   what went wrong once its lesson is clear (a post-mortem; a broken thing is first a task, through
   create-task), states a lasting fact about the project (roles, environments, integrations, a
   constraint), or says "remember this", "add a project rule", "record this incident", "update
-  the rule about…", "delete that rule". Not for the Makeitship rules (get_agent_rules) or a
+  the rule about…", "delete that rule", "what are project rules", "what is this for". Not for the Makeitship rules (get_agent_rules) or a
   task's insight points.
 ---
 
@@ -32,6 +32,14 @@ They are not the **Makeitship rules** (`get_agent_rules`, the same for every wor
 ## Who you are working for
 
 The person is most likely the product owner, not an engineer. The lists are theirs: what goes in them, in which words, is their decision, and nothing is written without their yes. Whether a moment deserves an entry, whether it is a rule or an incident, how it is phrased and which impact fits are yours to judge, and they reach the person as one ready proposal, not as questions.
+
+## What it is for, in the person's words
+
+When the person asks what Project rules are or what they are for, answer in their terms, not in tool names:
+
+> Project rules are your project's memory for agents. Rules are what every agent should always keep in mind here; incidents are what already went wrong and what it taught. Every agent connected to your workspace reads them before each task, so you don't repeat the same correction to every new session, and a mistake that cost you once isn't made twice. You can see and edit them on the Project rules page; I add an entry only when you say yes.
+
+Say it in the conversation's language and adapt it to what they asked; keep its substance. Do not promise more than that: not that other people can edit the lists, not that agents outside this workspace read them.
 
 ## 1. When to propose an entry
 
@@ -64,7 +72,7 @@ Before any proposal, call `get_house_rules`; read it again before a later propos
 
 ## 4. Propose in the conversation, write on a yes
 
-Show the exact entry, in the words that will be stored, and ask once:
+Show the exact entry, in the words that will be stored, and ask once. The first proposal in a conversation opens with one sentence on what Project rules are (the explanation above, shortened), since the person may not know them yet; later ones do not repeat it.
 
 > I'd add this as a project rule, so every agent on this project follows it:
 > "Only staging takes real customer data; local and preview environments use the seed."
@@ -94,7 +102,7 @@ Never write without that yes, never write something other than what was shown, a
 - **Self-contained**: an agent that never saw this conversation understands it. No "as above", "this file", "today".
 - **A takeaway names the class of failure**, so it applies where the incident did not happen; the description keeps what happened, where, how it was noticed and what the analysis found.
 - **Impact by what it cost**: `critical` — users lost data, money or access, or the product was down; `high` — many users hit it, or it took a release to fix; `medium` — some users, a workaround existed; `low` — caught before users, or cosmetic.
-- **No secrets**: no keys, passwords, tokens, personal data. Everyone connected to the workspace reads the lists. Say where a secret lives, never what it is.
+- **No secrets**: no keys, passwords, tokens, personal data. Every agent connected to the workspace reads the lists, and the dashboard shows them. Say where a secret lives, never what it is.
 - **In the language the existing entries use**; for an empty list, the language of the conversation.
 
 ## 6. When a write is refused
