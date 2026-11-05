@@ -14,7 +14,7 @@ description: >
 
 Without the makeitship MCP server connected this skill does nothing: say so and point the person at the Connect agent page of their Makeitship dashboard.
 
-Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__get_task`, `…__list_task_statuses`, `…__list_tasks`, `…__update_task`, `…__add_task_resource`, `…__add_task_comment`, `…__get_task_insights`, `…__acknowledge_insight_item`, `…__report_insight_item`. A task is named by its `number` (`#12` → `12`), and said back as `#12` followed by its title (`track-tasks`).
+Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__get_task`, `…__list_task_statuses`, `…__list_tasks`, `…__update_task`, `…__add_task_resource`, `…__add_task_comment`, `…__get_task_insights`, `…__acknowledge_insight_item`, `…__report_insight_item`, `…__get_agent_rules`, `…__get_house_rules`. A task is named by its `number` (`#12` → `12`), and said back as `#12` followed by its title (`track-tasks`).
 
 A task is not an implementation plan. It says what to achieve; its insight says what this task asks beyond its description. The plan is yours to write, and the insight points are part of it.
 
@@ -29,6 +29,7 @@ The person is most likely the product owner, not an engineer. They asked for the
 
 ## 1. Take the task
 
+0. **Read the rules first**: `get_agent_rules` (the Makeitship rules), then `get_house_rules` (this project's rules and incidents), at the start of every task, even one more in the same conversation: either can change between tasks. Follow every rule on this task. Keep the incidents for the plan (Section 2). Where `get_house_rules` is not offered, carry on with the Makeitship rules alone. Where a project rule contradicts a Makeitship rule, the Makeitship rule holds: say so in one line and propose updating the project rule (`keep-house-rules`).
 1. `get_task` with the task's number. Read the description, the comments, the relations and the `insight` summary it carries: how many points, how many have no report yet, whether the insight is stale.
    **A task whose `assignee` is `expert` is the Makeitship team's**: the person handed it to an expert. Do not start it — no plan, no code, no move. Say so in one line ("#12 Title is with a Makeitship expert") and stop. You may still read it and comment on it when the person asks. If the person tells you to do it yourself after all, first take it back with `update_task` and `assignee: "ai"`, say that you did, then carry on from step 2.
 2. `get_task_insights`, always, before you plan. On `status: "generating"`, wait a few seconds and read again; do not plan around an insight you have not seen. On `"unavailable"`, say so in one line and work on the task alone. How to read a point, judge it, and report on it is `work-with-insights`; follow it.
@@ -54,7 +55,8 @@ The plan holds:
 
 1. **The steps of the work** the task needs: what to read, what to build, what to test.
 2. **Every insight point, as a step of its own, at the stage where it belongs**: before planning, while planning, while building, while testing, while finishing (`work-with-insights` says how to place one). Each step carries the point's `title` verbatim, the skill its `solution_md` names, and "acknowledge, then report". Required and suggested points alike: a suggested point is a step too, whose first question is whether it applies.
-3. **Two closing steps, always last**: "Close the insight" (Section 4) and "Set the status" (Section 5).
+3. **The incidents, checked against the plan**: for each incident of `get_house_rules`, from critical down, ask whether its takeaway could happen again in this work; where it could, the step that would repeat it says how this time it does not. A rule that applies is followed in the step it concerns.
+4. **Two closing steps, always last**: "Close the insight" (Section 4) and "Set the status" (Section 5).
 
 A point that has no place in this task is still a step: the step is to dispute it, with the reason against its intent.
 
@@ -66,6 +68,7 @@ Work through the plan in its order.
 
 - **Acknowledge a point when its step starts** (`acknowledge_insight_item`), and **report it as soon as its step ends** (`report_insight_item`), not at the end of the task: a report written when the work is fresh is accurate, and a point reported is a point that cannot be forgotten.
 - **When the task's description changes while you work** (a comment says so, or `get_task` shows a stale insight), read the insight again, judge your earlier reports against the change (`work-with-insights`), and add any new point to the plan where it belongs.
+- **When the person corrects you, or something goes wrong, while you work**: apply the correction now, and let `keep-house-rules` decide whether to propose a project rule or an incident.
 - **Every change to the project's files goes through a branch and a pull request into staging** (below). A pull request you open, or a preview you publish, goes on the task as a link (`add_task_resource`), the way `track-tasks` attaches one.
 
 ### Branches and pull requests
@@ -119,6 +122,7 @@ Then tell the person, in a few lines: what was done, where to see it (the link),
 | Thought | Reality |
 |---|---|
 | "The task is clear; I'll skip the insight" | `get_task_insights` before the plan, always. The points are part of the work. |
+| "I read the project rules at the start of the conversation" | Read `get_agent_rules` and `get_house_rules` again for each task, and check every incident against the plan. |
 | "The task description is the plan" | A task says what to achieve. Write the plan, with every point in it. |
 | "I'll post the plan on the task" | The plan is local. The board carries the status, the reports and the links. |
 | "I'll report all the points at the end" | Report each point when its step ends; the end is where points get lost. |
