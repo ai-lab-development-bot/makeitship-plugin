@@ -25,7 +25,7 @@ Every workspace keeps two short lists its agents read before work; people see th
 - a **rule** is one statement (at most 500 characters) that every agent follows on every task in this project;
 - an **incident** is what happened (`description`, at most 1000 characters), the lesson it teaches (`takeaway`, at most 500) and how much it cost (`impact`: `critical`, `high`, `medium`, `low`).
 
-At most 50 of each. Every agent connected to the workspace reads every entry, at the start of every task: an entry costs every future task its length, so the lists hold only what is worth that.
+At most 50 of each. Every connected agent of the workspace reads every entry, at the start of every task: an entry costs every future task its length, so the lists hold only what is worth that.
 
 They are not the **Makeitship rules** (`get_agent_rules`, the same for every workspace, written by the Makeitship team) and not a task's **insight points** (`get_task_insights`, matched to one task). Never write either of those into the Project rules.
 
@@ -37,7 +37,7 @@ The person is most likely the product owner, not an engineer. The lists are thei
 
 When the person asks what Project rules are or what they are for, answer in their terms, not in tool names:
 
-> Project rules are your project's memory for agents. Rules are what every agent should always keep in mind here; incidents are what already went wrong and what it taught. Every agent connected to your workspace reads them before each task, so you don't repeat the same correction to every new session, and a mistake that cost you once isn't made twice. You can see and edit them on the Project rules page; I add an entry only when you say yes.
+> Project rules are your project's memory for agents. Rules are what your agents should always keep in mind here; incidents are what already went wrong and what it taught. Your connected agents read them before each task, so you don't repeat the same correction to every new session, and a mistake that cost you once isn't made twice. You can see and edit them on the Project rules page; I add an entry only when you say yes.
 
 Say it in the conversation's language and adapt it to what they asked; keep its substance. Do not promise more than that: not that other people can edit the lists, not that agents outside this workspace read them.
 
@@ -74,13 +74,13 @@ Before any proposal, call `get_house_rules`; read it again before a later propos
 
 Show the exact entry, in the words that will be stored, and ask once. The first proposal in a conversation opens with one sentence on what Project rules are (the explanation above, shortened), since the person may not know them yet; later ones do not repeat it.
 
-> I'd add this as a project rule, so every agent on this project follows it:
+> I'd add this as a project rule, so your connected agents follow it on every task:
 > "Only staging takes real customer data; local and preview environments use the seed."
 > Shall I add it?
 
 For an incident, show all three parts:
 
-> I'd record this as an incident, so every agent on this project checks for it:
+> I'd record this as an incident, so your connected agents check their work against it:
 > Takeaway: "A migration that already ran in production is never edited; a fix is a new migration."
 > What happened: "An edited migration was skipped by the production deploy; staging and production schemas diverged and the next deploy failed."
 > Impact: high — the release was blocked for a day.
@@ -102,7 +102,7 @@ Never write without that yes, never write something other than what was shown, a
 - **Self-contained**: an agent that never saw this conversation understands it. No "as above", "this file", "today".
 - **A takeaway names the class of failure**, so it applies where the incident did not happen; the description keeps what happened, where, how it was noticed and what the analysis found.
 - **Impact by what it cost**: `critical` — users lost data, money or access, or the product was down; `high` — many users hit it, or it took a release to fix; `medium` — some users, a workaround existed; `low` — caught before users, or cosmetic.
-- **No secrets**: no keys, passwords, tokens, personal data. Every agent connected to the workspace reads the lists, and the dashboard shows them. Say where a secret lives, never what it is.
+- **No secrets**: no keys, passwords, tokens, personal data. Every connected agent of the workspace reads the lists, and the dashboard shows them. Say where a secret lives, never what it is.
 - **In the language the existing entries use**; for an empty list, the language of the conversation.
 
 ## 6. When a write is refused
