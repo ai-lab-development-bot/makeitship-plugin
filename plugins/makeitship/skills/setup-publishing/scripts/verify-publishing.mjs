@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Generated from makeitship-dashboard 2ba83f34 (supabase/functions/_shared/publish-readiness/cli-main.ts) — do not edit; rebuild with npm run build:verify-publishing.
+// Generated from makeitship-dashboard 0a5f702d (supabase/functions/_shared/publish-readiness/cli-main.ts) — do not edit; rebuild with npm run build:verify-publishing.
 // supabase/functions/_shared/publish-readiness/cli-main.ts
 import { execFile } from "node:child_process";
 import process from "node:process";
@@ -2105,7 +2105,6 @@ function parseMarkerMessage(message) {
 }
 
 // supabase/functions/_shared/publish-readiness/checks.ts
-var PRODUCTION_ENVIRONMENT = "production";
 var PRODUCTION_MARKER_TAG = "deploy/production/current";
 var CALLER_FILES = {
   production: ".github/workflows/deploy-production.yml",
@@ -2189,13 +2188,6 @@ function checkProtection(rules, rulesets, productionBranch, checkedAt) {
     }
   }
   return state(checkedAt, "green", void 0, productionBranch);
-}
-function checkProductionEnvironment(env, checkedAt) {
-  if (env.kind === "ok") return state(checkedAt, "green", void 0, PRODUCTION_ENVIRONMENT);
-  if (env.kind === "absent") {
-    return state(checkedAt, "red", "missing", `No environment named ${PRODUCTION_ENVIRONMENT}`);
-  }
-  return unreadable(checkedAt, env);
 }
 var fileName = (name) => CALLER_FILES[name].split("/").pop();
 function parseCallerText(file) {
@@ -2399,7 +2391,7 @@ function checkDeployFilesOnBranches(branches, checkedAt) {
   const detail = `${worst.branch}: ${worst.item.detail ?? ""}`.trim();
   return state(checkedAt, worst.item.status, worst.item.reason, detail.slice(0, 200));
 }
-function checkHostKey(analysis, repoSecrets, envSecrets, checkedAt) {
+function checkHostKey(analysis, repoSecrets, checkedAt) {
   if (analysis.host === null) {
     if (analysis.callers.production === void 0 && analysis.unreadable) {
       return unreadable(checkedAt, analysis.unreadable);
@@ -2409,16 +2401,10 @@ function checkHostKey(analysis, repoSecrets, envSecrets, checkedAt) {
   const required = analysis.productionSecrets.length > 0 ? analysis.productionSecrets : [
     ...HOST_SECRETS[analysis.host]
   ];
-  const present = /* @__PURE__ */ new Set([
-    ...repoSecrets.kind === "ok" ? repoSecrets.value : [],
-    ...envSecrets.kind === "ok" ? envSecrets.value : []
-  ]);
+  const present = new Set(repoSecrets.kind === "ok" ? repoSecrets.value : []);
   const lacking = required.filter((n) => !present.has(n));
   if (lacking.length === 0) return state(checkedAt, "green", void 0, required.join(", "));
-  const bad = unreadable(checkedAt, repoSecrets, envSecrets.kind === "absent" ? {
-    kind: "ok",
-    value: []
-  } : envSecrets);
+  const bad = unreadable(checkedAt, repoSecrets);
   if (bad) return bad;
   return state(checkedAt, "red", "missing", `Secret ${lacking.join(", ")} is missing`);
 }
@@ -2726,11 +2712,7 @@ function createGithubRepoReader(options) {
         };
       });
     },
-    async getEnvironment(name) {
-      return map2(await get(`/environments/${encodeURIComponent(name)}`), () => true);
-    },
     listRepoSecretNames: () => listNames("/actions/secrets"),
-    listEnvironmentSecretNames: (environment) => listNames(`/environments/${encodeURIComponent(environment)}/secrets`),
     async getWorkflowPermissions() {
       return map2(await get(`/actions/permissions/workflow`), (json) => {
         if (!isObj2(json)) return null;
@@ -2832,9 +2814,7 @@ function createLocalFirstReader(remote, opts) {
     getBranch: (branch) => remote ? remote.getBranch(branch) : failed(),
     getBranchRules: (branch) => remote ? remote.getBranchRules(branch) : failed(),
     getRuleset: (id) => remote ? remote.getRuleset(id) : failed(),
-    getEnvironment: (name) => remote ? remote.getEnvironment(name) : failed(),
     listRepoSecretNames: () => remote ? remote.listRepoSecretNames() : failed(),
-    listEnvironmentSecretNames: (environment) => remote ? remote.listEnvironmentSecretNames(environment) : failed(),
     getWorkflowPermissions: () => remote ? remote.getWorkflowPermissions() : failed(),
     listDeployments: (filter) => remote ? remote.listDeployments(filter) : failed(),
     getTagRef: (tag) => remote ? remote.getTagRef(tag) : failed()
@@ -2878,9 +2858,7 @@ async function runReadinessChecks(reader, options) {
   const stagingP = read(() => reader.getBranch(options.stagingBranch));
   const productionP = read(() => reader.getBranch(options.defaultBranch));
   const rulesP = read(() => reader.getBranchRules(options.defaultBranch));
-  const environmentP = read(() => reader.getEnvironment(PRODUCTION_ENVIRONMENT));
   const repoSecretsP = read(() => reader.listRepoSecretNames());
-  const envSecretsP = read(() => reader.listEnvironmentSecretNames(PRODUCTION_ENVIRONMENT));
   const permissionsP = read(() => reader.getWorkflowPermissions());
   const byRefP = read(() => reader.listDeployments({
     ref: options.defaultBranch
@@ -2935,8 +2913,7 @@ async function runReadinessChecks(reader, options) {
     staging_branch: checkStagingBranch(await stagingP, options.stagingBranch, at),
     protection: checkProtection(rules, rulesets, options.defaultBranch, at),
     deploy_files: checkDeployFilesOnBranches(deployFileBranches, at),
-    production_environment: checkProductionEnvironment(await environmentP, at),
-    host_key: checkHostKey(analysis, await repoSecretsP, await envSecretsP, at),
+    host_key: checkHostKey(analysis, await repoSecretsP, at),
     workflow_permissions: checkWorkflowPermissions(await permissionsP, analysis, at),
     host_autodeploy_off: checkHostAutodeployOff(bySha ? [
       byRef,

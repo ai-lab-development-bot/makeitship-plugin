@@ -27,7 +27,6 @@ The checklist items the setup works on (`get_publish_readiness`), what each red 
 | `protection` · `missing`, `bypass_too_wide` | the person | Releases → **Restore protection** when the page offers it; otherwise a hard case |
 | `deploy_files` · `missing`, `wrong_*`, `invalid_file`, `not_shared`, `unsupported_version`, `host_unknown` | you | the deploy files, through a pull request into staging (SKILL.md §4) |
 | `deploy_files` · `not_merged` | the person | **Prepare the merge** on Releases, then merge it on GitHub (SKILL.md §8) |
-| `production_environment` · `missing` | the person | Releases → **Restore protection** when the page offers it; otherwise a hard case |
 | `host_key` · `missing` | the person | the key from the host into GitHub under the named secret (below) |
 | `workflow_permissions` · `read_only_token` | you, then the person | the deploy files must grant `contents: write` to the deploy job as the templates do; if they do, Releases → **Restore protection** when the page offers it, otherwise a hard case |
 | `host_autodeploy_off` · `host_access_unchecked` (yellow) | the person | remove the repository from the host's GitHub app, then tick the box (below) |
@@ -38,11 +37,15 @@ The checklist items the setup works on (`get_publish_readiness`), what each red 
 
 ## Keys on GitHub
 
-From https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions and https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-deployments/managing-environments-for-deployment:
+The host's key goes into the repository's secrets, never into an environment. From
+https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions:
+the repository's **Settings** → **Secrets and variables** → **Actions** → **Secrets** →
+**New repository secret** → **Name** and **Secret** → **Add secret**.
 
-- A repository secret: the repository's **Settings** → **Secrets and variables** → **Actions** → **Secrets** → **New repository secret** → **Name** and **Secret** → **Add secret**.
-- An environment secret: **Settings** → **Environments** → the environment → **Environment secrets** → **Add secret**. A `staging` environment that does not exist yet: **Environments** → **New environment**.
-- The environments page says GitHub Free configures environments for public repositories only, yet a private repository of a Free organization can have `production` and `staging` environments (seen on a real one); what Free limits on a private repository is *not confirmed* for environment secrets. If GitHub refuses an environment secret, use a repository secret: the check accepts either.
+Why not an environment: "If you are using GitHub Free, environment secrets are only available in
+public repositories" (https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments),
+yet GitHub's API accepts one on a private repository with GitHub Free — it is stored and then
+ignored when the deploy runs. MakeItShip's check reads repository secrets only.
 
 ## Which host
 
