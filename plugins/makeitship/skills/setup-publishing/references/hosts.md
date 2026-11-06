@@ -27,7 +27,7 @@ The checklist items the setup works on (`get_publish_readiness`), what each red 
 | `protection` · `missing`, `bypass_too_wide` | the person | Releases → **Restore protection** when the page offers it; otherwise a hard case |
 | `deploy_files` · `missing`, `wrong_*`, `invalid_file`, `not_shared`, `unsupported_version`, `host_unknown` | you | the deploy files, through a pull request into staging (SKILL.md §4) |
 | `deploy_files` · `not_merged` | the person | **Prepare the merge** on Releases, then merge it on GitHub (SKILL.md §8) |
-| `production_environment` · `missing` | the person | Releases → **Restore protection** when the page offers it; on a private repository with GitHub Free, GitHub does not allow environments (below): a hard case |
+| `production_environment` · `missing` | the person | Releases → **Restore protection** when the page offers it; otherwise a hard case |
 | `host_key` · `missing` | the person | the key from the host into GitHub under the named secret (below) |
 | `workflow_permissions` · `read_only_token` | you, then the person | the deploy files must grant `contents: write` to the deploy job as the templates do; if they do, Releases → **Restore protection** when the page offers it, otherwise a hard case |
 | `host_autodeploy_off` · `host_access_unchecked` (yellow) | the person | remove the repository from the host's GitHub app, then tick the box (below) |
@@ -42,7 +42,7 @@ From https://docs.github.com/en/actions/security-for-github-actions/security-gui
 
 - A repository secret: the repository's **Settings** → **Secrets and variables** → **Actions** → **Secrets** → **New repository secret** → **Name** and **Secret** → **Add secret**.
 - An environment secret: **Settings** → **Environments** → the environment → **Environment secrets** → **Add secret**. A `staging` environment that does not exist yet: **Environments** → **New environment**.
-- "Users with GitHub Free plans can only configure environments for public repositories"; GitHub Pro and Team can for private ones. On a private repository with GitHub Free, use repository secrets.
+- The environments page says GitHub Free configures environments for public repositories only, yet a private repository of a Free organization can have `production` and `staging` environments (seen on a real one); what Free limits on a private repository is *not confirmed* for environment secrets. If GitHub refuses an environment secret, use a repository secret: the check accepts either.
 
 ## Which host
 
