@@ -73,7 +73,7 @@ Work through the plan in its order.
 
 ### Branches and pull requests
 
-The Makeitship rules say where a change may go; this is how. Production is put live by a person — with Publish in Makeitship when it is on, otherwise through the project's own release process — never by you.
+The Makeitship rules say where a change may go; this is how. Production is put live by a person — with Publish in Makeitship when it is on, otherwise through the project's own release process — never by you. When the person wants Publish and it is not on yet, setting it up is the `setup-publishing` skill's.
 
 1. **Start from the latest staging.** Fetch, then cut a branch for this task from the remote staging: `feature/<short-slug>` or `fix/<short-slug>`. One task, one branch; a branch already made for this task is reused.
 2. **Commit only the task's files.** Look at what changed before every commit; a file the task did not touch stays out of it.
