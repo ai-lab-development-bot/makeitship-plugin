@@ -37,16 +37,16 @@ No CMS → this skill does not apply; carry on. A CMS that only holds part of th
 |---|---|
 | Sanity | `references/sanity.md` |
 
-Read it before the first step of the work, every time: it says which agent tools the CMS needs, how to install them in each agent, and the mechanics this skill leaves to the CMS. A CMS with no reference here: work from that CMS's official documentation and its official agent tools, if it has any, under the rules below; say in one line that this skill has no guide for it yet.
+Read it before the first step of the work, every time: it says which official agent tools the CMS has, what they are for and how to install them in each agent. A CMS with no reference here: work from that CMS's official documentation and its official agent tools, if it has any, under the rules below; say in one line that this skill has no guide for it yet.
 
 ## 3. The CMS's own agent tools come first
 
 A CMS that ships official skills and an MCP server for agents knows its own data better than this skill does. Its skills are the first-class rules for that CMS: schema design, content modelling, queries, images, rich text, preview, migrations. Read the one that matches the step before you take it. Where they and this skill disagree on how the CMS works, theirs win; this skill keeps only the rules of the work: where content belongs, what the person decides, what you never do.
 
-**When the tools are missing**, tell the person once, before the work, in their words: what is missing, what it gives (the agent reads and writes content through the CMS itself, by the CMS's own rules), and the steps for their agent from the reference. Then:
+**When the tools are missing**, tell the person once, before the work, in their words: what is missing, what it gives (the agent works by the CMS's own best practices and reaches its content through the CMS itself), and the steps for their agent from the reference. Then:
 
-- they install it → check it is there (the reference says how) and carry on;
-- they decline, or it cannot be installed here → carry on with what the code allows (the schema files, the CMS's CLI), say what is lost (no content written to the CMS, no check against the deployed schema), and never fall back to hard-coding content to make up for it.
+- they install it → check it is there and carry on;
+- they decline, or it cannot be installed here → carry on, and say in one line that you will follow the project's current code and its existing patterns instead, so something is more likely to be done incorrectly than with the CMS's own tools.
 
 ## 4. Where content belongs
 
@@ -81,7 +81,7 @@ A CMS that ships official skills and an MCP server for agents knows its own data
 | Thought | Reality |
 |---|---|
 | "I'll hard-code the copy for now; it can move to the CMS later" | Later never comes, and the editors cannot touch it. Model it now. |
-| "The CMS's MCP isn't connected; I'll write the content into the component" | Ask for the tools once; without them, say what is lost. Never hard-code content to make up for it. |
+| "The CMS's tools aren't installed; I'll just carry on" | Offer them once; without them, warn that you follow the current code and mistakes are more likely. |
 | "I know how Sanity works" | Read its official skill for the step. Its rules come first. |
 | "The draft looks good; I'll publish it" | Publishing puts it on the live site. Only on the person's yes. |
 | "I'll rename this field to something clearer" | Editors' content sits in it. Deprecate, migrate, then remove. |
