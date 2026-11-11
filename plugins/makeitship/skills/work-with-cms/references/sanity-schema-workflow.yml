@@ -1,0 +1,87 @@
+# Example: deploy the Sanity schema after each successful code deploy.
+#
+# A pattern to adapt, not a file to copy blindly: read `sanity.md` (this folder) first.
+# Change what the project needs (the deploy workflow names, the datasets, the package
+# manager, the Studio's folder, how its config picks the dataset); the four points in
+# `sanity.md` stay true whatever changes.
+#
+# Sources of truth, checked before the file is written:
+#   Sanity CLI, `sanity schemas`:  https://www.sanity.io/docs/cli-reference/cli-schema
+#   Schema deployment:             https://www.sanity.io/docs/apis-and-sdks/schema-deployment
+#   GitHub `workflow_run`:         https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#workflow_run
+
+name: Sanity Schema
+
+on:
+  workflow_run:
+    # The project's code deploy workflows, by their exact `name:`. A contract:
+    # if one is renamed, this listener stops without an error.
+    workflows: ["Deploy Staging", "Deploy Production"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      dataset:
+        description: Dataset to deploy the schema to
+        type: choice
+        options: [staging, production]
+        required: true
+      ref:
+        description: Commit or tag to take the schema from (empty = the branch this run starts on)
+        type: string
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sanity-schema-${{ inputs.dataset || github.event.workflow_run.name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy-schema:
+    # Only after a successful code deploy, or by hand.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Choose the dataset and the commit
+        id: target
+        env:
+          EVENT: ${{ github.event_name }}
+          RUN_NAME: ${{ github.event.workflow_run.name }}
+          RUN_SHA: ${{ github.event.workflow_run.head_sha }}
+          INPUT_DATASET: ${{ inputs.dataset }}
+          INPUT_REF: ${{ inputs.ref }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            echo "dataset=$INPUT_DATASET" >> "$GITHUB_OUTPUT"
+            echo "ref=${INPUT_REF:-$GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          else
+            case "$RUN_NAME" in
+              "Deploy Production") echo "dataset=production" >> "$GITHUB_OUTPUT" ;;
+              "Deploy Staging")    echo "dataset=staging" >> "$GITHUB_OUTPUT" ;;
+              *) echo "Unknown deploy workflow: $RUN_NAME" >&2; exit 1 ;;
+            esac
+            # The commit that was just deployed, not the default branch.
+            echo "ref=$RUN_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.target.outputs.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Deploy the schema
+        # The project's own Sanity CLI version. This example assumes the Studio config
+        # reads its dataset from SANITY_STUDIO_DATASET; with one workspace per dataset,
+        # pass `--workspace <name>` instead.
+        run: npx sanity schemas deploy
+        env:
+          # A Sanity deploy token, saved by the person as a repository secret.
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
+          SANITY_STUDIO_DATASET: ${{ steps.target.outputs.dataset }}
