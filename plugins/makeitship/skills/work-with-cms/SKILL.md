@@ -1,17 +1,17 @@
 ---
 name: work-with-cms
 description: >
-  Work on a project whose content lives in a CMS (Sanity first; others by their own docs): find
-  out whether and which CMS the project uses, make sure the CMS's own agent tools are installed
-  (its official skills and MCP server, the first-class rules for that CMS), and keep content
-  where editors manage it — modelled in the CMS schema and written to the CMS as drafts, never
-  hard-coded into components; content goes through staging first and reaches production with the
-  release. Use before building a new page, section, block or layout on a site that has a CMS,
-  before writing or changing content (copy, a blog post, a landing page's text, images), before
-  changing a content schema, and whenever the person says "add it to the CMS", "put this in
-  Sanity", "the editors should be able to change this", "write the post", "migrate the content",
-  or the code shows a CMS client, a Studio or CMS queries. Publishing to the live site and
-  writing to a production dataset are the person's decision.
+  Work on a project whose content lives in a CMS (Sanity first): find out whether and which CMS
+  the project uses, require the CMS's own agent tools (its official skills and MCP server, the
+  first-class rules for that CMS) and ask the person to install them whenever they are missing,
+  and keep content where editors manage it — modelled in the CMS schema and written to the CMS
+  as drafts, never hard-coded into components; content goes through staging first and reaches
+  production with the release. Use before building a new page, section, block or layout on a
+  site that has a CMS, before writing or changing content (copy, a blog post, a landing page's
+  text, images), before changing a content schema, and whenever the person says "add it to the
+  CMS", "put this in Sanity", "the editors should be able to change this", "write the post",
+  "migrate the content", or the code shows a CMS client, a Studio or CMS queries. Publishing to
+  the live site and writing to a production dataset are the person's decision.
 ---
 
 # Work with a CMS
@@ -44,10 +44,12 @@ Read it before the first step of the work, every time: it says which official ag
 
 A CMS that ships official skills and an MCP server for agents knows its own data better than this skill does. Its skills are the first-class rules for that CMS: schema design, content modelling, queries, images, rich text, preview, migrations. Read the one that matches the step before you take it. Where they and this skill disagree on how the CMS works, theirs win; this skill keeps only the rules of the work: where content belongs, what the person decides, what you never do.
 
-**When the tools are missing**, tell the person once, before the work, in their words: what is missing, what it gives (the agent works by the CMS's own best practices and reaches its content through the CMS itself), and the steps for their agent from the reference. Then:
+**They are required, not optional.** When a CMS has official agent tools, they are the only way to work with it reliably: through them the agent sees the content structure the CMS really holds, its writes are checked by the CMS, and it follows the CMS's own current rules. Working without them is not an equal alternative; it is a trade-off with fewer guarantees.
+
+**When the tools are missing**, stop before the CMS work and ask the person to install them, every time you meet the gap: in every task and every session where they are still missing, not once per conversation. Say it in product words, not tool names: what is missing; what goes wrong without it (the agent works from guesses about the content's structure, nothing checks what it writes, a mistake can silently leave part of a page empty, and content the site can no longer show goes unnoticed); and the steps for their agent from the reference. Then:
 
 - they install it → check it is there and carry on;
-- they decline, or it cannot be installed here → carry on, and say in one line that you will follow the project's current code and its existing patterns instead, so something is more likely to be done incorrectly than with the CMS's own tools.
+- they say to go on without it, or it cannot be installed here → carry on in the reduced way the reference describes, and say plainly, each time, what is not guaranteed in this piece of work. Their go-ahead holds for the work at hand only; at the next task the request comes again.
 
 ## 4. Where content belongs
 
@@ -105,7 +107,9 @@ Code reaches the live site through staging (`work-on-task`): a branch, a pull re
 | Thought | Reality |
 |---|---|
 | "I'll hard-code the copy for now; it can move to the CMS later" | Later never comes, and the editors cannot touch it. Model it now. |
-| "The CMS's tools aren't installed; I'll just carry on" | Offer them once; without them, warn that you follow the current code and mistakes are more likely. |
+| "The CMS's tools aren't installed; I'll just carry on" | They are required. Ask the person to install them, in product words, before the CMS work. |
+| "I asked about the tools last time; I won't nag" | Ask every time they are missing. A go-ahead without them holds for the work at hand only. |
+| "Without the MCP I'll read the code; it's just as good" | It is a trade-off with fewer guarantees. Say what is not guaranteed, each time. |
 | "I know how Sanity works" | Read its official skill for the step. Its rules come first. |
 | "The draft looks good; I'll publish it" | Publishing puts it on the live site. Only on the person's yes. |
 | "I'll rename this field to something clearer" | Editors' content sits in it. Deprecate, migrate, then remove. |

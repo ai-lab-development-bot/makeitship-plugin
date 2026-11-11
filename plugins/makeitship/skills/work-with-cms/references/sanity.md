@@ -11,7 +11,7 @@ Sanity publishes its own tools for agents, the [Sanity Agent Toolkit](https://gi
 
 What the toolkit contains and how its tools behave is Sanity's to say and changes over time: learn it from the toolkit and its tools, not from this file.
 
-**Check that it is there** before the work: the toolkit's skills are among your skills, and the Sanity MCP tools answer. When either is missing, give the person the steps for the agent they use (below), as `work-with-cms` §3 says.
+**It is required.** Effective work on a Sanity project goes through the toolkit: without it the agent cannot see what Sanity really holds or have its writes checked. **Check that it is there** before the work: the toolkit's skills are among your skills, and the Sanity MCP tools answer. When either is missing, ask the person to install it, with the steps for the agent they use (below), every time, as `work-with-cms` §3 says.
 
 ## Installing it, by agent
 
@@ -49,6 +49,14 @@ Content the code cannot show is easy to miss: the site does not fail (an unknown
 Never delete, unpublish or rewrite it on your own, and do not build new content on top of it until they decide.
 
 **Never reuse a removed type's name with a different meaning.** A schema deploy replaces the deployed schema, it does not merge, but old documents of a removed type stay in the dataset; a new type under the same name makes them render wrongly with no error. Pick a new name, and migrate or remove the old content deliberately (with the person, as above).
+
+### Without the Sanity MCP: a trade-off, not an alternative
+
+Only when the person has said to go on without the toolkit, or it cannot be installed here. Each of these gives fewer guarantees than the MCP, and the person hears which, for this piece of work:
+
+- **The schema and the types** come from the Studio's schema files in the code.
+- **The deployed schema and the content** are checked through the project's own Sanity CLI, when it is installed and signed in (its schema and document commands; check `npx sanity --help` and Sanity's CLI docs, https://www.sanity.io/docs/cli-reference, for the current ones). The same three checks, by hand.
+- **With neither the MCP nor the CLI**: say plainly that the deployed schema and content the code cannot show were not checked, and that Sanity does not check what is written. Then work staging first and check every change on the rendered page (`work-with-cms` §7).
 
 ## The proposal, in the person's words
 
