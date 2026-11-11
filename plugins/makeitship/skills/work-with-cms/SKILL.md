@@ -38,7 +38,7 @@ No CMS → this skill does not apply; carry on. A CMS that only holds part of th
 |---|---|
 | Sanity | `references/sanity.md` |
 
-Read it before the first step of the work, every time: it says which official agent tools the CMS has, what they are for and how to install them in each agent. A CMS with no reference here: work from that CMS's official documentation and its official agent tools, if it has any, under the rules below; say in one line that this skill has no guide for it yet.
+Read it before the first step of the work, every time: it says which official agent tools the CMS has, what they are for, how to install them in each agent, and what to check in the project before the first content write (for Sanity: that its schema is deployed). A CMS with no reference here: work from that CMS's official documentation and its official agent tools, if it has any, under the rules below; say in one line that this skill has no guide for it yet.
 
 ## 3. The CMS's own agent tools come first
 
