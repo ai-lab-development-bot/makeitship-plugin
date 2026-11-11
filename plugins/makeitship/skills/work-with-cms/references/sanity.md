@@ -28,10 +28,27 @@ The Sanity MCP checks content against the schema **deployed** to Sanity, not aga
 - the agent cannot ask Sanity what content should look like, and without the code it guesses the structure from existing documents;
 - Sanity's own document validation does not work.
 
-So, before the first content write on a Sanity project, every time: with the Sanity MCP, check whether a schema is deployed **for each dataset the project uses** (staging and production) and whether it matches the schema in the code (its types and fields). Then:
+So, before the first content write on a Sanity project, every time, with the Sanity MCP and for **each dataset the project uses** (staging and production):
 
-- **Deployed and current** → carry on.
-- **Missing or behind** → before writing content, propose adding the schema deploy to the project (below), as a recommendation the person decides on. Until it is in place, work the safe way (below).
+1. **The schema.** Is a schema deployed, and does it match the schema in the code (its types and fields)? The code's schema is the base for the next checks.
+   - **Deployed and current** → carry on.
+   - **Missing or behind, and the project has no schema deploy** → before writing content, propose adding it (below), as a recommendation the person decides on. Until it is in place, work the safe way (below).
+   - **Behind although the project has the schema deploy** → its last run failed or has not happened yet: look at its runs, and offer the person a manual run.
+   - **Ahead of the code** (types the code no longer has) → usually a rollback: check 2 and the person's decision below.
+2. **Content the current code cannot show.** Query (GROQ) for documents whose `_type` the code's schema does not know (system documents, `_.**` and the like, aside), and for documents whose sections or array items have an unknown `_type`, for example `*[_type == "page" && count(modules[!(_type in $knownModules)]) > 0]{_id, title}`. The known types come from the code's schema, or from the deployed one when it is current.
+3. **The documents you are about to touch.** When the deployed schema is current, validate them against it with the MCP's document validation before you change them.
+
+Content the code cannot show is easy to miss: the site does not fail (an unknown section is skipped and the page renders part-empty), and the Studio shows "unknown type" only to someone who opens the document, where an editor may delete it by accident. It usually means **the code went back and the content did not** (a rollback; below), or a type was removed without migrating its content.
+
+**What to do about it is the person's decision, never yours.** Only they know why it happened and what comes next: a rollback may be a short detour before a fix that brings the code back, or the end of that feature. Show them what you found in plain words ("the Use cases page has three sections the site can no longer show; its links in the header and footer lead to a part-empty page"), say what it affects, and offer the choices with your recommendation:
+
+- leave it as it is, because a release bringing the code back is coming;
+- migrate it to the current structure;
+- remove it: unpublish, then delete, only on their yes, after a dataset export or with the document history named as the way back.
+
+Never delete, unpublish or rewrite it on your own, and do not build new content on top of it until they decide.
+
+**Never reuse a removed type's name with a different meaning.** A schema deploy replaces the deployed schema, it does not merge, but old documents of a removed type stay in the dataset; a new type under the same name makes them render wrongly with no error. Pick a new name, and migrate or remove the old content deliberately (with the person, as above).
 
 ## The proposal, in the person's words
 
@@ -55,7 +72,7 @@ A separate workflow file in the project, `.github/workflows/sanity-schema.yml`, 
 - **No new step for anyone**: neither the person nor the release process does anything extra, and the release does not know the file exists.
 - **A code deploy fails** → the schema is not deployed, so the live schema never runs ahead of the code.
 - **The schema deploy fails** → the code is already live and stays live. The failure shows as a red run in GitHub Actions, and GitHub emails the person who started the deploy. The first-step check above catches it before the next content work.
-- **A rollback** of the code does not roll the schema back: the deployed schema stays at the newer version. When the older code needs the older schema, a manual run with the rolled-back version's tag restores it.
+- **A rollback** goes back in code only. It is not a content rollback, and it does not start the schema workflow: the deployed schema and the content stay ahead of the code until the next release. The first-step check is what catches it, and what to do about it is the person's call (above).
 
 What makes it reliable, whatever else changes in the file:
 
