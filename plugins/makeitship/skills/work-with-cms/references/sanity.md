@@ -32,7 +32,7 @@ So, before the first content write on a Sanity project, every time, with the San
 
 1. **The schema.** Is a schema deployed, and does it match the schema in the code (its types and fields)? The code's schema is the base for the next checks.
    - **Deployed and current** → carry on.
-   - **Missing or behind, and the project has no schema deploy** → before writing content, propose adding it (below), as a recommendation the person decides on. Until it is in place, work the safe way (below).
+   - **Missing or behind, and the project has no schema deploy** → before writing content, propose adding it (below), as a recommendation the person decides on. Until it is in place, work as "When the guarantees are lower" says (below).
    - **Behind although the project has the schema deploy** → its last run failed or has not happened yet: look at its runs, and offer the person a manual run.
    - **Ahead of the code** (types the code no longer has) → usually a rollback: check 2 and the person's decision below.
 2. **Content the current code cannot show.** Query (GROQ) for documents whose `_type` the code's schema does not know (system documents, `_.**` and the like, aside), and for documents whose sections or array items have an unknown `_type`, for example `*[_type == "page" && count(modules[!(_type in $knownModules)]) > 0]{_id, title}`. The known types come from the code's schema, or from the deployed one when it is current.
@@ -50,13 +50,14 @@ Never delete, unpublish or rewrite it on your own, and do not build new content 
 
 **Never reuse a removed type's name with a different meaning.** A schema deploy replaces the deployed schema, it does not merge, but old documents of a removed type stay in the dataset; a new type under the same name makes them render wrongly with no error. Pick a new name, and migrate or remove the old content deliberately (with the person, as above).
 
-### Without the Sanity MCP: a trade-off, not an alternative
+## When the guarantees are lower
 
-Only when the person has said to go on without the toolkit, or it cannot be installed here. Each of these gives fewer guarantees than the MCP, and the person hears which, for this piece of work:
+Two gaps lower what the work can guarantee: **the Sanity MCP is missing** (the person said to go on without the toolkit, or it cannot be installed here), or **no schema is deployed** (or it is behind the code) until the schema deploy is in place. Neither is an equal alternative to the full way; each is a trade-off, and the person hears plainly, for this piece of work, what is not guaranteed. Then:
 
-- **The schema and the types** come from the Studio's schema files in the code.
-- **The deployed schema and the content** are checked through the project's own Sanity CLI, when it is installed and signed in (its schema and document commands; check `npx sanity --help` and Sanity's CLI docs, https://www.sanity.io/docs/cli-reference, for the current ones). The same three checks, by hand.
-- **With neither the MCP nor the CLI**: say plainly that the deployed schema and content the code cannot show were not checked, and that Sanity does not check what is written. Then work staging first and check every change on the rendered page (`work-with-cms` §7).
+- **Content shapes come from the Studio's schema files** in the code: field names, types, required fields, limits.
+- **Without the MCP, the three checks above are done through the project's own Sanity CLI**, when it is installed and signed in (its schema and document commands; check `npx sanity --help` and Sanity's CLI docs, https://www.sanity.io/docs/cli-reference, for the current ones). With neither, say that the deployed schema and content the code cannot show were not checked.
+- **Without a deployed schema, Sanity does not check what you write**: say so.
+- **Staging first**: write there, render and check every change on the page, then copy the approved version to production (`work-with-cms` §7).
 
 ## The proposal, in the person's words
 
@@ -115,9 +116,3 @@ Required before the workflow is added to any project. Verify each point and reco
 - [ ] The workflow names it listens for match the project's deploy workflows exactly.
 - [ ] Rollback works exactly as before, without the schema workflow.
 - [ ] MakeItShip's Releases readiness checklist is unaffected.
-
-## Until the schema deploy is in place
-
-- Take content shapes from the schema files when the code is available: field names, types, required fields, limits.
-- Write to staging first, render and check there, then copy the approved version to production (`work-with-cms` §7).
-- Say plainly to the person that Sanity does not check what you write yet.
