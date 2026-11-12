@@ -106,3 +106,4 @@ When a step fails twice, a host or a GitHub plan blocks it, the project is outsi
 | "Staging can use the production database for now" | Only with the person's explicit yes. |
 | "The setup failed again; I'll try a third way" | Two failures are a hard case: offer the expert. |
 | "Everything green but the rollback item — still waiting" | `rollback_ready` is neutral until something is live, and a yellow protection does not block. Publish is on when `state` is `publish_on`. |
+| "They can roll staging back from MakeItShip" | Roll back in MakeItShip is for production only. A change on staging is reverted by you, in the conversation with the person. |
