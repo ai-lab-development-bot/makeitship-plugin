@@ -17,7 +17,14 @@ What the toolkit contains and how its tools behave is Sanity's to say and change
 
 The toolkit's README is the source of truth for these steps; when it says otherwise, follow it.
 
-- **Claude Desktop and claude.ai**: Customize → Plugins → find **Sanity** → install it, then authorize its connector (sign in to Sanity when it asks). Start a new conversation afterwards.
+**Recommend the Sanity plugin, not the connector alone.** The plugin brings both halves: Sanity's skills and its MCP connector. A connector added on its own gives the tools without the skills. Where the person's agent installs plugins, the plugin is the step to give.
+
+**Installing it is not the end: its connector has to be connected.** The connector works only after the person signs in to Sanity through it. A plugin that is installed but whose connector is not connected looks like "the tools are missing" (the agent may report a connector that is not connected to the session): then the step is to connect it, not to install anything again.
+
+- **Claude Desktop and claude.ai**:
+  1. Customize → Plugins → find **Sanity** → install it.
+  2. Connect its connector: when asked, or in Customize → Connectors → Sanity → Connect, sign in to Sanity and allow access.
+  3. Start a new conversation: tools are picked up only when a conversation starts.
 - **Claude Code, Codex, Cursor and other agents**: follow the installation section of the toolkit's README for that agent.
 
 ## First, before any content work: is the schema deployed
