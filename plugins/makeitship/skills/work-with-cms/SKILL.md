@@ -38,7 +38,9 @@ No CMS → this skill does not apply; carry on. A CMS that only holds part of th
 |---|---|
 | Sanity | `references/sanity.md` |
 
-Read it before the first step of the work, every time: it says which official agent tools the CMS has, what they are for, how to install them in each agent, and what to check in the project before the first content write (for Sanity: that its schema is deployed). A CMS with no reference here: work from that CMS's official documentation and its official agent tools, if it has any, under the rules below; say in one line that this skill has no guide for it yet.
+Read it before the first step of the work, every time: it says which official agent tools the CMS has, what they are for, how to install them in each agent, and what to check in the project before any content write and before any schema change (for Sanity: that its schema is deployed, and that the project deploys it automatically). A CMS with no reference here: work from that CMS's official documentation and its official agent tools, if it has any, under the rules below; say in one line that this skill has no guide for it yet.
+
+**A gap the project can close is a question, asked before the work.** When that check finds something the project is missing and could add (for Sanity: no automatic schema deploy), stop before the content write or the schema change and propose adding it, as a question of its own with your recommendation, the way the reference words it. Wait for the answer, then go on. Ask every time the check finds it still missing: a no holds for the work at hand only. The reduced way the reference describes is what you do after the answer (a no, a "not now", or a yes whose change is not live yet), never instead of asking, and never a line in the report at the end.
 
 ## 3. The CMS's own agent tools come first
 
@@ -60,7 +62,9 @@ A CMS that ships official skills and an MCP server for agents knows its own data
 
 ## 5. Changing a schema
 
+- **Before you change a schema, run the reference's check** (§2), as before a content write: a missing automatic deploy is proposed then, before the change.
 - Edit the schema where the project keeps it (the Studio's schema files in the repository) and follow its existing patterns; deploy it only by the CMS's own procedure (the reference).
+- **Deploying the schema yourself and proposing the project's automatic deploy are different things.** The CMS's tools may tell you to deploy a schema only when the person explicitly asks, never as a fallback: that is about you running the deploy. Proposing that the project deploy it automatically is a code change the person decides on, and you propose it every time it is missing; the CMS's rule does not cover it.
 - **Adding is safe; removing and renaming are not.** A field or type that holds editors' content is never removed or renamed in one step: deprecate it, migrate the content, then remove it, by the CMS's own rules; the person hears in one line what changes for the editors.
 - After a schema change, regenerate the project's content types when it keeps them, and update the queries that read the changed fields.
 
@@ -110,6 +114,9 @@ Code reaches the live site through staging (`work-on-task`): a branch, a pull re
 | "The CMS's tools aren't installed; I'll just carry on" | They are required. Ask the person to install them, in product words, before the CMS work. |
 | "I asked about the tools last time; I won't nag" | Ask every time they are missing. A go-ahead without them holds for the work at hand only. |
 | "Without the MCP I'll read the code; it's just as good" | It is a trade-off with fewer guarantees. Say what is not guaranteed, each time. |
+| "No schema deployed, but I'll check against the code; I'll mention the deploy in the report" | Checking against the code is the fallback, not a replacement for the proposal. Ask first, as its own question, and wait for the answer. |
+| "The CMS's tools say not to deploy the schema, so I'll leave deploys alone" | That forbids you deploying it. Proposing the project's automatic deploy is required while it is missing. |
+| "I'm only changing the schema, not writing content, so the check doesn't apply" | It applies before any schema change too. |
 | "I know how Sanity works" | Read its official skill for the step. Its rules come first. |
 | "The draft looks good; I'll publish it" | Publishing puts it on the live site. Only on the person's yes. |
 | "I'll rename this field to something clearer" | Editors' content sits in it. Deprecate, migrate, then remove. |

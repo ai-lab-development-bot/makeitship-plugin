@@ -27,7 +27,7 @@ The toolkit's README is the source of truth for these steps; when it says otherw
   3. Start a new conversation: tools are picked up only when a conversation starts.
 - **Claude Code, Codex, Cursor and other agents**: follow the installation section of the toolkit's README for that agent.
 
-## First, before any content work: is the schema deployed
+## First, before any content work or schema change: is the schema deployed
 
 The Sanity MCP checks content against the schema **deployed** to Sanity, not against the Studio code in the repository. With no deployed schema:
 
@@ -35,11 +35,11 @@ The Sanity MCP checks content against the schema **deployed** to Sanity, not aga
 - the agent cannot ask Sanity what content should look like, and without the code it guesses the structure from existing documents;
 - Sanity's own document validation does not work.
 
-So, before the first content write on a Sanity project, every time, with the Sanity MCP and for **each dataset the project uses** (staging and production):
+So, before the first content write and before any schema change on a Sanity project, every time, with the Sanity MCP and for **each dataset the project uses** (staging and production):
 
 1. **The schema.** Is a schema deployed, and does it match the schema in the code (its types and fields)? The code's schema is the base for the next checks.
    - **Deployed and current** → carry on.
-   - **Missing or behind, and the project has no schema deploy** → before writing content, propose adding it (below), as a recommendation the person decides on. Until it is in place, work as "When the guarantees are lower" says (below).
+   - **Missing or behind, and the project has no schema deploy** → **stop and propose adding it** ("The proposal, in the person's words", below), as a question of its own, before you write content or change the schema, and wait for the answer. Ask every time the check finds it missing; a no holds for the work at hand only. Only after the answer (a no, a "not now", or a yes while the deploy is not live yet) work as "When the guarantees are lower" says (below). Checking against the code's schema is what you do then, not a reason to skip the question.
    - **Behind although the project has the schema deploy** → its last run failed or has not happened yet: look at its runs, and offer the person a manual run.
    - **Ahead of the code** (types the code no longer has) → usually a rollback: check 2 and the person's decision below.
 2. **Content the current code cannot show.** Query (GROQ) for documents whose `_type` the code's schema does not know (system documents, `_.**` and the like, aside), and for documents whose sections or array items have an unknown `_type`, for example `*[_type == "page" && count(modules[!(_type in $knownModules)]) > 0]{_id, title}`. The known types come from the code's schema, or from the deployed one when it is current.
@@ -59,7 +59,7 @@ Never delete, unpublish or rewrite it on your own, and do not build new content 
 
 ## When the guarantees are lower
 
-Two gaps lower what the work can guarantee: **the Sanity MCP is missing** (the person said to go on without the toolkit, or it cannot be installed here), or **no schema is deployed** (or it is behind the code) until the schema deploy is in place. Neither is an equal alternative to the full way; each is a trade-off, and the person hears plainly, for this piece of work, what is not guaranteed. Then:
+Two gaps lower what the work can guarantee: **the Sanity MCP is missing** (the person said to go on without the toolkit, or it cannot be installed here), or **no schema is deployed** (or it is behind the code) until the schema deploy is in place, once the person has answered the proposal. Neither is an equal alternative to the full way; each is a trade-off, and the person hears plainly, for this piece of work, what is not guaranteed. Then:
 
 - **Content shapes come from the Studio's schema files** in the code: field names, types, required fields, limits.
 - **Without the MCP, the three checks above are done through the project's own Sanity CLI**, when it is installed and signed in (its schema and document commands; check `npx sanity --help` and Sanity's CLI docs, https://www.sanity.io/docs/cli-reference, for the current ones). With neither, say that the deployed schema and content the code cannot show were not checked.
@@ -76,6 +76,8 @@ Say what it gives, not how it works:
 > - Sanity's own hosted tools see the same content types your site uses.
 >
 > It needs one thing from you: a Sanity deploy token saved in GitHub (I'll show you where). Shall I add it?
+
+**Not the deploy Sanity's tools warn about.** Sanity's tools may say to deploy a schema only when explicitly asked, and never as a fallback. That is about the agent running the deploy itself (the MCP's schema deploy, or the CLI's): never do that on your own to get past a missing schema; run it only when the person explicitly asks. The proposal is something else: an automatic step in the project, added as code through a pull request, on the person's yes. Sanity's rule does not forbid it, and this reference requires it while it is missing.
 
 Say it in the conversation's language. On a yes, the change is a task of its own (`create-task`) and goes through a branch and a pull request into staging like any code (`work-on-task`).
 
