@@ -4,6 +4,8 @@ This repository is a marketplace (`.claude-plugin/marketplace.json` at the root,
 
 - Skills live in `plugins/makeitship/skills/<name>/SKILL.md`. Inside the plugin the server's tools are named `mcp__plugin_makeitship_makeitship__<tool>`; a person who added the server by hand sees `mcp__makeitship__<tool>`. Name the plugin form in skills.
 - Bump `version` in both `plugin.json` files on every release: it is the update signal Claude Code compares.
+- Two long-lived branches. Work branches come off `staging` and pull requests go into `staging`; a release is a pull request from `staging` into `main`, with the version already bumped on `staging`. The marketplace serves `main`.
+- `plugins/makeitship/.mcp.json` differs between the two branches on purpose: `main` connects to `https://mcp.makeitship.com/mcp`. Never change that file in a pull request into `staging` or in a release, and never merge `main` into `staging` (a hotfix included) without keeping `staging`'s copy of it.
 
 Both ecosystems read the same `plugins/makeitship/skills/`, so these hold at all times; breaking one ships a broken release:
 
