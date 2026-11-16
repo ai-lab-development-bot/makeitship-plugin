@@ -37,6 +37,19 @@ The team keeps a catalog of things worth taking into account when working on a t
 - **After the description changed.** A task edited while you work on it is read again by the catalog (`stale: true` on your next read, then a fresh version); points you already reported on may no longer hold, and new ones may appear. Read again whenever `get_task` shows a changed description, and once more before you call the task done.
 - **`status: "generating"`** — the model is reading the task now. Wait a few seconds and read once more. Do not plan around an insight you have not seen.
 - **`status: "unavailable"`** — no insight for this task (the catalog could not be read, or has not been written yet: `catalog_empty: true` on a ready one). Say so in one line and proceed on the task alone; never treat it as a failure of the task.
+- **`status: "not_in_plan"`** — the workspace's plan does not include the checklist; see the next section.
+
+## When the plan does not include the checklist
+
+Development Insights — the **Agent Checklist** on the person's dashboard — belong to a paid plan. In a workspace whose plan does not include them, `get_task_insights` answers `status: "not_in_plan"` with a `note`, `get_task` carries the same in its `insight` summary, and `acknowledge_insight_item` and `report_insight_item` are refused with the same sentence. This is not an error and not a failure of the task:
+
+- **Work on the task without the checklist**, calmly and completely: the plan, the build, the status. There are no points to place, acknowledge, report or close, and nothing waits on them.
+- **Tell the person, once per task, which step was skipped and why**, in the note's own terms: it names the plan the workspace is on and the plan that includes the checklist ("I worked without the Agent Checklist: it is part of Plus, and this workspace is on Free"). Say it when you hand the task over, in one line. Do not sell the plan and do not repeat it in every message.
+- **When the note says a payment did not go through**, the plan is paid for but closed for now: tell the person to update their card on Plan & billing, in the note's words, instead of naming a plan to buy.
+- **The answer is final for this task.** Do not retry it, do not wait for it, and do not look for the points by another route. Read again on the next task: the plan may have changed.
+- **Do not make up for it** by inventing a checklist of your own and reporting against it. Work the way you would on any task: the project's rules, the docs and your own judgement still apply.
+
+On a plan that includes the checklist nothing here applies and nothing is optional: an insight that fails to load there is `generating` or `unavailable`, handled as above, never a reason to call the step skipped because of the plan.
 
 ## Place each point in the work before you start
 
@@ -85,4 +98,6 @@ A report on a point the current insight does not have (the insight was regenerat
 | "The canvas point is cheap to skip here; I'll dispute it" | A point about what the person sees is theirs to decline. Do the round, or report their words. |
 | "The description changed, but my reports stand" | Read the new insight; judge each previous report against the change. |
 | "The insight is generating; I'll plan without it" | Wait a few seconds and read again. |
+| "`not_in_plan` — the tool is broken; I'll retry or stop" | It is the plan's answer, and final for this task. Work without the checklist and tell the person which step was skipped. |
+| "No checklist on this plan, so I will not mention it" | Say once, at hand-over, that the checklist step was skipped because of the plan the note names. |
 | "A point names a skill I would not have chosen" | The point is the reason the team raised; use the skill, or say in the report why not. |

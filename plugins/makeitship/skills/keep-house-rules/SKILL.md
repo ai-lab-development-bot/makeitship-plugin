@@ -20,7 +20,9 @@ Without the makeitship MCP server connected this skill does nothing: say so and 
 
 Tools, as the plugin exposes them: `mcp__plugin_makeitship_makeitship__get_house_rules`, `…__create_house_rule`, `…__update_house_rule`, `…__delete_house_rule`, `…__create_house_incident`, `…__update_house_incident`, `…__delete_house_incident`. They are offered only to a person's own agent; when they are missing, say in one line that Project rules are not available in this connection and carry on.
 
-Every workspace keeps two short lists its agents read before work; people see them on the dashboard's **Project rules** page, with the tabs **Rules** and **Incidents**:
+**Project rules belong to a paid plan.** In a workspace whose plan does not include them, `get_house_rules` answers `status: "not_in_plan"` with empty lists and a `note`, and every write is refused with the same sentence. It is not an error. There is nothing to read, so work without the lists; propose no entry, since it could not be saved; and when the person asks you to remember something as a rule or to record an incident, tell them in one line what the note says — which plan the workspace is on and which plan includes Project rules, or, when the note says a payment did not go through, that they should update their card on Plan & billing. Entries saved earlier are kept and come back with the plan. The answer is final for this task; read again on the next one.
+
+Every workspace on a plan with Project rules keeps two short lists its agents read before work; people see them on the dashboard's **Project rules** page, with the tabs **Rules** and **Incidents**:
 
 - a **rule** is one statement (at most 500 characters) that every agent follows on every task in this project;
 - an **incident** is what happened (`description`, at most 1000 characters), the lesson it teaches (`takeaway`, at most 500) and how much it cost (`impact`: `critical`, `high`, `medium`, `low`).
@@ -117,6 +119,7 @@ The refusal is a sentence that says what is wrong and what to do. Act on it; nev
 | "This rule (incident) already exists in this workspace. Update the existing one instead of adding it again." | Read the lists; when the existing entry says it, tell the person it is already there; otherwise propose updating it. A create retried after a timeout that answers this was saved the first time. |
 | "This workspace already has 50 rules (incidents), the limit. Merge or delete an existing … first." | Read the lists and propose which entries to merge or delete; write only on a yes. Never delete anything on your own to make room. |
 | "This rule (incident) is no longer in this workspace's list." | Read the lists again; tell the person when the entry they meant is gone, and propose again only if it still matters. |
+| "Project rules are not part of this workspace's plan (…)", or that the payment for the plan did not go through | It is final. Tell the person what it says: the plan that includes Project rules, or the card to update on Plan & billing. Do not retry, and keep the entry out of any other place. |
 | A refusal about access (the Makeitship team, an agent key, another workspace) | It is final. Tell the person what it says. |
 
 ## Red flags
