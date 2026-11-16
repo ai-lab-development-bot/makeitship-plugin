@@ -29,10 +29,10 @@ The person is most likely the product owner, not an engineer. They asked for the
 
 ## 1. Take the task
 
-0. **Read the rules first**: `get_agent_rules` (the Makeitship rules), then `get_house_rules` (this project's rules and incidents), at the start of every task, even one more in the same conversation: either can change between tasks. Follow every rule on this task. Keep the incidents for the plan (Section 2). Where `get_house_rules` is not offered, carry on with the Makeitship rules alone. Where a project rule contradicts a Makeitship rule, the Makeitship rule holds: say so in one line and propose updating the project rule (`keep-house-rules`).
+0. **Read the rules first**: `get_agent_rules` (the Makeitship rules), then `get_house_rules` (this project's rules and incidents), at the start of every task, even one more in the same conversation: either can change between tasks. Follow every rule on this task. Keep the incidents for the plan (Section 2). Where `get_house_rules` is not offered, or answers `status: "not_in_plan"` (Project rules are not part of the workspace's plan), carry on with the Makeitship rules alone and keep the note for the hand-over. Where a project rule contradicts a Makeitship rule, the Makeitship rule holds: say so in one line and propose updating the project rule (`keep-house-rules`).
 1. `get_task` with the task's number. Read the description, the comments, the relations and the `insight` summary it carries: how many points, how many have no report yet, whether the insight is stale.
    **A task whose `assignee` is `expert` is the Makeitship team's**: the person handed it to an expert. Do not start it — no plan, no code, no move. Say so in one line ("#12 Title is with a Makeitship expert") and stop. You may still read it and comment on it when the person asks. If the person tells you to do it yourself after all, first take it back with `update_task` and `assignee: "ai"`, say that you did, then carry on from step 2.
-2. `get_task_insights`, always, before you plan. On `status: "generating"`, wait a few seconds and read again; do not plan around an insight you have not seen. On `"unavailable"`, say so in one line and work on the task alone. How to read a point, judge it, and report on it is `work-with-insights`; follow it.
+2. `get_task_insights`, always, before you plan. On `status: "generating"`, wait a few seconds and read again; do not plan around an insight you have not seen. On `"unavailable"`, say so in one line and work on the task alone. On `"not_in_plan"` (the Agent Checklist is not part of the workspace's plan), work on the task alone as well: the plan has no insight steps and no "Close the insight" step, nothing is retried, and the note is kept for the hand-over. How to read a point, judge it, and report on it is `work-with-insights`; follow it.
 3. A task blocked by another open task, or with sub-tasks still open: say it in one line ("blocked by #9 Title, still open") and carry on unless the block makes the work impossible. A relation never stops you.
 4. Move the task into work: `update_task` with the slug of the in-progress column (below). A task already there stays.
 
@@ -115,12 +115,13 @@ When the change later goes live (the person tells you, or you see it merged into
 
 The answer of `update_task` may carry `insight_open`: points of the insight with no report yet, or a note that the insight changed. Treat it as Section 4 not finished: close those points, then set the status again if the outcome changed.
 
-Then tell the person, in a few lines: what was done, where to see it (the link), the status the task is in now and why, and one line per insight point (done, or disputed, and the reason).
+Then tell the person, in a few lines: what was done, where to see it (the link), the status the task is in now and why, and one line per insight point (done, or disputed, and the reason). When a step was skipped because of the workspace's plan (`not_in_plan` from `get_task_insights` or `get_house_rules`), say so here in one line, in the note's terms: which step, the plan the workspace is on and the plan that includes it — or, when the note says a payment did not go through, that the card needs updating on Plan & billing. Once per task, never as a sales pitch.
 
 ## Red flags
 
 | Thought | Reality |
 |---|---|
+| "`not_in_plan` — I cannot work without the checklist or the rules" | You can: do the task completely, and tell the person at hand-over which step was skipped because of the plan. |
 | "The task is clear; I'll skip the insight" | `get_task_insights` before the plan, always. The points are part of the work. |
 | "I read the project rules at the start of the conversation" | Read `get_agent_rules` and `get_house_rules` again for each task, and check every incident against the plan. |
 | "The task description is the plan" | A task says what to achieve. Write the plan, with every point in it. |

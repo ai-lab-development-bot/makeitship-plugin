@@ -30,7 +30,7 @@ Call `list_task_statuses` first, once per conversation. It answers the board's c
 
 For a task the person names, call `get_task` with its `number` and read its description, its status, its comments, and what it is linked to. Report what a reply said in its own words where it matters (a question, a decision needed), and say what the person has to do next, if anything.
 
-**A task on the Makeitship board comes with its Development Insights**, and `get_task` says so in its `insight` summary. Whenever you read a task to work on it — not only to answer what it says — take it through `work-on-task`: its insight read before the plan (`get_task_insights`), every point a step of the plan, done or disputed and reported, and the task moved to the status its outcome deserves. A task from this board is never worked without its insight.
+**A task on the Makeitship board comes with its Development Insights**, and `get_task` says so in its `insight` summary. Whenever you read a task to work on it — not only to answer what it says — take it through `work-on-task`: its insight read before the plan (`get_task_insights`), every point a step of the plan, done or disputed and reported, and the task moved to the status its outcome deserves. A task from this board is never worked without its insight — unless the workspace's plan does not include it (`insight.status: "not_in_plan"`): then the task is worked without it, and the person is told once that the step was skipped because of the plan.
 
 ## What a task is linked to
 
