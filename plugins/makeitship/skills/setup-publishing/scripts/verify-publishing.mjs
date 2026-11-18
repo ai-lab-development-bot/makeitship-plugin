@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Generated from makeitship-dashboard 0a5f702d (supabase/functions/_shared/publish-readiness/cli-main.ts) — do not edit; rebuild with npm run build:verify-publishing.
+// Generated from makeitship-dashboard 611ddd7c (supabase/functions/_shared/publish-readiness/cli-main.ts) — do not edit; rebuild with npm run build:verify-publishing.
 // supabase/functions/_shared/publish-readiness/cli-main.ts
 import { execFile } from "node:child_process";
 import process from "node:process";
@@ -9,7 +9,6 @@ import { join as join2 } from "node:path";
 
 // supabase/functions/_shared/mcp-contract/publish-readiness.ts
 var NON_BLOCKING_ITEMS = [
-  "protection",
   "rollback_ready"
 ];
 var READINESS_HOSTS = [
@@ -2165,30 +2164,6 @@ function checkStagingBranch(branch, stagingBranch, checkedAt) {
   if (branch.kind === "absent") return state(checkedAt, "red", "missing", `No branch named ${stagingBranch}`);
   return unreadable(checkedAt, branch);
 }
-var TOO_WIDE_BYPASS_TYPES = /* @__PURE__ */ new Set([
-  "RepositoryRole",
-  "OrganizationAdmin",
-  "EnterpriseOwner"
-]);
-function checkProtection(rules, rulesets, productionBranch, checkedAt) {
-  const bad = rules.kind === "absent" ? null : unreadable(checkedAt, rules);
-  if (bad) return bad;
-  const active = rules.kind === "ok" ? rules.value : [];
-  const pullRequestRules = active.filter((r) => r.type === "pull_request");
-  if (pullRequestRules.length === 0) {
-    return state(checkedAt, "yellow", "not_enforced", `GitHub enforces no pull-request rule on ${productionBranch}`);
-  }
-  for (const rule of pullRequestRules) {
-    if (rule.ruleset_id === void 0) continue;
-    const ruleset = rulesets.get(rule.ruleset_id);
-    if (!ruleset || ruleset.kind !== "ok" || ruleset.value.bypass_actors === null) continue;
-    const wide = ruleset.value.bypass_actors.find((a) => a.bypass_mode === "always" && TOO_WIDE_BYPASS_TYPES.has(a.actor_type));
-    if (wide) {
-      return state(checkedAt, "red", "bypass_too_wide", `The rule on ${productionBranch} can be bypassed by ${wide.actor_type === "RepositoryRole" ? "a repository role" : wide.actor_type}`);
-    }
-  }
-  return state(checkedAt, "green", void 0, productionBranch);
-}
 var fileName = (name) => CALLER_FILES[name].split("/").pop();
 function parseCallerText(file) {
   if (file.text === null) return "too_large";
@@ -2320,6 +2295,26 @@ function structureProblem(name, doc, match) {
       reason: "host_unknown",
       detail: `${file} names no host (vercel, netlify or cloudflare)`
     };
+  }
+  const forwarding = forwardingProblem(name, match.job);
+  return forwarding ? {
+    reason: "wrong_inputs",
+    detail: `${file} ${forwarding}`
+  } : null;
+}
+function forwardsInput(value, input) {
+  return typeof value === "string" && new RegExp(`^\\$\\{\\{\\s*(github\\.event\\.)?inputs\\.${input}\\s*\\}\\}$`).test(value.trim());
+}
+function forwardingProblem(name, job) {
+  const w = isObj(job.with) ? job.with : {};
+  if (name === "production") {
+    if (w.environment !== "production") return "must deploy environment: production";
+    if (!forwardsInput(w.version, "tag")) return "must pass version: ${{ inputs.tag }}";
+  } else if (name === "staging") {
+    if (w.environment !== "staging") return "must deploy environment: staging";
+  } else {
+    if (!forwardsInput(w.environment, "target_environment")) return "must pass environment: ${{ inputs.target_environment }}";
+    if (!forwardsInput(w.target_ref, "target_ref")) return "must pass target_ref: ${{ inputs.target_ref }}";
   }
   return null;
 }
@@ -2679,39 +2674,6 @@ function createGithubRepoReader(options) {
         } : null;
       });
     },
-    async getBranchRules(branch) {
-      return map2(await get(`/rules/branches/${encodeURIComponent(branch)}?per_page=100`), (json) => {
-        if (!Array.isArray(json)) return null;
-        const rules = [];
-        for (const r of json) {
-          if (!isObj2(r) || typeof r.type !== "string") continue;
-          rules.push({
-            type: r.type,
-            ruleset_id: typeof r.ruleset_id === "number" ? r.ruleset_id : void 0,
-            ruleset_source_type: typeof r.ruleset_source_type === "string" ? r.ruleset_source_type : void 0
-          });
-        }
-        return rules;
-      });
-    },
-    async getRuleset(id) {
-      return map2(await get(`/rulesets/${id}`), (json) => {
-        if (!isObj2(json) || typeof json.id !== "number") return null;
-        let bypass = null;
-        if (Array.isArray(json.bypass_actors)) {
-          bypass = json.bypass_actors.filter(isObj2).map((a) => ({
-            actor_id: typeof a.actor_id === "number" ? a.actor_id : null,
-            actor_type: typeof a.actor_type === "string" ? a.actor_type : "",
-            bypass_mode: typeof a.bypass_mode === "string" ? a.bypass_mode : ""
-          }));
-        }
-        return {
-          id: json.id,
-          enforcement: typeof json.enforcement === "string" ? json.enforcement : "",
-          bypass_actors: bypass
-        };
-      });
-    },
     listRepoSecretNames: () => listNames("/actions/secrets"),
     async getWorkflowPermissions() {
       return map2(await get(`/actions/permissions/workflow`), (json) => {
@@ -2812,8 +2774,6 @@ function createLocalFirstReader(remote, opts) {
   return {
     getFile: (path, ref) => ref === opts.localRef ? readLocal(fs, opts.root, path) : remote ? remote.getFile(path, ref) : failed(),
     getBranch: (branch) => remote ? remote.getBranch(branch) : failed(),
-    getBranchRules: (branch) => remote ? remote.getBranchRules(branch) : failed(),
-    getRuleset: (id) => remote ? remote.getRuleset(id) : failed(),
     listRepoSecretNames: () => remote ? remote.listRepoSecretNames() : failed(),
     getWorkflowPermissions: () => remote ? remote.getWorkflowPermissions() : failed(),
     listDeployments: (filter) => remote ? remote.listDeployments(filter) : failed(),
@@ -2857,7 +2817,6 @@ async function runReadinessChecks(reader, options) {
   ];
   const stagingP = read(() => reader.getBranch(options.stagingBranch));
   const productionP = read(() => reader.getBranch(options.defaultBranch));
-  const rulesP = read(() => reader.getBranchRules(options.defaultBranch));
   const repoSecretsP = read(() => reader.listRepoSecretNames());
   const permissionsP = read(() => reader.getWorkflowPermissions());
   const byRefP = read(() => reader.listDeployments({
@@ -2867,23 +2826,11 @@ async function runReadinessChecks(reader, options) {
   const filesAt = (ref) => Promise.all(names.map((n) => read(() => reader.getFile(CALLER_FILES[n], ref))));
   const stagingFilesP = filesAt(options.stagingBranch);
   const productionFilesP = options.defaultBranch === options.stagingBranch ? stagingFilesP : filesAt(options.defaultBranch);
-  const rules = await rulesP;
-  const rulesetIds = rules.kind === "ok" ? [
-    ...new Set(rules.value.flatMap((r) => r.type === "pull_request" && r.ruleset_id !== void 0 ? [
-      r.ruleset_id
-    ] : []))
-  ] : [];
-  const rulesetsP = Promise.all(rulesetIds.map((id) => read(() => reader.getRuleset(id))));
   const production = await productionP;
   const headSha = production.kind === "ok" ? production.value.headSha : null;
   const bySha = headSha ? await read(() => reader.listDeployments({
     sha: headSha
   })) : null;
-  const rulesetOutcomes = await rulesetsP;
-  const rulesets = new Map(rulesetIds.map((id, i) => [
-    id,
-    rulesetOutcomes[i]
-  ]));
   const asCallers = (f) => ({
     production: f[0],
     staging: f[1],
@@ -2911,7 +2858,6 @@ async function runReadinessChecks(reader, options) {
   const byRef = await byRefP;
   return {
     staging_branch: checkStagingBranch(await stagingP, options.stagingBranch, at),
-    protection: checkProtection(rules, rulesets, options.defaultBranch, at),
     deploy_files: checkDeployFilesOnBranches(deployFileBranches, at),
     host_key: checkHostKey(analysis, await repoSecretsP, at),
     workflow_permissions: checkWorkflowPermissions(await permissionsP, analysis, at),
