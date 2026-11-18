@@ -38,8 +38,8 @@ Find the open task about setting up publishing (`list_tasks`; a task created by 
 Call `get_publish_readiness`. Its `state` and checklist tell you what is left:
 
 - **`publish_included` is false** — the workspace's plan does not include Publish. Tell the person what `plan_note` says and stop: no task, no setup. The refusal is final.
-- **not_set_up** — the repository is not connected. Connecting is the person's: on the **Releases** page, **Connect GitHub**, choose the repository, then **Set it up** (Makeitship protects the production branch, adds `staging` and read-only defaults for automated jobs). Say it in those words and wait; then read the state again.
-- **setting_up** or **needs_attention** — work through the items that block, in the checklist's order: every `red` item, and `host_autodeploy_off` yellow `host_access_unchecked`. A yellow `protection` (GitHub does not enforce it on this plan) and a neutral `rollback_ready` (nothing is live yet) do not block. `unknown` means GitHub did not answer: check again later. `pending` is the test deploy running: wait. `references/hosts.md`, "Who fixes what", says who fixes each item and how; an item that is not there is a hard case (§9).
+- **not_set_up** — the repository is not connected. Connecting is the person's: on the **Releases** page, **Connect GitHub**, choose the repository, then **Set it up** (Makeitship adds the `staging` branch). Say it in those words and wait; then read the state again.
+- **setting_up** or **needs_attention** — work through the items that block, in the checklist's order: every `red` item, and `host_autodeploy_off` yellow `host_access_unchecked`. A neutral `rollback_ready` (nothing is live yet) does not block. `unknown` means GitHub did not answer: check again later. `pending` is the test deploy running: wait. `references/hosts.md`, "Who fixes what", says who fixes each item and how; an item that is not there is a hard case (§9).
 - **publish_on** — nothing to set up. If the person expected something else, show them what the checklist says.
 
 ## 3. Know the project
@@ -105,5 +105,5 @@ When a step fails twice, a host or a GitHub plan blocks it, the project is outsi
 | "check_publish_readiness will redeploy staging for me" | It starts the one test deploy once everything else is in place, and never deploys on request. |
 | "Staging can use the production database for now" | Only with the person's explicit yes. |
 | "The setup failed again; I'll try a third way" | Two failures are a hard case: offer the expert. |
-| "Everything green but the rollback item — still waiting" | `rollback_ready` is neutral until something is live, and a yellow protection does not block. Publish is on when `state` is `publish_on`. |
+| "Everything green but the rollback item — still waiting" | `rollback_ready` is neutral until something is live, and it does not block. Publish is on when `state` is `publish_on`. |
 | "They can roll staging back from MakeItShip" | Roll back in MakeItShip is for production only. A change on staging is reverted by you, in the conversation with the person. |
