@@ -22,13 +22,11 @@ The checklist items the setup works on (`get_publish_readiness`), what each red 
 | Item · reason | Who | How |
 |---|---|---|
 | `repo_connected` · `not_connected`, `access_lost` | the person | Releases → **Connect GitHub** (again), choose the repository, **Set it up** |
-| `staging_branch` · `missing` | the person | Releases → **Restore protection** when the page offers it (it re-applies Set it up's changes); otherwise a hard case |
-| `protection` · `not_enforced` (yellow) | nobody | GitHub Free does not enforce it on a private repository; it does not block |
-| `protection` · `missing`, `bypass_too_wide` | the person | Releases → **Restore protection** when the page offers it; otherwise a hard case |
+| `staging_branch` · `missing` | the person | Releases → **Restore the staging branch** when the page offers it; otherwise a hard case |
 | `deploy_files` · `missing`, `wrong_*`, `invalid_file`, `not_shared`, `unsupported_version`, `host_unknown` | you | the deploy files, through a pull request into staging (SKILL.md §4) |
 | `deploy_files` · `not_merged` | the person | **Prepare the merge** on Releases, then merge it on GitHub (SKILL.md §8) |
 | `host_key` · `missing` | the person | the key from the host into GitHub under the named secret (below) |
-| `workflow_permissions` · `read_only_token` | you, then the person | the deploy files must grant `contents: write` to the deploy job as the templates do; if they do, Releases → **Restore protection** when the page offers it, otherwise a hard case |
+| `workflow_permissions` · `read_only_token` | you | the deploy files must grant `contents: write` to the deploy job as the templates do; if they already do, a hard case |
 | `host_autodeploy_off` · `host_access_unchecked` (yellow) | the person | remove the repository from the host's GitHub app, then tick the box (below) |
 | `host_autodeploy_off` · `host_deploys_main` | the person | the host put main live by itself: remove the repository from its GitHub app (below), then **Check again**; the tick alone does not clear it |
 | `test_deploy` · `failed`, `timed_out` | you | read the staging run's log on GitHub, fix the cause, check again |
