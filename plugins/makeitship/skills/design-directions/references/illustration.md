@@ -24,8 +24,11 @@ Whatever the genre, the image is good, or it does not ship. A badly drawn person
 scene reads as amateur and drags the whole direction down; the critic rejects it
 (`critic.md`). Ways to reach the bar:
 
-- **An image generator,** when this session has one, with a short prompt: the subject, the
-  product's palette and style, the frame and its size, what to avoid.
+- **A generated image,** through the `create-asset` skill (it decides whether to generate,
+  reaches Codex or another generator, and writes the brief: the subject, the product's palette
+  and style, the frame and its size, transparency, what to avoid). Inside a round: one image per
+  direction by default; on its route without a generator, one copyable prompt per direction;
+  nothing made for the canvas is placed into the product until a direction is chosen.
 - **A style you can execute exactly:** flat shapes, a limited palette, a clear silhouette, a
   consistent stroke — pictures built from forms you can specify, not imitated brushwork or
   shading.

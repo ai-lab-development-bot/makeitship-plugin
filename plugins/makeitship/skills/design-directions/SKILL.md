@@ -2,8 +2,9 @@
 name: design-directions
 description: >
   Use when the person wants to design, mock up, redesign or visually iterate on anything —
-  app screens, flows, landing pages, dashboards, components, motion, or visual assets such as
-  icons, illustrations, banners and posters — or describes a UI in words that would be clearer
+  app screens, flows, landing pages, dashboards, components, motion, or ideas for a visual
+  asset to choose between (a concrete asset in the product's style goes to `create-asset`) —
+  or describes a UI in words that would be clearer
   seen than read ("show me what it could look like", "mock up the archive screen", "how
   should this animate?"). Puts several genuinely different directions on a visual canvas,
   each grounded in the product as it is and derived from its audience's world, never the
@@ -65,6 +66,10 @@ Only two things skip it:
   finished: run what is owed.
 - **The person said so**, in so many words, for this change ("no canvas, just build it"). An
   ignored offer or silence is not a no: ask once more, plainly, and wait.
+- **A concrete asset, not a screen** (an illustration for this empty state, the parts of this
+  scene, a picture for this page) in the product's style: the `create-asset` skill makes it,
+  without a round. Where it goes still counts: a change around it (a new slot, a new layout) is a
+  visible change and gets its round.
 
 Never decide it for them. "It is built from blocks the product already has", "we agreed the
 shape in words", "it is cheap to change later" and "it is a small change" are not reasons to
@@ -75,8 +80,11 @@ The rest of this section, the offers and "never offer twice", is for ordinary co
 where nobody has asked for anything to be built.
 
 **Use directly** when the person asks to design, mock up, wireframe, redesign, "show what it
-could look like", animate, or make a visual asset (screen, flow, landing page, dashboard,
-component, poster, ad, social post, app icon, illustration, banner, invite).
+could look like", animate, or explore ideas for something visual (screen, flow, landing page,
+dashboard, component, poster, ad, social post, app icon, illustration, banner, invite) where
+several different takes are worth comparing. A concrete asset to make in the product's style
+goes to `create-asset`, which makes one finished asset; this skill calls it for the imagery its
+directions need.
 
 **Offer it (one short line, then carry on)** when the person describes an interface in words, a
 discussion keeps circling around how something should look or behave, they are choosing between
